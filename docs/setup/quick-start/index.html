@@ -14,7 +14,7 @@
 <meta name="author" content="FiestaBoard">
 <link rel="canonical" href="https://fiestaboard.app">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"FiestaBoard","description":"Open-source software that transforms split-flap displays into living dashboards. Display weather, stocks, sports scores, transit times, and more.","url":"https://fiestaboard.app","applicationCategory":"UtilitiesApplication","operatingSystem":"Linux, macOS, Windows","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":"WYSIWYG page editor, Schedule mode, 18 plugins, Docker deployment, Raspberry Pi support, Weather display, Stock ticker, Sports scores, Transit times, Home Assistant integration","screenshot":"https://fiestaboard.app/img/web-ui-home.png","softwareRequirements":"Docker and Docker Compose","codeRepository":"https://github.com/Fiestaboard/FiestaBoard","sourceOrganization":{"@type":"Organization","name":"FiestaBoard","url":"https://github.com/Fiestaboard/FiestaBoard"}}</script><link rel="stylesheet" href="/assets/css/styles.d040296a.css">
-<script src="/assets/js/runtime~main.914be301.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.b45f0892.js" defer="defer"></script>
 <script src="/assets/js/main.f47c8b9b.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -31,7 +31,7 @@
 </ul>
 <p>That&#x27;s it. The install wizard handles the rest. Plugins that need external API keys (weather, traffic, etc.) can be configured later through the web UI.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="installation-recommended">Installation (Recommended)<a href="#installation-recommended" class="hash-link" aria-label="Direct link to Installation (Recommended)" title="Direct link to Installation (Recommended)" translate="no">​</a></h2>
-<p>Run the setup wizard — it will collect your board API key, create the configuration, and start the server:</p>
+<p>Run the setup wizard. It will collect your board API key, create the configuration, and start the server:</p>
 <div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain"># Mac/Linux</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">./scripts/install.sh</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"># Windows (PowerShell)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">.\scripts\install.ps1</span><br></span></code></pre></div></div>
 <p>The script guides you through everything. When it finishes, FiestaBoard is running.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="access-your-dashboard">Access Your Dashboard<a href="#access-your-dashboard" class="hash-link" aria-label="Direct link to Access Your Dashboard" title="Direct link to Access Your Dashboard" translate="no">​</a></h2>
@@ -82,7 +82,7 @@
 </ol>
 <div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">docker-compose up -d --build</span><br></span></code></pre></div></div>
 <ol start="5">
-<li class=""><strong>Configure plugins in the web UI</strong> — go to the Integrations page at <a href="http://localhost:8080" target="_blank" rel="noopener noreferrer" class="">http://localhost:8080</a> to enable plugins and enter API keys.</li>
+<li class=""><strong>Configure plugins in the web UI</strong> - go to the Integrations page at <a href="http://localhost:8080" target="_blank" rel="noopener noreferrer" class="">http://localhost:8080</a> to enable plugins and enter API keys.</li>
 </ol>
 <p>See <code>env.example</code> for all available environment variables (useful for development).</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="next-steps">Next Steps<a href="#next-steps" class="hash-link" aria-label="Direct link to Next Steps" title="Direct link to Next Steps" translate="no">​</a></h2>

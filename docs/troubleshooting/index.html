@@ -14,7 +14,7 @@
 <meta name="author" content="FiestaBoard">
 <link rel="canonical" href="https://fiestaboard.app">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"FiestaBoard","description":"Open-source software that transforms split-flap displays into living dashboards. Display weather, stocks, sports scores, transit times, and more.","url":"https://fiestaboard.app","applicationCategory":"UtilitiesApplication","operatingSystem":"Linux, macOS, Windows","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":"WYSIWYG page editor, Schedule mode, 18 plugins, Docker deployment, Raspberry Pi support, Weather display, Stock ticker, Sports scores, Transit times, Home Assistant integration","screenshot":"https://fiestaboard.app/img/web-ui-home.png","softwareRequirements":"Docker and Docker Compose","codeRepository":"https://github.com/Fiestaboard/FiestaBoard","sourceOrganization":{"@type":"Organization","name":"FiestaBoard","url":"https://github.com/Fiestaboard/FiestaBoard"}}</script><link rel="stylesheet" href="/assets/css/styles.d040296a.css">
-<script src="/assets/js/runtime~main.914be301.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.b45f0892.js" defer="defer"></script>
 <script src="/assets/js/main.f47c8b9b.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -49,10 +49,10 @@ Ensure build tools are installed on your Pi:</p>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="board-not-updating">Board not updating<a href="#board-not-updating" class="hash-link" aria-label="Direct link to Board not updating" title="Direct link to Board not updating" translate="no">​</a></h3>
 <p><strong>Checklist</strong>:</p>
 <ol>
-<li class="">✅ Is the display service started? (Click ▶ in the Web UI)</li>
-<li class="">✅ Is your <code>BOARD_READ_WRITE_KEY</code> correct in <code>.env</code>?</li>
-<li class="">✅ Is the board on the same network? (for local API mode)</li>
-<li class="">✅ Check the API logs: <code>docker-compose logs -f api</code></li>
+<li class="">Is the display service started? (Click ▶ in the Web UI)</li>
+<li class="">Is your <code>BOARD_READ_WRITE_KEY</code> correct in <code>.env</code>?</li>
+<li class="">Is the board on the same network? (for local API mode)</li>
+<li class="">Check the API logs: <code>docker-compose logs -f api</code></li>
 </ol>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="401-unauthorized-from-board-api">401 Unauthorized from board API<a href="#401-unauthorized-from-board-api" class="hash-link" aria-label="Direct link to 401 Unauthorized from board API" title="Direct link to 401 Unauthorized from board API" translate="no">​</a></h3>
 <p><strong>Solution</strong>:</p>
@@ -64,49 +64,49 @@ Ensure build tools are installed on your Pi:</p>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="board-updates-are-slow">Board updates are slow<a href="#board-updates-are-slow" class="hash-link" aria-label="Direct link to Board updates are slow" title="Direct link to Board updates are slow" translate="no">​</a></h3>
 <p><strong>Possible causes</strong>:</p>
 <ul>
-<li class="">Cloud API mode has a 15-second rate limit — increase <code>REFRESH_INTERVAL_SECONDS</code></li>
-<li class="">Network latency — check your connection to the board</li>
-<li class="">Too many plugins refreshing — reduce enabled plugins or increase refresh interval</li>
+<li class="">Cloud API mode has a 15-second rate limit. Increase <code>REFRESH_INTERVAL_SECONDS</code></li>
+<li class="">Network latency. Check your connection to the board</li>
+<li class="">Too many plugins refreshing. Reduce enabled plugins or increase refresh interval</li>
 </ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="plugin-issues">Plugin Issues<a href="#plugin-issues" class="hash-link" aria-label="Direct link to Plugin Issues" title="Direct link to Plugin Issues" translate="no">​</a></h2>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="weather-shows-no-data">Weather shows no data<a href="#weather-shows-no-data" class="hash-link" aria-label="Direct link to Weather shows no data" title="Direct link to Weather shows no data" translate="no">​</a></h3>
 <p><strong>Checklist</strong>:</p>
 <ol>
-<li class="">✅ Is <code>WEATHER_API_KEY</code> set in <code>.env</code>?</li>
-<li class="">✅ Is <code>WEATHER_PROVIDER</code> set correctly? (<code>weatherapi</code> or <code>openweathermap</code>)</li>
-<li class="">✅ Is <code>WEATHER_LOCATION</code> a valid location string?</li>
-<li class="">✅ Is the Weather plugin enabled in the Integrations page?</li>
+<li class="">Is <code>WEATHER_API_KEY</code> set in <code>.env</code>?</li>
+<li class="">Is <code>WEATHER_PROVIDER</code> set correctly? (<code>weatherapi</code> or <code>openweathermap</code>)</li>
+<li class="">Is <code>WEATHER_LOCATION</code> a valid location string?</li>
+<li class="">Is the Weather plugin enabled in the Integrations page?</li>
 </ol>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="traffic-plugin-returns-errors">Traffic plugin returns errors<a href="#traffic-plugin-returns-errors" class="hash-link" aria-label="Direct link to Traffic plugin returns errors" title="Direct link to Traffic plugin returns errors" translate="no">​</a></h3>
 <p><strong>Common causes</strong>:</p>
 <ul>
 <li class="">Google Routes API not enabled in Cloud Console</li>
 <li class="">Billing not set up (required even for free tier)</li>
-<li class="">Invalid address format — try using coordinates instead</li>
+<li class="">Invalid address format - try using coordinates instead</li>
 </ul>
 <p>See the <a class="" href="/docs/plugins/traffic">Traffic Plugin</a> guide for detailed setup.</p>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="home-assistant-connection-refused">Home Assistant connection refused<a href="#home-assistant-connection-refused" class="hash-link" aria-label="Direct link to Home Assistant connection refused" title="Direct link to Home Assistant connection refused" translate="no">​</a></h3>
 <p><strong>Checklist</strong>:</p>
 <ol>
-<li class="">✅ Is the <code>HOME_ASSISTANT_URL</code> correct and reachable?</li>
-<li class="">✅ Is your long-lived access token valid?</li>
-<li class="">✅ Can FiestaBoard&#x27;s Docker container reach your HA instance?</li>
+<li class="">Is the <code>HOME_ASSISTANT_URL</code> correct and reachable?</li>
+<li class="">Is your long-lived access token valid?</li>
+<li class="">Can FiestaBoard&#x27;s Docker container reach your HA instance?</li>
 </ol>
 <p>If using Docker, ensure both are on the same Docker network or use the host&#x27;s IP address.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="web-ui-issues">Web UI Issues<a href="#web-ui-issues" class="hash-link" aria-label="Direct link to Web UI Issues" title="Direct link to Web UI Issues" translate="no">​</a></h2>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="web-ui-wont-load">Web UI won&#x27;t load<a href="#web-ui-wont-load" class="hash-link" aria-label="Direct link to Web UI won&#x27;t load" title="Direct link to Web UI won&#x27;t load" translate="no">​</a></h3>
 <p><strong>Checklist</strong>:</p>
 <ol>
-<li class="">✅ Are both containers running? <code>docker-compose ps</code></li>
-<li class="">✅ Try accessing the API directly: <code>http://localhost:8000/health</code></li>
-<li class="">✅ Check UI container logs: <code>docker-compose logs ui</code></li>
+<li class="">Are both containers running? <code>docker-compose ps</code></li>
+<li class="">Try accessing the API directly: <code>http://localhost:8000/health</code></li>
+<li class="">Check UI container logs: <code>docker-compose logs ui</code></li>
 </ol>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="changes-not-saving">Changes not saving<a href="#changes-not-saving" class="hash-link" aria-label="Direct link to Changes not saving" title="Direct link to Changes not saving" translate="no">​</a></h3>
 <p><strong>Possible causes</strong>:</p>
 <ul>
-<li class="">The <code>data/</code> volume mount is not working — check <code>docker-compose.yml</code></li>
+<li class="">The <code>data/</code> volume mount is not working - check <code>docker-compose.yml</code></li>
 <li class="">File permissions on the <code>data/</code> directory</li>
-<li class="">API container is not running — check with <code>docker-compose ps</code></li>
+<li class="">API container is not running - check with <code>docker-compose ps</code></li>
 </ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getting-more-help">Getting More Help<a href="#getting-more-help" class="hash-link" aria-label="Direct link to Getting More Help" title="Direct link to Getting More Help" translate="no">​</a></h2>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="check-the-logs">Check the Logs<a href="#check-the-logs" class="hash-link" aria-label="Direct link to Check the Logs" title="Direct link to Check the Logs" translate="no">​</a></h3>
@@ -129,9 +129,9 @@ Ensure build tools are installed on your Pi:</p>
 </ol>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="next-steps">Next Steps<a href="#next-steps" class="hash-link" aria-label="Direct link to Next Steps" title="Direct link to Next Steps" translate="no">​</a></h2>
 <ul>
-<li class=""><a class="" href="/docs/setup/quick-start">Quick Start</a> — Setup guide</li>
-<li class=""><a class="" href="/docs/setup/docker-setup">Docker Setup</a> — Docker architecture</li>
-<li class=""><a class="" href="/docs/reference/api-endpoints">API Endpoints</a> — API reference</li>
+<li class=""><a class="" href="/docs/setup/quick-start">Quick Start</a> - Setup guide</li>
+<li class=""><a class="" href="/docs/setup/docker-setup">Docker Setup</a> - Docker architecture</li>
+<li class=""><a class="" href="/docs/reference/api-endpoints">API Endpoints</a> - API reference</li>
 </ul></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/Fiestaboard/FiestaBoard/tree/main/docs-site/docs/troubleshooting.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/docs/development/testing"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Testing Guide</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#installation-issues" class="table-of-contents__link toc-highlight">Installation Issues</a><ul><li><a href="#docker-is-not-running" class="table-of-contents__link toc-highlight">Docker is not running</a></li><li><a href="#port-already-in-use" class="table-of-contents__link toc-highlight">Port already in use</a></li><li><a href="#build-fails-on-raspberry-pi" class="table-of-contents__link toc-highlight">Build fails on Raspberry Pi</a></li></ul></li><li><a href="#board-connection-issues" class="table-of-contents__link toc-highlight">Board Connection Issues</a><ul><li><a href="#board-not-updating" class="table-of-contents__link toc-highlight">Board not updating</a></li><li><a href="#401-unauthorized-from-board-api" class="table-of-contents__link toc-highlight">401 Unauthorized from board API</a></li><li><a href="#board-updates-are-slow" class="table-of-contents__link toc-highlight">Board updates are slow</a></li></ul></li><li><a href="#plugin-issues" class="table-of-contents__link toc-highlight">Plugin Issues</a><ul><li><a href="#weather-shows-no-data" class="table-of-contents__link toc-highlight">Weather shows no data</a></li><li><a href="#traffic-plugin-returns-errors" class="table-of-contents__link toc-highlight">Traffic plugin returns errors</a></li><li><a href="#home-assistant-connection-refused" class="table-of-contents__link toc-highlight">Home Assistant connection refused</a></li></ul></li><li><a href="#web-ui-issues" class="table-of-contents__link toc-highlight">Web UI Issues</a><ul><li><a href="#web-ui-wont-load" class="table-of-contents__link toc-highlight">Web UI won&#39;t load</a></li><li><a href="#changes-not-saving" class="table-of-contents__link toc-highlight">Changes not saving</a></li></ul></li><li><a href="#getting-more-help" class="table-of-contents__link toc-highlight">Getting More Help</a><ul><li><a href="#check-the-logs" class="table-of-contents__link toc-highlight">Check the Logs</a></li><li><a href="#interactive-api-documentation" class="table-of-contents__link toc-highlight">Interactive API Documentation</a></li><li><a href="#open-an-issue" class="table-of-contents__link toc-highlight">Open an Issue</a></li></ul></li><li><a href="#next-steps" class="table-of-contents__link toc-highlight">Next Steps</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Documentation</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/docs/intro">Getting Started</a></li><li class="footer__item"><a class="footer__link-item" href="/docs/setup/quick-start">Setup Guide</a></li><li class="footer__item"><a class="footer__link-item" href="/docs/plugins/overview">Plugins</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Features</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/docs/features/page-editor">Page Editor</a></li><li class="footer__item"><a class="footer__link-item" href="/docs/features/schedule">Schedule Mode</a></li><li class="footer__item"><a class="footer__link-item" href="/docs/reference/api-endpoints">API Reference</a></li><li class="footer__item"><a class="footer__link-item" href="/docs/troubleshooting">Troubleshooting</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://discord.gg/wc9dDfte" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://github.com/Fiestaboard/FiestaBoard" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://github.com/Fiestaboard/FiestaBoard/issues" target="_blank" rel="noopener noreferrer" class="footer__link-item">Issues<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a class="footer__link-item" href="/docs/development/contributing">Contributing</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Support</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://www.buymeacoffee.com/fiestaboard" target="_blank" rel="noopener noreferrer" class="footer__link-item">Buy Me a Coffee<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 FiestaBoard. Made with ❤️ in San Francisco.</div></div></div></footer></div>
 </body>
 </html>

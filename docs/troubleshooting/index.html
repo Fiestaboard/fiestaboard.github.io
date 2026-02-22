@@ -14,8 +14,8 @@
 <meta name="author" content="FiestaBoard">
 <link rel="canonical" href="https://fiestaboard.app">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"FiestaBoard","description":"Open-source software that transforms split-flap displays into living dashboards. Display weather, stocks, sports scores, transit times, and more.","url":"https://fiestaboard.app","applicationCategory":"UtilitiesApplication","operatingSystem":"Linux, macOS, Windows","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":"WYSIWYG page editor, Schedule mode, 18 plugins, Docker deployment, Raspberry Pi support, Weather display, Stock ticker, Sports scores, Transit times, Home Assistant integration","screenshot":"https://fiestaboard.app/img/web-ui-home.png","softwareRequirements":"Docker and Docker Compose","codeRepository":"https://github.com/Fiestaboard/FiestaBoard","sourceOrganization":{"@type":"Organization","name":"FiestaBoard","url":"https://github.com/Fiestaboard/FiestaBoard"}}</script><link rel="stylesheet" href="/assets/css/styles.b5c25503.css">
-<script src="/assets/js/runtime~main.f6d3892a.js" defer="defer"></script>
-<script src="/assets/js/main.f47c8b9b.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.9eddd569.js" defer="defer"></script>
+<script src="/assets/js/main.75601594.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
 <svg style="display: none;"><defs>
@@ -49,10 +49,10 @@ Ensure build tools are installed on your Pi:</p>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="board-not-updating">Board not updating<a href="#board-not-updating" class="hash-link" aria-label="Direct link to Board not updating" title="Direct link to Board not updating" translate="no">​</a></h3>
 <p><strong>Checklist</strong>:</p>
 <ol>
-<li class="">Is the display service started? (Click ▶ in the Web UI)</li>
+<li class="">Is the display service started? (Click Start in the Web UI)</li>
 <li class="">Is your <code>BOARD_READ_WRITE_KEY</code> correct in <code>.env</code>?</li>
 <li class="">Is the board on the same network? (for local API mode)</li>
-<li class="">Check the API logs: <code>docker-compose logs -f api</code></li>
+<li class="">Check the logs: <code>docker-compose logs -f fiestaboard</code></li>
 </ol>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="401-unauthorized-from-board-api">401 Unauthorized from board API<a href="#401-unauthorized-from-board-api" class="hash-link" aria-label="Direct link to 401 Unauthorized from board API" title="Direct link to 401 Unauthorized from board API" translate="no">​</a></h3>
 <p><strong>Solution</strong>:</p>
@@ -97,22 +97,22 @@ Ensure build tools are installed on your Pi:</p>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="web-ui-wont-load">Web UI won&#x27;t load<a href="#web-ui-wont-load" class="hash-link" aria-label="Direct link to Web UI won&#x27;t load" title="Direct link to Web UI won&#x27;t load" translate="no">​</a></h3>
 <p><strong>Checklist</strong>:</p>
 <ol>
-<li class="">Are both containers running? <code>docker-compose ps</code></li>
-<li class="">Try accessing the API directly: <code>http://localhost:8000/health</code></li>
-<li class="">Check UI container logs: <code>docker-compose logs ui</code></li>
+<li class="">Is the container running? <code>docker-compose ps</code></li>
+<li class="">Try accessing the health endpoint: <code>http://localhost:4420/api/health</code></li>
+<li class="">Check container logs: <code>docker-compose logs -f fiestaboard</code></li>
 </ol>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="changes-not-saving">Changes not saving<a href="#changes-not-saving" class="hash-link" aria-label="Direct link to Changes not saving" title="Direct link to Changes not saving" translate="no">​</a></h3>
 <p><strong>Possible causes</strong>:</p>
 <ul>
 <li class="">The <code>data/</code> volume mount is not working - check <code>docker-compose.yml</code></li>
 <li class="">File permissions on the <code>data/</code> directory</li>
-<li class="">API container is not running - check with <code>docker-compose ps</code></li>
+<li class="">Container is not running - check with <code>docker-compose ps</code></li>
 </ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getting-more-help">Getting More Help<a href="#getting-more-help" class="hash-link" aria-label="Direct link to Getting More Help" title="Direct link to Getting More Help" translate="no">​</a></h2>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="check-the-logs">Check the Logs<a href="#check-the-logs" class="hash-link" aria-label="Direct link to Check the Logs" title="Direct link to Check the Logs" translate="no">​</a></h3>
-<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain"># All logs</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">docker-compose logs -f</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"># API logs only</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">docker-compose logs -f api</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"># UI logs only</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">docker-compose logs -f ui</span><br></span></code></pre></div></div>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain"># All logs</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">docker-compose logs -f</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"># FiestaBoard container only</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">docker-compose logs -f fiestaboard</span><br></span></code></pre></div></div>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="interactive-api-documentation">Interactive API Documentation<a href="#interactive-api-documentation" class="hash-link" aria-label="Direct link to Interactive API Documentation" title="Direct link to Interactive API Documentation" translate="no">​</a></h3>
-<p>Visit <code>http://localhost:8000/docs</code> for the Swagger UI where you can test API endpoints directly.</p>
+<p>Visit <code>http://localhost:4420/docs</code> for the Swagger UI where you can test API endpoints directly.</p>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="open-an-issue">Open an Issue<a href="#open-an-issue" class="hash-link" aria-label="Direct link to Open an Issue" title="Direct link to Open an Issue" translate="no">​</a></h3>
 <p>If you can&#x27;t resolve the problem:</p>
 <ol>

@@ -14,8 +14,8 @@
 <meta name="author" content="FiestaBoard">
 <link rel="canonical" href="https://fiestaboard.app">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"FiestaBoard","description":"Open-source software that transforms split-flap displays into living dashboards. Display weather, stocks, sports scores, transit times, and more.","url":"https://fiestaboard.app","applicationCategory":"UtilitiesApplication","operatingSystem":"Linux, macOS, Windows","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":"WYSIWYG page editor, Schedule mode, 18 plugins, Docker deployment, Raspberry Pi support, Weather display, Stock ticker, Sports scores, Transit times, Home Assistant integration","screenshot":"https://fiestaboard.app/img/web-ui-home.png","softwareRequirements":"Docker and Docker Compose","codeRepository":"https://github.com/Fiestaboard/FiestaBoard","sourceOrganization":{"@type":"Organization","name":"FiestaBoard","url":"https://github.com/Fiestaboard/FiestaBoard"}}</script><link rel="stylesheet" href="/assets/css/styles.c314f3ff.css">
-<script src="/assets/js/runtime~main.9d678447.js" defer="defer"></script>
-<script src="/assets/js/main.98d9c7fb.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.34095673.js" defer="defer"></script>
+<script src="/assets/js/main.9a54683f.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
 <svg style="display: none;"><defs>
@@ -112,7 +112,8 @@
 <li class="">Go to <strong><a href="http://localhost:4420" target="_blank" rel="noopener noreferrer" class="">http://localhost:4420</a></strong></li>
 <li class="">You should see the FiestaBoard dashboard</li>
 </ol>
-<p><img decoding="async" loading="lazy" alt="FiestaBoard Dashboard" src="/assets/images/web-ui-home-0d4367ef52a19eeb79631d6e1c3383a8.png" width="1148" height="655" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="FiestaBoard Dashboard" src="/assets/images/web-ui-home-fba8d5a78f5bc02410e4b1a63b5a755d.png" width="1280" height="720" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="Dashboard with active page displayed on the board" src="/assets/images/dashboard-running-848358ee7eac1dfc8709e4a6a93ef066.png" width="1280" height="720" class="img_ev3q"></p>
 <div class="theme-admonition theme-admonition-info admonition_xJq3 alert alert--info"><div class="admonitionHeading_Gvgb"><span class="admonitionIcon_Rf37"><svg viewBox="0 0 14 16"><path fill-rule="evenodd" d="M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z"></path></svg></span>Don&#x27;t see anything?</div><div class="admonitionContent_BuS1"><p>If the page doesn&#x27;t load, wait 30 seconds and try again - the server may still be starting up. Make sure Docker Desktop is running (look for the whale icon in your system tray or menu bar).</p></div></div>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="step-5-connect-your-board">Step 5: Connect Your Board<a href="#step-5-connect-your-board" class="hash-link" aria-label="Direct link to Step 5: Connect Your Board" title="Direct link to Step 5: Connect Your Board" translate="no">​</a></h2>
 <p>If you used the install wizard (Path B or C), you may have already entered your API key. If not:</p>
@@ -122,14 +123,18 @@
 <li class="">If you&#x27;re using the Local API, also enter your board&#x27;s IP address</li>
 <li class="">Click <strong>Save</strong></li>
 </ol>
+<p><img decoding="async" loading="lazy" alt="Settings page with board API key and IP address inputs" src="/assets/images/settings-board-config-70c807726a694724d7a37c88eef1c2e0.png" width="1280" height="720" class="img_ev3q"></p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="step-6-start-the-display-service">Step 6: Start the Display Service<a href="#step-6-start-the-display-service" class="hash-link" aria-label="Direct link to Step 6: Start the Display Service" title="Direct link to Step 6: Start the Display Service" translate="no">​</a></h2>
 <ol>
 <li class="">On the main dashboard page, click the <strong>&quot;Start Service&quot;</strong> button</li>
 <li class="">Your board should start updating within a few seconds</li>
 </ol>
+<p><img decoding="async" loading="lazy" alt="Dashboard before service is started, showing the Start Service button" src="/assets/images/start-service-button-37b1ccefc407b27f5198614dcd48914c.png" width="1280" height="720" class="img_ev3q"></p>
 <p>Congratulations - your board is now controlled by FiestaBoard!</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="step-7-make-it-yours">Step 7: Make It Yours<a href="#step-7-make-it-yours" class="hash-link" aria-label="Direct link to Step 7: Make It Yours" title="Direct link to Step 7: Make It Yours" translate="no">​</a></h2>
 <p>Now the fun part. Here&#x27;s what to do next:</p>
+<p><img decoding="async" loading="lazy" alt="Integrations page showing all plugins with toggle switches" src="/assets/images/integrations-full-e1629f4fcb70908cdfd0795935a04e46.png" width="1280" height="720" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="Variable Picker dropdown open in the page editor" src="/assets/images/page-editor-variable-picker-open-0a7f01b44b9e087c54c0766be0f0a5eb.png" width="1280" height="720" class="img_ev3q"></p>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="enable-some-plugins">Enable some plugins<a href="#enable-some-plugins" class="hash-link" aria-label="Direct link to Enable some plugins" title="Direct link to Enable some plugins" translate="no">​</a></h3>
 <ol>
 <li class="">Go to the <strong>Integrations</strong> page</li>

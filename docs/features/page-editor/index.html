@@ -14,8 +14,8 @@
 <meta name="author" content="FiestaBoard">
 <link rel="canonical" href="https://fiestaboard.app">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"FiestaBoard","description":"Open-source software that transforms split-flap displays into living dashboards. Display weather, stocks, sports scores, transit times, and more.","url":"https://fiestaboard.app","applicationCategory":"UtilitiesApplication","operatingSystem":"Linux, macOS, Windows","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":"WYSIWYG page editor, Schedule mode, 18 plugins, Docker deployment, Raspberry Pi support, Weather display, Stock ticker, Sports scores, Transit times, Home Assistant integration","screenshot":"https://fiestaboard.app/img/web-ui-home.png","softwareRequirements":"Docker and Docker Compose","codeRepository":"https://github.com/Fiestaboard/FiestaBoard","sourceOrganization":{"@type":"Organization","name":"FiestaBoard","url":"https://github.com/Fiestaboard/FiestaBoard"}}</script><link rel="stylesheet" href="/assets/css/styles.c314f3ff.css">
-<script src="/assets/js/runtime~main.9d678447.js" defer="defer"></script>
-<script src="/assets/js/main.98d9c7fb.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.34095673.js" defer="defer"></script>
+<script src="/assets/js/main.9a54683f.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
 <svg style="display: none;"><defs>
@@ -25,7 +25,7 @@
 <p>FiestaBoard&#x27;s WYSIWYG page editor lets you create and edit board display pages with a visual editor that shows exactly how content will appear on your split-flap display.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="overview">Overview<a href="#overview" class="hash-link" aria-label="Direct link to Overview" title="Direct link to Overview" translate="no">​</a></h2>
 <p>The page editor is the core of FiestaBoard&#x27;s content creation experience. It provides a real-time preview of your board layout, template variable insertion, and color formatting, all in a visual interface.</p>
-<p><img decoding="async" loading="lazy" alt="Page Editor" src="/assets/images/page-editor-wysiwyg-7ed0471acf3c2582e7e49e5303472291.png" width="2036" height="1718" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="Page Editor" src="/assets/images/page-editor-wysiwyg-f2b6e89484878239026c2a45310fb66e.png" width="1280" height="720" class="img_ev3q"></p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="device-types">Device Types<a href="#device-types" class="hash-link" aria-label="Direct link to Device Types" title="Direct link to Device Types" translate="no">​</a></h2>
 <p>FiestaBoard supports multiple Vestaboard devices with different display sizes:</p>
 <table><thead><tr><th>Device</th><th>Dimensions</th><th>Total Characters</th></tr></thead><tbody><tr><td><strong>Flagship</strong></td><td>6 rows × 22 columns</td><td>132</td></tr><tr><td><strong>Note</strong></td><td>3 rows × 15 columns</td><td>45</td></tr></tbody></table>
@@ -49,6 +49,7 @@
 <li class="">Browse available variables grouped by plugin</li>
 <li class="">Click a variable to insert it at the cursor position</li>
 </ol>
+<p><img decoding="async" loading="lazy" alt="Variable Picker dropdown showing available plugin variables" src="/assets/images/page-editor-variable-picker-open-0a7f01b44b9e087c54c0766be0f0a5eb.png" width="1280" height="720" class="img_ev3q"></p>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="variable-types">Variable Types<a href="#variable-types" class="hash-link" aria-label="Direct link to Variable Types" title="Direct link to Variable Types" translate="no">​</a></h3>
 <table><thead><tr><th>Type</th><th>Description</th><th>Example</th></tr></thead><tbody><tr><td><strong>Simple</strong></td><td>Single value replacement</td><td><code>{weather.temperature}</code> → <code>72°F</code></td></tr><tr><td><strong>Array</strong></td><td>Multi-line data</td><td><code>{stocks.prices}</code> → formatted stock rows</td></tr></tbody></table>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="example-variables">Example Variables<a href="#example-variables" class="hash-link" aria-label="Direct link to Example Variables" title="Direct link to Example Variables" translate="no">​</a></h3>
@@ -62,6 +63,7 @@
 </ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="working-with-colors">Working with Colors<a href="#working-with-colors" class="hash-link" aria-label="Direct link to Working with Colors" title="Direct link to Working with Colors" translate="no">​</a></h2>
 <p>The split-flap display supports colored tiles using special character codes. You can use these in the editor to add visual emphasis to your pages.</p>
+<p><img decoding="async" loading="lazy" alt="Page editor showing color codes in use" src="/assets/images/page-editor-colors-22f64640581b01ccea2d3122992f0a90.png" width="1280" height="720" class="img_ev3q"></p>
 <table><thead><tr><th>Code</th><th>Color</th><th>Common Use</th></tr></thead><tbody><tr><td><code>{63}</code></td><td>🟥 Red</td><td>Alerts, high temperatures</td></tr><tr><td><code>{64}</code></td><td>🟧 Orange</td><td>Warm temperatures</td></tr><tr><td><code>{65}</code></td><td>🟨 Yellow</td><td>Comfortable, warnings</td></tr><tr><td><code>{66}</code></td><td>🟩 Green</td><td>Good status, success</td></tr><tr><td><code>{67}</code></td><td>🟦 Blue</td><td>Cold temperatures, info</td></tr><tr><td><code>{68}</code></td><td>🟪 Violet</td><td>Very cold, accents</td></tr><tr><td><code>{69}</code></td><td>⬜ White</td><td>Backgrounds</td></tr><tr><td><code>{70}</code></td><td>⬛ Black</td><td>Backgrounds</td></tr></tbody></table>
 <p>See the <a class="" href="/docs/reference/color-guide">Color Guide</a> for detailed usage examples.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="page-layout">Page Layout<a href="#page-layout" class="hash-link" aria-label="Direct link to Page Layout" title="Direct link to Page Layout" translate="no">​</a></h2>
@@ -80,6 +82,7 @@
 <li class=""><strong>Design per device</strong> - Create separate pages optimized for each device&#x27;s dimensions</li>
 </ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="managing-pages">Managing Pages<a href="#managing-pages" class="hash-link" aria-label="Direct link to Managing Pages" title="Direct link to Managing Pages" translate="no">​</a></h2>
+<p><img decoding="async" loading="lazy" alt="Pages list view with Flagship and Note tabs" src="/assets/images/pages-list-3cf86d62569f761b8ef4f904e98bb3fa.png" width="1280" height="720" class="img_ev3q"></p>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="editing-existing-pages">Editing Existing Pages<a href="#editing-existing-pages" class="hash-link" aria-label="Direct link to Editing Existing Pages" title="Direct link to Editing Existing Pages" translate="no">​</a></h3>
 <ol>
 <li class="">Go to the <strong>Pages</strong> section</li>

@@ -14,7 +14,7 @@
 <meta name="author" content="FiestaBoard">
 <link rel="canonical" href="https://fiestaboard.app">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"FiestaBoard","description":"Open-source software that transforms split-flap displays into living dashboards. Display weather, stocks, sports scores, transit times, and more.","url":"https://fiestaboard.app","applicationCategory":"UtilitiesApplication","operatingSystem":"Linux, macOS, Windows","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":"WYSIWYG page editor, Schedule mode, 18 plugins, Docker deployment, Raspberry Pi support, Weather display, Stock ticker, Sports scores, Transit times, Home Assistant integration","screenshot":"https://fiestaboard.app/img/web-ui-home.png","softwareRequirements":"Docker and Docker Compose","codeRepository":"https://github.com/Fiestaboard/FiestaBoard","sourceOrganization":{"@type":"Organization","name":"FiestaBoard","url":"https://github.com/Fiestaboard/FiestaBoard"}}</script><link rel="stylesheet" href="/assets/css/styles.b5c25503.css">
-<script src="/assets/js/runtime~main.9eddd569.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.c01cf52d.js" defer="defer"></script>
 <script src="/assets/js/main.75601594.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -105,11 +105,11 @@
 <table><thead><tr><th>Service</th><th>V1 Port</th><th>V2 Port</th></tr></thead><tbody><tr><td>Web UI</td><td>8080</td><td>4420</td></tr><tr><td>API (direct)</td><td>8000</td><td><del>not exposed</del> (proxied at :4420)</td></tr><tr><td>API Docs</td><td>8000/docs</td><td>4420/docs</td></tr></tbody></table>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="docker-image-names">Docker image names<a href="#docker-image-names" class="hash-link" aria-label="Direct link to Docker image names" title="Direct link to Docker image names" translate="no">​</a></h3>
 <p>V1 published two separate container images. V2 replaces them with a single unified image:</p>
-<table><thead><tr><th>V1 (deprecated)</th><th>V2</th></tr></thead><tbody><tr><td><code>ghcr.io/fiestaboard/fiestaboard-api:latest</code></td><td><code>ghcr.io/fiestaboard/fiestaboard:latest</code></td></tr><tr><td><code>ghcr.io/fiestaboard/fiestaboard-ui:latest</code></td><td><em>(removed — included in the unified image)</em></td></tr></tbody></table>
+<table><thead><tr><th>V1 (deprecated)</th><th>V2</th></tr></thead><tbody><tr><td><code>ghcr.io/fiestaboard/fiestaboard-api:latest</code></td><td><code>fiestaboard/fiestaboard:latest</code></td></tr><tr><td><code>ghcr.io/fiestaboard/fiestaboard-ui:latest</code></td><td><em>(removed — included in the unified image)</em></td></tr></tbody></table>
 <p>If you were pulling the V1 images, switch to the new image name. The old image names will not receive updates.</p>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="using-pre-built-images-optional">Using pre-built images (optional)<a href="#using-pre-built-images-optional" class="hash-link" aria-label="Direct link to Using pre-built images (optional)" title="Direct link to Using pre-built images (optional)" translate="no">​</a></h3>
-<p>V2 introduces a <code>docker-compose.ghcr.yml</code> for using pre-built images from GitHub Container Registry — no local build required:</p>
-<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">docker-compose -f docker-compose.ghcr.yml up -d</span><br></span></code></pre></div></div>
+<p>V2 introduces a <code>docker-compose.hub.yml</code> for using pre-built images from Docker Hub — no local build required:</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">docker-compose -f docker-compose.hub.yml up -d</span><br></span></code></pre></div></div>
 <hr>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="upgrading">Upgrading<a href="#upgrading" class="hash-link" aria-label="Direct link to Upgrading" title="Direct link to Upgrading" translate="no">​</a></h2>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="understanding-your-data">Understanding your data<a href="#understanding-your-data" class="hash-link" aria-label="Direct link to Understanding your data" title="Direct link to Understanding your data" translate="no">​</a></h3>
@@ -171,7 +171,7 @@
 <p><strong>Stop and remove both V1 containers</strong> (<code>fiestaboard-api</code> and <code>fiestaboard-ui</code>).</p>
 </li>
 <li class="">
-<p><strong>Deploy the new unified container</strong> using image <code>ghcr.io/fiestaboard/fiestaboard:latest</code>:</p>
+<p><strong>Deploy the new unified container</strong> using image <code>fiestaboard/fiestaboard:latest</code>:</p>
 <ul>
 <li class=""><strong>Volume</strong>: Mount the <strong>same host data path</strong> from step 1 to <code>/app/data</code></li>
 <li class=""><strong>Port</strong>: Map host port <code>4420</code> to container port <code>3000</code></li>
@@ -179,7 +179,7 @@
 <li class=""><strong>Restart policy</strong>: <code>unless-stopped</code> (recommended)</li>
 </ul>
 <p>Example with <code>docker run</code>:</p>
-<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">docker run -d \</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  --name fiestaboard \</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  --restart unless-stopped \</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  -p 4420:3000 \</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  -v /path/to/your/data:/app/data \</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  --env-file /path/to/your/.env \</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  ghcr.io/fiestaboard/fiestaboard:latest</span><br></span></code></pre></div></div>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">docker run -d \</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  --name fiestaboard \</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  --restart unless-stopped \</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  -p 4420:3000 \</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  -v /path/to/your/data:/app/data \</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  --env-file /path/to/your/.env \</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  fiestaboard/fiestaboard:latest</span><br></span></code></pre></div></div>
 </li>
 <li class="">
 <p><strong>Verify</strong>: Open <code>http://your-server:4420</code> — your pages and settings should be there.</p>

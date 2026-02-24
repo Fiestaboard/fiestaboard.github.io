@@ -13,9 +13,9 @@
 <meta name="keywords" content="split-flap display, dashboard, Vestaboard, weather display, stocks display, sports scores, Docker, Raspberry Pi, home automation, smart display, open source, self-hosted, WYSIWYG editor, display scheduler, IoT display, transit times, surf report, Home Assistant display">
 <meta name="author" content="FiestaBoard">
 <link rel="canonical" href="https://fiestaboard.app">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"FiestaBoard","description":"Open-source software that transforms split-flap displays into living dashboards. Display weather, stocks, sports scores, transit times, and more.","url":"https://fiestaboard.app","applicationCategory":"UtilitiesApplication","operatingSystem":"Linux, macOS, Windows","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":"WYSIWYG page editor, Schedule mode, 18 plugins, Docker deployment, Raspberry Pi support, Weather display, Stock ticker, Sports scores, Transit times, Home Assistant integration","screenshot":"https://fiestaboard.app/img/web-ui-home.png","softwareRequirements":"Docker and Docker Compose","codeRepository":"https://github.com/Fiestaboard/FiestaBoard","sourceOrganization":{"@type":"Organization","name":"FiestaBoard","url":"https://github.com/Fiestaboard/FiestaBoard"}}</script><link rel="stylesheet" href="/assets/css/styles.c314f3ff.css">
-<script src="/assets/js/runtime~main.34095673.js" defer="defer"></script>
-<script src="/assets/js/main.9a54683f.js" defer="defer"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"FiestaBoard","description":"Open-source software that transforms split-flap displays into living dashboards. Display weather, stocks, sports scores, transit times, and more.","url":"https://fiestaboard.app","applicationCategory":"UtilitiesApplication","operatingSystem":"Linux, macOS, Windows","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":"WYSIWYG page editor, Schedule mode, 23 plugins, Docker deployment, Raspberry Pi support, Weather display, Stock ticker, Sports scores, Transit times, Home Assistant integration","screenshot":"https://fiestaboard.app/img/web-ui-home.png","softwareRequirements":"Docker and Docker Compose","codeRepository":"https://github.com/Fiestaboard/FiestaBoard","sourceOrganization":{"@type":"Organization","name":"FiestaBoard","url":"https://github.com/Fiestaboard/FiestaBoard"}}</script><link rel="stylesheet" href="/assets/css/styles.c314f3ff.css">
+<script src="/assets/js/runtime~main.2ff0f835.js" defer="defer"></script>
+<script src="/assets/js/main.b0f6ea2a.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
 <svg style="display: none;"><defs>
@@ -36,7 +36,7 @@
 <li class="">Open the FiestaBoard Web UI at <code>http://localhost:4420</code></li>
 <li class="">Navigate to the <strong>Pages</strong> section</li>
 <li class="">Select the <strong>Flagship</strong> or <strong>Note</strong> tab for your target device</li>
-<li class="">Click <strong>New Page</strong></li>
+<li class="">Click <strong>New</strong></li>
 <li class="">Give your page a name</li>
 <li class="">Use the editor to compose your content (dimensions match your target device)</li>
 <li class="">Click <strong>Save</strong></li>
@@ -45,7 +45,7 @@
 <p>Template variables let you insert live data from your enabled plugins into any page. Variables are automatically replaced with real-time data when the page is displayed.</p>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="inserting-variables">Inserting Variables<a href="#inserting-variables" class="hash-link" aria-label="Direct link to Inserting Variables" title="Direct link to Inserting Variables" translate="no">​</a></h3>
 <ol>
-<li class="">In the page editor, click the <strong>Variable Picker</strong> button</li>
+<li class="">In the page editor, click the <strong>Variables</strong> button</li>
 <li class="">Browse available variables grouped by plugin</li>
 <li class="">Click a variable to insert it at the cursor position</li>
 </ol>
@@ -56,10 +56,10 @@
 <p>Here are some commonly used template variables:</p>
 <ul>
 <li class=""><code>{weather.temperature}</code> - Current temperature</li>
-<li class=""><code>{weather.conditions}</code> - Weather conditions (Sunny, Cloudy, etc.)</li>
+<li class=""><code>{weather.condition}</code> - Weather conditions (Sunny, Cloudy, etc.)</li>
 <li class=""><code>{stocks.prices}</code> - Stock price display</li>
-<li class=""><code>{date_time.current}</code> - Current date and time</li>
-<li class=""><code>{muni.arrivals}</code> - Transit arrival times</li>
+<li class=""><code>{date_time.datetime}</code> - Current date and time</li>
+<li class=""><code>{muni.formatted}</code> - Transit arrival times</li>
 </ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="working-with-colors">Working with Colors<a href="#working-with-colors" class="hash-link" aria-label="Direct link to Working with Colors" title="Direct link to Working with Colors" translate="no">​</a></h2>
 <p>The split-flap display supports colored tiles using special character codes. You can use these in the editor to add visual emphasis to your pages.</p>

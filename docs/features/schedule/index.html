@@ -13,9 +13,9 @@
 <meta name="keywords" content="split-flap display, dashboard, Vestaboard, weather display, stocks display, sports scores, Docker, Raspberry Pi, home automation, smart display, open source, self-hosted, WYSIWYG editor, display scheduler, IoT display, transit times, surf report, Home Assistant display">
 <meta name="author" content="FiestaBoard">
 <link rel="canonical" href="https://fiestaboard.app">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"FiestaBoard","description":"Open-source software that transforms split-flap displays into living dashboards. Display weather, stocks, sports scores, transit times, and more.","url":"https://fiestaboard.app","applicationCategory":"UtilitiesApplication","operatingSystem":"Linux, macOS, Windows","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":"WYSIWYG page editor, Schedule mode, 18 plugins, Docker deployment, Raspberry Pi support, Weather display, Stock ticker, Sports scores, Transit times, Home Assistant integration","screenshot":"https://fiestaboard.app/img/web-ui-home.png","softwareRequirements":"Docker and Docker Compose","codeRepository":"https://github.com/Fiestaboard/FiestaBoard","sourceOrganization":{"@type":"Organization","name":"FiestaBoard","url":"https://github.com/Fiestaboard/FiestaBoard"}}</script><link rel="stylesheet" href="/assets/css/styles.c314f3ff.css">
-<script src="/assets/js/runtime~main.34095673.js" defer="defer"></script>
-<script src="/assets/js/main.9a54683f.js" defer="defer"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"FiestaBoard","description":"Open-source software that transforms split-flap displays into living dashboards. Display weather, stocks, sports scores, transit times, and more.","url":"https://fiestaboard.app","applicationCategory":"UtilitiesApplication","operatingSystem":"Linux, macOS, Windows","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":"WYSIWYG page editor, Schedule mode, 23 plugins, Docker deployment, Raspberry Pi support, Weather display, Stock ticker, Sports scores, Transit times, Home Assistant integration","screenshot":"https://fiestaboard.app/img/web-ui-home.png","softwareRequirements":"Docker and Docker Compose","codeRepository":"https://github.com/Fiestaboard/FiestaBoard","sourceOrganization":{"@type":"Organization","name":"FiestaBoard","url":"https://github.com/Fiestaboard/FiestaBoard"}}</script><link rel="stylesheet" href="/assets/css/styles.c314f3ff.css">
+<script src="/assets/js/runtime~main.2ff0f835.js" defer="defer"></script>
+<script src="/assets/js/main.b0f6ea2a.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
 <svg style="display: none;"><defs>
@@ -63,11 +63,11 @@
 <ul>
 <li class=""><strong>Overlap Detection</strong> - Warns if two schedules overlap on the same day/time</li>
 <li class=""><strong>Gap Detection</strong> - Shows unscheduled time periods</li>
-<li class=""><strong>Active Page Resolution</strong> - The system checks every 60 seconds which page should be displayed based on the current time</li>
+<li class=""><strong>Active Page Resolution</strong> - The system checks at your configured refresh interval (default: 300 seconds) which page should be displayed based on the current time</li>
 </ul>
 <div class="theme-admonition theme-admonition-info admonition_xJq3 alert alert--info"><div class="admonitionHeading_Gvgb"><span class="admonitionIcon_Rf37"><svg viewBox="0 0 14 16"><path fill-rule="evenodd" d="M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z"></path></svg></span>info</div><div class="admonitionContent_BuS1"><p>When no schedule is active, FiestaBoard displays the default page. You can set the default page in Settings.</p></div></div>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="how-page-resolution-works">How Page Resolution Works<a href="#how-page-resolution-works" class="hash-link" aria-label="Direct link to How Page Resolution Works" title="Direct link to How Page Resolution Works" translate="no">​</a></h2>
-<p>Every 60 seconds, the display service:</p>
+<p>At your configured refresh interval (default: 300 seconds), the display service:</p>
 <ol>
 <li class="">Checks the current local time and day of week</li>
 <li class="">Looks for enabled schedule entries that match the current time</li>
@@ -76,8 +76,8 @@
 </ol>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="known-limitations">Known Limitations<a href="#known-limitations" class="hash-link" aria-label="Direct link to Known Limitations" title="Direct link to Known Limitations" translate="no">​</a></h2>
 <ul>
-<li class=""><strong>No midnight spanning</strong> - Schedules cannot cross midnight (e.g., 11 PM to 1 AM). As a workaround, create two separate entries: one from 11 PM to 11:59 PM and another from 12 AM to 1 AM. The system handles the transition automatically with no gap.</li>
-<li class=""><strong>Switching delay</strong> - There may be up to a 60-second delay when switching between scheduled pages.</li>
+<li class=""><strong>Midnight spanning supported</strong> - Schedules can cross midnight (e.g., 11 PM to 1 AM). The system handles the rollover automatically.</li>
+<li class=""><strong>Switching delay</strong> - There may be a delay of up to one refresh interval when switching between scheduled pages.</li>
 <li class=""><strong>Recommended limit</strong> - For optimal performance, keep the total number of schedule entries under 50.</li>
 </ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="next-steps">Next Steps<a href="#next-steps" class="hash-link" aria-label="Direct link to Next Steps" title="Direct link to Next Steps" translate="no">​</a></h2>

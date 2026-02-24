@@ -13,9 +13,9 @@
 <meta name="keywords" content="split-flap display, dashboard, Vestaboard, weather display, stocks display, sports scores, Docker, Raspberry Pi, home automation, smart display, open source, self-hosted, WYSIWYG editor, display scheduler, IoT display, transit times, surf report, Home Assistant display">
 <meta name="author" content="FiestaBoard">
 <link rel="canonical" href="https://fiestaboard.app">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"FiestaBoard","description":"Open-source software that transforms split-flap displays into living dashboards. Display weather, stocks, sports scores, transit times, and more.","url":"https://fiestaboard.app","applicationCategory":"UtilitiesApplication","operatingSystem":"Linux, macOS, Windows","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":"WYSIWYG page editor, Schedule mode, 18 plugins, Docker deployment, Raspberry Pi support, Weather display, Stock ticker, Sports scores, Transit times, Home Assistant integration","screenshot":"https://fiestaboard.app/img/web-ui-home.png","softwareRequirements":"Docker and Docker Compose","codeRepository":"https://github.com/Fiestaboard/FiestaBoard","sourceOrganization":{"@type":"Organization","name":"FiestaBoard","url":"https://github.com/Fiestaboard/FiestaBoard"}}</script><link rel="stylesheet" href="/assets/css/styles.c314f3ff.css">
-<script src="/assets/js/runtime~main.34095673.js" defer="defer"></script>
-<script src="/assets/js/main.9a54683f.js" defer="defer"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"FiestaBoard","description":"Open-source software that transforms split-flap displays into living dashboards. Display weather, stocks, sports scores, transit times, and more.","url":"https://fiestaboard.app","applicationCategory":"UtilitiesApplication","operatingSystem":"Linux, macOS, Windows","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":"WYSIWYG page editor, Schedule mode, 23 plugins, Docker deployment, Raspberry Pi support, Weather display, Stock ticker, Sports scores, Transit times, Home Assistant integration","screenshot":"https://fiestaboard.app/img/web-ui-home.png","softwareRequirements":"Docker and Docker Compose","codeRepository":"https://github.com/Fiestaboard/FiestaBoard","sourceOrganization":{"@type":"Organization","name":"FiestaBoard","url":"https://github.com/Fiestaboard/FiestaBoard"}}</script><link rel="stylesheet" href="/assets/css/styles.c314f3ff.css">
+<script src="/assets/js/runtime~main.2ff0f835.js" defer="defer"></script>
+<script src="/assets/js/main.b0f6ea2a.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
 <svg style="display: none;"><defs>
@@ -64,7 +64,7 @@
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="board-not-updating">Board not updating<a href="#board-not-updating" class="hash-link" aria-label="Direct link to Board not updating" title="Direct link to Board not updating" translate="no">​</a></h3>
 <p>This is the most common issue. Work through this checklist:</p>
 <ol>
-<li class=""><strong>Is the display service started?</strong> Open <a href="http://localhost:4420" target="_blank" rel="noopener noreferrer" class="">http://localhost:4420</a> and check if the service is running. Click <strong>Start Service</strong> if it&#x27;s stopped.</li>
+<li class=""><strong>Is the display service running?</strong> Open <a href="http://localhost:4420" target="_blank" rel="noopener noreferrer" class="">http://localhost:4420</a> and check if the dashboard shows <strong>Running</strong>. If it shows <strong>Stopped</strong> or <strong>Disconnected</strong>, check that your Docker container is running (<code>docker ps</code>).</li>
 <li class=""><strong>Is your API key correct?</strong> Go to <strong>Settings</strong> in the web UI and verify your board API key.</li>
 <li class=""><strong>Is the API mode correct?</strong> Make sure you&#x27;re using the right mode (Local API or Cloud API) for the key you entered.</li>
 <li class=""><strong>For Local API:</strong> Is your board on the same WiFi network as the computer running FiestaBoard?</li>
@@ -137,7 +137,7 @@
 <li class="">If FiestaBoard runs in Docker and Home Assistant runs on the same machine, use your machine&#x27;s local IP address (e.g., <code>192.168.1.100:8123</code>) instead of <code>localhost</code></li>
 </ol>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="a-plugin-shows-stale-or-outdated-data">A plugin shows stale or outdated data<a href="#a-plugin-shows-stale-or-outdated-data" class="hash-link" aria-label="Direct link to A plugin shows stale or outdated data" title="Direct link to A plugin shows stale or outdated data" translate="no">​</a></h3>
-<p>Plugins refresh their data at the interval set in Settings (default: 60 seconds). If data seems stuck:</p>
+<p>Plugins refresh their data at the interval set in Settings (default: 300 seconds). If data seems stuck:</p>
 <ol>
 <li class="">Try a <strong>Force Refresh</strong> from the API: <code>curl -X POST http://localhost:4420/api/force-refresh</code></li>
 <li class="">Check plugin logs for errors: <code>docker-compose logs -f fiestaboard | grep plugin_name</code></li>
@@ -148,7 +148,7 @@
 <p>Logs are the best way to diagnose issues:</p>
 <div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain"># See all recent logs</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">docker-compose logs --tail=100 fiestaboard</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"># Follow logs in real time</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">docker-compose logs -f fiestaboard</span><br></span></code></pre></div></div>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="interactive-api-documentation">Interactive API documentation<a href="#interactive-api-documentation" class="hash-link" aria-label="Direct link to Interactive API documentation" title="Direct link to Interactive API documentation" translate="no">​</a></h3>
-<p>Visit <strong><a href="http://localhost:4420/docs" target="_blank" rel="noopener noreferrer" class="">http://localhost:4420/docs</a></strong> for the Swagger UI where you can test API endpoints directly and check service status.</p>
+<p>Visit <strong><a href="http://localhost:4420/api/docs" target="_blank" rel="noopener noreferrer" class="">http://localhost:4420/api/docs</a></strong> for the Swagger UI where you can test API endpoints directly and check service status.</p>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="community-support">Community support<a href="#community-support" class="hash-link" aria-label="Direct link to Community support" title="Direct link to Community support" translate="no">​</a></h3>
 <ul>
 <li class=""><strong><a href="https://discord.gg/wc9dDfte" target="_blank" rel="noopener noreferrer" class="">Discord</a></strong> - Ask questions and get help from other FiestaBoard users</li>

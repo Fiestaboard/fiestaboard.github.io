@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkdocs_site=globalThis.webpackChunkdocs_site||[]).push([[38947],{56600(a){a.exports=JSON.parse('{"authors":[{"name":"FiestaBoard Team","url":"https://github.com/Fiestaboard/FiestaBoard","imageURL":"/img/logo.png","key":"team","page":null,"count":4}]}')}}]);

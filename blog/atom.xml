@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://fiestaboard.app/blog</id>
+    <title>FiestaBoard Blog</title>
+    <updated>2026-07-23T00:00:00.000Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://fiestaboard.app/blog"/>
+    <subtitle>News, release announcements, and project updates from FiestaBoard</subtitle>
+    <icon>https://fiestaboard.app/img/favicon.ico</icon>
+    <rights>Copyright © 2026 FiestaBoard.</rights>
+    <entry>
+        <title type="html"><![CDATA[FiestaBoard Catch-Up: Note Arrays, Home Assistant, and Now Fully Local Arrays]]></title>
+        <id>https://fiestaboard.app/blog/note-arrays-home-assistant-local-arrays</id>
+        <link href="https://fiestaboard.app/blog/note-arrays-home-assistant-local-arrays"/>
+        <updated>2026-07-23T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[A recap of the last few releases: run multiple Vestaboard Notes as one logical display, a Home Assistant Supervisor add-on in beta, and a new fully local array mode with LAN-only updates.]]></summary>
+        <content type="html"><![CDATA[<p>It's been a while since we posted an update, so here's a recap of what's shipped over the last few releases, plus the big one that just landed.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="multi-board-arrays-v4-schema">Multi-board arrays (v4 schema)<a href="https://fiestaboard.app/blog/note-arrays-home-assistant-local-arrays#multi-board-arrays-v4-schema" class="hash-link" aria-label="Direct link to Multi-board arrays (v4 schema)" title="Direct link to Multi-board arrays (v4 schema)" translate="no">​</a></h2>
+<p>The headline feature from a few releases back: you can now run multiple Note boards as a single logical display. Arrays go from simple side-by-side pairs up to an 8x8 grid, with five ready-made presets (2 or 4 side-by-side, 2 or 4 stacked, 2x2) or fully custom layouts. A few things that made this less painful than it could've been:</p>
+<ul>
+<li class=""><strong>Auto-detect</strong> — the settings UI can read your live board and figure out its type and size for you</li>
+<li class=""><strong>Smarter previews</strong> — variable-size rendering with visible seams between Notes, a board-size indicator, and a fit-to-width/actual-size toggle for wide arrays</li>
+<li class=""><strong>Size-aware plugins</strong> — plugins now get real board dimensions, so content can adapt to whatever layout you're running</li>
+<li class=""><strong>Everything that switches between boards</strong> — scheduling, page loading, page triggering — got rebuilt to be dimension-driven instead of assuming a single fixed board</li>
+</ul>
+<p>The fun engineering problem here: none of us own a wall of eight Vestaboards to test against. So we built a local mock Cloud API with a live web UI that simulates split-flap tiles, message history, and arbitrary board configs on the fly. That's what let us test odd array shapes we'll probably never own in real life.</p>
+<p>This bumped the schema from v3 to v4, but existing pages migrate automatically and single-board setups (Flagship or Note) work exactly as before.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="since-then-v6162-highlights">Since then: v6.16.2 highlights<a href="https://fiestaboard.app/blog/note-arrays-home-assistant-local-arrays#since-then-v6162-highlights" class="hash-link" aria-label="Direct link to Since then: v6.16.2 highlights" title="Direct link to Since then: v6.16.2 highlights" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>Collections</strong> (formerly "Carousels") now support variable-driven page selection, so what shows can depend on live data</li>
+<li class=""><strong>Schedule overrides</strong> — pin a specific page to a specific date, useful for holidays or one-offs</li>
+<li class="">Inline schedule enable/disable toggles</li>
+<li class="">More Date/Time plugin formatting options</li>
+<li class="">A <code>ZEROPAD</code> template filter for padding numbers (7 → 07)</li>
+<li class="">A <strong>Home Assistant Supervisor add-on</strong>, now in beta with docs, plus fixes so the UI behaves correctly behind HA Ingress</li>
+</ul>
+<p>On that last point — if you're running FiestaBoard alongside Home Assistant, we'd like that integration to be genuinely good, not just functional. If you've got ideas, run into friction, or want to contribute, that's an area where community input would go a long way right now.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="and-today-local-array-mode">And today: Local Array Mode<a href="https://fiestaboard.app/blog/note-arrays-home-assistant-local-arrays#and-today-local-array-mode" class="hash-link" aria-label="Direct link to And today: Local Array Mode" title="Direct link to And today: Local Array Mode" translate="no">​</a></h2>
+<p>Arrays could already run over Vestaboard's cloud API, but as of this release they can run entirely over your local network — no cloud round-trip required. The missing piece wasn't talking to the boards, it was the arrangement layer: knowing where each Note sits in the grid and splitting each frame into the right slice for the right board. FiestaBoard now cuts each frame into 3x15 pieces and fans them out to your Notes over LAN. That gets you:</p>
+<ul>
+<li class="">Messages that never leave your network</li>
+<li class="">Lower latency and no cloud rate limit</li>
+<li class="">Transition animations on arrays (previously cloud-only)</li>
+<li class=""><strong>Identify mode</strong> — flash each slot's position number on the physical boards, handy when wiring up a new array</li>
+<li class="">Network scanning, per-tile connection tests, and duplicate-IP warnings for debugging a multi-board setup</li>
+</ul>
+<p>Cloud arrays aren't going anywhere — this is opt-in, and cloud stays the default for new arrays.</p>
+<p>Setup guide: <a class="" href="https://fiestaboard.app/docs/setup/note-arrays">Note Arrays</a></p>
+<p>Full changelog: <a href="https://github.com/Fiestaboard/FiestaBoard/releases" target="_blank" rel="noopener noreferrer" class="">https://github.com/Fiestaboard/FiestaBoard/releases</a></p>
+<p>Happy to answer questions on <a href="https://github.com/Fiestaboard/FiestaBoard/issues" target="_blank" rel="noopener noreferrer" class="">GitHub</a> or <a href="https://discord.gg/JvN8y6ahaf" target="_blank" rel="noopener noreferrer" class="">Discord</a> — and if you're on Home Assistant, genuinely curious what would make that integration better for you.</p>]]></content>
+        <author>
+            <name>FiestaBoard Team</name>
+            <uri>https://github.com/Fiestaboard/FiestaBoard</uri>
+        </author>
+        <category label="Release" term="Release"/>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[FiestaBoard Update — May 2026]]></title>
+        <id>https://fiestaboard.app/blog/may-2026-update</id>
+        <link href="https://fiestaboard.app/blog/may-2026-update"/>
+        <updated>2026-05-02T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Flash a Raspberry Pi and skip Docker entirely, one-click auto-updates, and 25+ new plugins — the FiestaBoard plugin registry has roughly doubled to 45+.]]></summary>
+        <content type="html"><![CDATA[<p>Hi friends 👋</p>
+<p>For anyone who missed the <a class="" href="https://fiestaboard.app/blog/introducing-fiestaboard">first</a> and <a class="" href="https://fiestaboard.app/blog/wysiwyg-editor-scheduling-disney-parks">second</a> posts: FiestaBoard is the free, open-source dashboard for Vestaboard. You self-host it, plug in the data sources you care about (weather, transit, stocks, sports, surf, your calendar, Last.fm, Home Assistant, dad jokes — you name it), and it drives your board. Flagship and Note both supported.</p>
+<p>Since the last update, two things have changed that we think genuinely matter for this project:</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="-you-no-longer-need-to-know-docker--just-flash-a-raspberry-pi">🍓 You no longer need to know Docker — just flash a Raspberry Pi<a href="https://fiestaboard.app/blog/may-2026-update#-you-no-longer-need-to-know-docker--just-flash-a-raspberry-pi" class="hash-link" aria-label="Direct link to 🍓 You no longer need to know Docker — just flash a Raspberry Pi" title="Direct link to 🍓 You no longer need to know Docker — just flash a Raspberry Pi" translate="no">​</a></h2>
+<p>The biggest accessibility unlock: there's now a FiestaPi image you flash onto a microSD card with the official Raspberry Pi Imager. No command line, no docker-compose, no editing config files. Boot the Pi, open <code>http://fiestapi.local:4420</code> on any device on your network, and the setup wizard walks you the rest of the way.</p>
+<p>While it runs on the Raspberry Pi Zero 2 W, we are testing and using a Pi 3B+ because we wanted an Ethernet port for a more stable connection. A microSD and a 5V power supply and you're done — that's an always-on controller for your board. A Pi 3B/4/5 works too if you have one in a drawer.</p>
+<p>Setup guide: <a class="" href="https://fiestaboard.app/docs/setup/raspberry-pi">Raspberry Pi setup</a></p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="-one-click-auto-updates">🔄 One-click auto-updates<a href="https://fiestaboard.app/blog/may-2026-update#-one-click-auto-updates" class="hash-link" aria-label="Direct link to 🔄 One-click auto-updates" title="Direct link to 🔄 One-click auto-updates" translate="no">​</a></h2>
+<p>The other big quality-of-life change: FiestaBoard now updates itself. There's an in-app "Update available" banner with a single button — click it, you get a full-screen progress overlay, and a minute or two later you're on the latest version. This does require a second "sidecar" docker image that comes automatically with the FiestaPi. For existing users you'll want to pull the new docker compose file to join in on the fun.</p>
+<p>Translation: you're not stuck on whatever version you installed six months ago. Bug fixes and new plugins land on your board without you having to think about it.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="-25-new-plugins-since-the-last-post">🧩 25+ new plugins since the last post<a href="https://fiestaboard.app/blog/may-2026-update#-25-new-plugins-since-the-last-post" class="hash-link" aria-label="Direct link to 🧩 25+ new plugins since the last post" title="Direct link to 🧩 25+ new plugins since the last post" translate="no">​</a></h2>
+<p>The plugin registry has roughly doubled. A non-exhaustive sampler of what's new:</p>
+<ul>
+<li class=""><strong>Calendar Subscription</strong> — point it at any public iCal URL, get upcoming events + pre-event alerts on the board</li>
+<li class=""><strong>Home Assistant</strong> — display any entity state via REST or MQTT</li>
+<li class=""><strong>Aurora Forecast, ISS Tracker, Spacecraft Launches, Solar Activity, Moon Phase</strong></li>
+<li class=""><strong>Earthquake, Wildfire, Volcano Activity, Lightning Alerts, River Flow, Tide Times, UV Index</strong></li>
+<li class=""><strong>Hacker News, Reddit Hot, Currency Exchange, Network Speed, Pi-hole Stats</strong></li>
+<li class=""><strong>Word of the Day, Quote of the Day, National Day, On This Day, Element of the Day, Pet Facts, Dad Jokes</strong></li>
+<li class=""><strong>Santa Tracker</strong> (don't @ me, it's December-shaped fun)</li>
+<li class=""><strong>Webhook + Generic Data</strong> — point at any JSON/XML feed and map fields to template variables, no code</li>
+</ul>
+<p>Total is now 45+ plugins. Browse the list inside the app under Integrations, or here: <a class="" href="https://fiestaboard.app/plugins">fiestaboard.app/plugins</a></p>
+<p><img decoding="async" loading="lazy" alt="The Integrations page with plugin cards" src="https://fiestaboard.app/assets/images/integrations-page-d2c110b1ff4e89abc5e8e5e4c8a6d8d0.png" width="1280" height="720" class="img_ev3q"></p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="a-few-other-things-worth-mentioning">A few other things worth mentioning<a href="https://fiestaboard.app/blog/may-2026-update#a-few-other-things-worth-mentioning" class="hash-link" aria-label="Direct link to A few other things worth mentioning" title="Direct link to A few other things worth mentioning" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>Inline expressions in templates</strong> — spreadsheet-style formulas so you can do math, conditionals, and string formatting right in the page editor.</li>
+<li class=""><strong>WYSIWYG editor and Scheduling</strong> from the last post are still here and have gotten a lot more polish.</li>
+<li class=""><strong>Multi-board support</strong> if you have more than one board.</li>
+<li class=""><strong>Note device rendering</strong> (the heart ❤️ character, etc.) is now correct.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="come-hang-out--break-things-with-us">Come hang out / break things with us<a href="https://fiestaboard.app/blog/may-2026-update#come-hang-out--break-things-with-us" class="hash-link" aria-label="Direct link to Come hang out / break things with us" title="Direct link to Come hang out / break things with us" translate="no">​</a></h2>
+<p>The project remains open source and a labor of love — expect a few rough edges, but getting from unboxing to a functional board is now a breeze. Plus, it is forever free.</p>
+<ul>
+<li class="">Repo / issues / discussions: <a href="https://github.com/Fiestaboard/FiestaBoard" target="_blank" rel="noopener noreferrer" class="">https://github.com/Fiestaboard/FiestaBoard</a></li>
+<li class="">Docs: <a href="https://fiestaboard.app/" target="_blank" rel="noopener noreferrer" class="">https://fiestaboard.app</a></li>
+<li class="">Discord: <a href="https://discord.gg/JvN8y6ahaf" target="_blank" rel="noopener noreferrer" class="">https://discord.gg/JvN8y6ahaf</a></li>
+</ul>
+<p>If you build a plugin, file an issue, or just want a feature — GitHub is the best place so it's all in one spot and others can chime in. We genuinely read everything. And if you're already running FiestaBoard, drop a screenshot of what's on your board right now in <a href="https://discord.gg/JvN8y6ahaf" target="_blank" rel="noopener noreferrer" class="">Discord</a> — that's always the best part.</p>
+<p>Happy flipping.</p>]]></content>
+        <author>
+            <name>FiestaBoard Team</name>
+            <uri>https://github.com/Fiestaboard/FiestaBoard</uri>
+        </author>
+        <category label="Release" term="Release"/>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Now with a Rich WYSIWYG Editor, Scheduling, and Disney Parks Queue Times 🥳]]></title>
+        <id>https://fiestaboard.app/blog/wysiwyg-editor-scheduling-disney-parks</id>
+        <link href="https://fiestaboard.app/blog/wysiwyg-editor-scheduling-disney-parks"/>
+        <updated>2026-02-15T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[A major FiestaBoard update: a pixel-perfect WYSIWYG editor with live board preview, scheduled messages and layouts, and real-time Disney Parks wait times.]]></summary>
+        <content type="html"><![CDATA[<p>Hi friends,</p>
+<p>We've been working on FiestaBoard — the free, open-source web dashboard for Vestaboard (<a class="" href="https://fiestaboard.app/blog/introducing-fiestaboard">see the launch announcement</a>) — to make managing the board grid a bit more flexible. We just pushed a major update and wanted to share the new features with the community!</p>
+<p>If you're looking for more "pixel-perfect" control or specific automation, here is what's new:</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-rich-wysiwyg-editor">🎨 New Rich WYSIWYG Editor<a href="https://fiestaboard.app/blog/wysiwyg-editor-scheduling-disney-parks#-new-rich-wysiwyg-editor" class="hash-link" aria-label="Direct link to 🎨 New Rich WYSIWYG Editor" title="Direct link to 🎨 New Rich WYSIWYG Editor" translate="no">​</a></h2>
+<p>No more guessing. The new editor gives you a real-time preview of the Vestaboard grid. You can "paint" individual bits, toggle colors, and align text exactly where you want it before sending it to your board.</p>
+<p><img decoding="async" loading="lazy" alt="The rich page editor with live grid preview and the template variable picker open" src="https://fiestaboard.app/assets/images/rich-editor-3e367b009e6b699de555f509805bc7e2.png" width="2036" height="1718" class="img_ev3q"></p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="-scheduling-mode">📅 Scheduling Mode<a href="https://fiestaboard.app/blog/wysiwyg-editor-scheduling-disney-parks#-scheduling-mode" class="hash-link" aria-label="Direct link to 📅 Scheduling Mode" title="Direct link to 📅 Scheduling Mode" translate="no">​</a></h2>
+<p>You can now schedule specific messages or layouts to trigger at set times. Perfect for recurring morning greetings, "Meeting in Progress" signs, or daily reminders.</p>
+<p><img decoding="async" loading="lazy" alt="The schedule calendar showing pages rotating through a full week" src="https://fiestaboard.app/assets/images/schedule-calendar-693afc7f2712f0831cfdb65f4484b12e.jpg" width="2116" height="1710" class="img_ev3q"></p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="-disney-parks-plugin">🏰 Disney Parks Plugin<a href="https://fiestaboard.app/blog/wysiwyg-editor-scheduling-disney-parks#-disney-parks-plugin" class="hash-link" aria-label="Direct link to 🏰 Disney Parks Plugin" title="Direct link to 🏰 Disney Parks Plugin" translate="no">​</a></h2>
+<p>By popular request, we've added a plugin that pulls real-time queue times for Disney Parks. You can now turn your board into a live wait-time tracker.</p>
+<p><img decoding="async" loading="lazy" alt="Disneyland ride wait times displayed on a split-flap board" src="https://fiestaboard.app/assets/images/disneyland-wait-times-0a4e8f4184fa3bcced94c2616765bbb7.jpg" width="1512" height="648" class="img_ev3q"></p>
+<p>Check it out on GitHub: <a href="https://github.com/Fiestaboard/FiestaBoard" target="_blank" rel="noopener noreferrer" class="">https://github.com/Fiestaboard/FiestaBoard</a></p>
+<p>We'd love to hear what you think! If you have ideas for new plugins or features you'd like to see added to the dashboard, let us know on <a href="https://github.com/Fiestaboard/FiestaBoard/issues" target="_blank" rel="noopener noreferrer" class="">GitHub</a> or <a href="https://discord.gg/JvN8y6ahaf" target="_blank" rel="noopener noreferrer" class="">Discord</a>. As always: we know there are some bugs here and there — we fix them as fast as we can in our free time.</p>
+<p>Happy flipping!</p>]]></content>
+        <author>
+            <name>FiestaBoard Team</name>
+            <uri>https://github.com/Fiestaboard/FiestaBoard</uri>
+        </author>
+        <category label="Release" term="Release"/>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Introducing FiestaBoard: Turn Your Vestaboard Into a Living Dashboard]]></title>
+        <id>https://fiestaboard.app/blog/introducing-fiestaboard</id>
+        <link href="https://fiestaboard.app/blog/introducing-fiestaboard"/>
+        <updated>2026-02-04T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[FiestaBoard is a free, open-source way to turn your Vestaboard into a live dashboard that shows what you care about — weather, transit, stocks, sports, even Star Trek quotes.]]></summary>
+        <content type="html"><![CDATA[<p>FiestaBoard is launching!</p>
+<p>We've been working on this for a while and want to finally put it out there: FiestaBoard is a free way to turn your Vestaboard into a live dashboard that shows whatever you care about — weather, your commute, stocks, or even Star Trek quotes.</p>
+<p><img decoding="async" loading="lazy" alt="FiestaBoard is launching — the open-source, local application to drive dynamic data to your split-flap display" src="https://fiestaboard.app/assets/images/launch-banner-9651a9a751d769a810929c77cc6de8f3.png" width="1024" height="434" class="img_ev3q"></p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="what-your-board-can-show">What your board can show<a href="https://fiestaboard.app/blog/introducing-fiestaboard#what-your-board-can-show" class="hash-link" aria-label="Direct link to What your board can show" title="Direct link to What your board can show" translate="no">​</a></h2>
+<p>You pick what you want: weather, date &amp; time, transit (e.g. Muni), traffic, bike share, surf conditions, stocks, sports scores, air quality, what's playing on Last.fm, or fun stuff like Star Trek quotes and a sun-based art display. You can mix and match, and change what's on the board at different times (e.g. commute in the morning, weather in the evening).</p>
+<p><img decoding="async" loading="lazy" alt="Stock prices with change indicators on a split-flap board" src="https://fiestaboard.app/assets/images/stocks-board-e9ad2497e61ec80efa2984b7854d5cef.png" width="747" height="280" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="Live NBA scores on a split-flap board" src="https://fiestaboard.app/assets/images/nba-scores-board-b40101100702695738135c543d10d381.png" width="761" height="332" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="A colorful visual clock rendered in board bits" src="https://fiestaboard.app/assets/images/visual-clock-board-7d0abd20b33d55cfc79201efe06504e7.png" width="1514" height="654" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="Dynamic sunrise/sunset art that follows the day" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA30AAAEdCAMAAACPP/74AAAAPFBMVEXayQDNfgDhkg/45xz/xEENDQ1KkNn/ujf1piPQvwBepO3/+zAiaLForvcscrvk0wj//zoFBQU2fMXXiAXWyDq1AAAACXBIWXMAAAsTAAALEwEAmpwYAAAFZklEQVR42u3dzYrbMACF0TT9ST1qx57M+79riTFeFcktEdE151tfaGh0UBZjfPmQ9Jou/gsk+iT6JNEn0SeJPok+SfRJ9EmiT6JPEn0SfZLok+iT6JNEn0SfJPok+iTRJ9EniT6JPkn0SfRJok+iTxJ90sj6vkv6/+iT6JPo+xd9b2+/a72/r/9G9qqUpdblYtVtdfbzRR999KXq+1Fr/xTJq1K+1tpPk9XzV2c/X/TRRx999FnRRx999NFHH3300ccCffTRRx999BFDH3300UcffVb00UcfffTRZ0VfT333VuunyF7Nray6rc5+vtx97j53n1+e9FnRRx999NFHH3300ccCffTRRx999BFDH3300UcffVb00UcfffTRZ0VfT32/6m2fIns11dvOiVWP1dnPF3300ZepT5J3GEn0SaJPok8SfRJ9kuiT6JPoo09K0Zf9VvtSllr73wNbjb3KPYX0Ob/0perz7JCV55A830cfffTRZ0UfffTRRx99VvTRRx999NFnRR99zi999NFnRR99Tjl99NFnRR99VvSNqO/eav0Uo67mVlYRq9xT6O5ze7j7/PKkz4o++pxy+uijz4o++qzoo48+K/ros6KPPvqs6KPPij766KOPPvqs6OupL/ut9lO97bu1Gn2Vewrpc37py9QnyTuMJPok0SfRJ4k+iT5J9En0SfTRJ6Xoy31f/aPb7Vutz891VcpSa/97YKvnr459Q7mnkD766EvVl/yE0e32s9auz5M8r1od+4Y830efFX300UcfffRZ0UcfffTRR58VffTRRx999FnRRx999NFHnxV99NFHH3300Uff3/TdW62fYtTVtdW6mltZdVsd+4ZyT6G7z93n7vPLkz4r+uijjz766KOPPvpYoI8++uijjz5i6KOPPvroo8+KPvroo48++qzo66kv9331j77U277bqd52Tqx6rI59Q7mnkD766MvUJ8k7jCT6JNEn0SeJPok+SfRJ9En00Sel6Dv2VvvsVSlLrf2vhq2evzr7+aKPPvpS9R15AiR75Xmf0Z8wyl3RRx999NFnRR999NFHH3300UcfC/TRRx999NFHDH300UcfffRZ0UcfffTRR58VfT31XVutnyJ7Nbey6rY6+/ly97n73H1+edJnRR999NFHH3300UcfC/TRRx999NFHDH300UcfffRZ0UcfffTRR58VfT31HXurffZqqredE6seq7OfL/rooy9TnyTvMJLok0SfRJ8k+iT6JNEn0SfRR5+Uoi/7rfalLLX2vwe2GnuVewrpc37pS9Xn2SErzyF5vo8++uijz4o++uijjz76rOijjz766KPPij76nF/66KPPij76nHL66KPPij76rOgbUd+11fopRl3NrawiVrmn0N3n9nD3+eVJnxV99Dnl9NFHnxV99FnRRx99VvTRZ0UfffRZ0UefFX300UcfffRZ0ddTX/Zb7ad623drNfoq9xTS5/zSl6lPkncYSfRJok+iTxJ9En2S6JPok+ijT0rRl/u++kelLLX2v/S1GnuVewrpc37pS9XnCSMrTxh5vo8++uijz4o++uijjz76rOijjz766KPPij76nF/66KPPij76nHL66KPPij76rOgbUd+11fopRl3NrawiVrmn0N3n9nD3+eVJnxV99Dnl9NFHnxV99FnRRx99VvTRZ0UfffRZ0UefFX300UcfffRZ0ddTX+776h9N9bbv1mr0Ve4ppM/5pS9TnyTvMJLok0SfdGp9krpFn0SfRJ8k+iT6JNEn0SeJPok+SfRJ9EmiT6JPEn0SfRJ9kuiT6JNEn0SfJPok+iTRJ9EniT6JPkn0SfRJok96bX8AcvY5ZH6o7uMAAAAASUVORK5CYII=" width="893" height="285" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="Nearby aircraft with callsign, altitude, and ground speed" src="https://fiestaboard.app/assets/images/nearby-aircraft-board-1adfc6b476a19e6873c95760f2fa2253.png" width="761" height="335" class="img_ev3q"></p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="controlling-it">Controlling it<a href="https://fiestaboard.app/blog/introducing-fiestaboard#controlling-it" class="hash-link" aria-label="Direct link to Controlling it" title="Direct link to Controlling it" translate="no">​</a></h2>
+<p>There's a simple page you open in your browser to choose what's on the board, add or change "pages," and start or stop the updates. No need to use the command line for day-to-day use.</p>
+<p><img decoding="async" loading="lazy" alt="The FiestaBoard dashboard showing the active stocks display" src="https://fiestaboard.app/assets/images/dashboard-stocks-1eb0fcce3e3ecdef3e893dc0ba97115d.png" width="1148" height="655" class="img_ev3q"></p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getting-started">Getting started<a href="https://fiestaboard.app/blog/introducing-fiestaboard#getting-started" class="hash-link" aria-label="Direct link to Getting started" title="Direct link to Getting started" translate="no">​</a></h2>
+<p>Everything runs in Docker (good for a Raspberry Pi, NAS, or a computer that's always on). The repo has a step-by-step setup guide and a beginner's guide if you're new to this. You'll add your Vestaboard key and any optional API keys (e.g. for weather), then you're good to go.</p>
+<p>Repo: <a href="https://github.com/Fiestaboard/FiestaBoard" target="_blank" rel="noopener noreferrer" class="">https://github.com/Fiestaboard/FiestaBoard</a></p>
+<p>It's open source (MIT license), so you can use it, change it, and share it freely. Fair warning: there are still bugs — we're working on it in our free time and things will improve over time. We welcome contributions and suggestions; the best place for those is <a href="https://github.com/Fiestaboard/FiestaBoard/issues" target="_blank" rel="noopener noreferrer" class="">GitHub</a> (issues or discussions), so they're in one place and others can benefit too.</p>
+<p>We built it with San Francisco in mind (Muni, Bay Wheels, traffic) but you can set it up for anywhere. If you give it a try, we'd love to hear what you'd want to see on your board.</p>]]></content>
+        <author>
+            <name>FiestaBoard Team</name>
+            <uri>https://github.com/Fiestaboard/FiestaBoard</uri>
+        </author>
+        <category label="Announcement" term="Announcement"/>
+    </entry>
+</feed>

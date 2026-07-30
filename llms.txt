@@ -1,0 +1,70 @@
+# FiestaBoard
+
+> Open-source software for split-flap displays (Vestaboard Flagship and Note). Plugins, scheduling, and a visual page editor for your board.
+
+This file contains links to documentation sections following the llmstxt.org standard.
+
+## Table of Contents
+
+- [Welcome to FiestaBoard](https://fiestaboard.app/docs/intro): FiestaBoard is free, open-source software for Vestaboard and split-flap displays. 26 plugins including weather, stocks, sports, transit, and option...
+- [AI Providers (FiestaBot setup)](https://fiestaboard.app/docs/setup/ai-providers): Bring your own AI: configure OpenAI, Anthropic, OpenRouter, Groq, DeepSeek, Mistral, Together, Fireworks, Ollama, LM Studio, vLLM, or llama.cpp. Fi...
+- [API Keys](https://fiestaboard.app/docs/setup/api-keys): API keys for FiestaBoard - only your board key is required to start. Plugin API keys are added as you enable them.
+- [Authentication](https://fiestaboard.app/docs/setup/authentication): FiestaBoard ships with a built-in username/password login. Decide on first run whether to keep it on or skip it; both options are one click.
+- [Beginner's Guide](https://fiestaboard.app/docs/setup/beginners-guide): Step-by-step beginner guide to installing and configuring FiestaBoard for your Vestaboard or split-flap display.
+- [Cloud API Setup](https://fiestaboard.app/docs/setup/cloud-api): Configure FiestaBoard Cloud API for remote access to your split-flap display from anywhere over the internet.
+- [Docker Setup](https://fiestaboard.app/docs/setup/docker-setup): Understand FiestaBoard's Docker architecture, container configuration, and docker compose setup for production and development.
+- [Your First 10 Minutes](https://fiestaboard.app/docs/setup/first-10-minutes): Your first 10 minutes with FiestaBoard: create a page, enable plugins, and set up a schedule for your split-flap display.
+- [Home Assistant Add-on (Beta)](https://fiestaboard.app/docs/setup/home-assistant-addon): Install FiestaBoard as a Home Assistant Supervisor add-on. Sidebar Ingress, auto MQTT discovery, HA-managed backups — all from the HA Add-on Store....
+- [Connecting to Home Assistant via MQTT](https://fiestaboard.app/docs/setup/home-assistant-mqtt): Connect FiestaBoard to Home Assistant via MQTT. Step-by-step guide to set up an MQTT broker, configure the HA MQTT integration, and enable MQTT in ...
+- [Local Development](https://fiestaboard.app/docs/setup/local-development): Set up a FiestaBoard development environment with hot-reload for contributing code or building plugins.
+- [Local Home Assistant for Development](https://fiestaboard.app/docs/setup/local-home-assistant): Run Home Assistant in Docker for local development so the FiestaBoard dev container can connect and test the Home Assistant plugin.
+- [Note Array Setup](https://fiestaboard.app/docs/setup/note-arrays): Set up a Vestaboard Note array in FiestaBoard — via the Cloud API with a single token, or entirely on your local network with per-Note IPs and keys.
+- [Quick Start](https://fiestaboard.app/docs/setup/quick-start): Get FiestaBoard running on your Vestaboard in minutes. Flash a Raspberry Pi (easiest), use Docker Hub, or run the install wizard.
+- [FiestaPi Quick Start](https://fiestaboard.app/docs/setup/raspberry-pi): Flash a Raspberry Pi with FiestaPi and have FiestaBoard running in minutes — no Docker setup, no command line. Self-updating out of the box.
+- [Secret encryption at rest](https://fiestaboard.app/docs/setup/secret-encryption): FiestaBoard can encrypt secrets like API keys and board keys before writing them to disk. This is independent of the login feature.
+- [V2 Migration Guide](https://fiestaboard.app/docs/setup/v2-migration): Upgrade guide for migrating from FiestaBoard V1 to V2. Covers multi-device support, multi-board management, and API changes.
+- [V3 Migration Guide](https://fiestaboard.app/docs/setup/v3-migration): Upgrade guide for migrating from FiestaBoard V2 to V3. Covers the new external plugin system, plugin registry, Git-based plugin installs, and API c...
+- [Plugins Overview](https://fiestaboard.app/docs/plugins/overview): Explore FiestaBoard's 26 plugins for your Vestaboard — weather, sports, traffic, transit, Home Assistant, and more.
+- [Plugin Configuration](https://fiestaboard.app/docs/plugins/configuration): Enable and configure FiestaBoard plugins through the web UI or environment variables for your split-flap display.
+- [Air Quality & Fog](https://fiestaboard.app/docs/plugins/air-fog): Display real-time air quality (AQI) and fog/visibility conditions on your split-flap display with FiestaBoard.
+- [Bay Wheels](https://fiestaboard.app/docs/plugins/baywheels): Display Bay Wheels bike share availability with electric and classic bike counts on your split-flap display.
+- [Countdown](https://fiestaboard.app/docs/plugins/countdown): Count down to any event in real time on your split-flap display with FiestaBoard. No API key required.
+- [Date & Time](https://fiestaboard.app/docs/plugins/date-time): Display current date and time in configurable formats on your split-flap display with FiestaBoard.
+- [Disney Parks Queue Times](https://fiestaboard.app/docs/plugins/disney-parks): Display real-time Disney theme park ride wait times on your split-flap display with FiestaBoard.
+- [Entertainment Plugins](https://fiestaboard.app/docs/plugins/entertainment): Entertainment plugins for FiestaBoard: Disney park wait times, Last.fm music, Star Trek quotes, and more.
+- [Guest WiFi](https://fiestaboard.app/docs/plugins/guest-wifi): Display guest WiFi network name and password on your split-flap display for visitors.
+- [Home Assistant Plugin](https://fiestaboard.app/docs/plugins/home-assistant): Display Home Assistant smart home data on your Vestaboard. Show door sensors, temperature, lights, and more with the FiestaBoard Home Assistant plu...
+- [Last.fm Now Playing](https://fiestaboard.app/docs/plugins/last-fm): Display what's currently playing via Last.fm scrobbling on your split-flap display.
+- [SF Muni](https://fiestaboard.app/docs/plugins/muni): Display real-time San Francisco Muni transit arrival predictions on your split-flap display.
+- [Nearby Aircraft](https://fiestaboard.app/docs/plugins/nearby-aircraft): Display real-time nearby aircraft information from OpenSky Network on your split-flap display.
+- [Random](https://fiestaboard.app/docs/plugins/random): Display randomly selected values on your split-flap display with FiestaBoard. Coin flips, custom lists, and random colors — no API key required.
+- [Sports Scores Plugin](https://fiestaboard.app/docs/plugins/sports-scores): Display live NFL, NBA, NHL, and soccer scores on your Vestaboard with FiestaBoard's sports plugin.
+- [Star Trek Quotes](https://fiestaboard.app/docs/plugins/star-trek-quotes): Display random Star Trek quotes from TNG, Voyager, and DS9 on your split-flap display.
+- [Stardate](https://fiestaboard.app/docs/plugins/stardate): Display the current TNG-style stardate on your split-flap display with FiestaBoard.
+- [Stock Prices](https://fiestaboard.app/docs/plugins/stocks): Display real-time stock prices on your Vestaboard with percentage changes and color-coded indicators.
+- [Sun Art](https://fiestaboard.app/docs/plugins/sun-art): Display a full-screen sun art pattern that changes with the sun's position throughout the day.
+- [Surf Conditions](https://fiestaboard.app/docs/plugins/surf): Display surf conditions including wave height, swell period, and quality ratings on your split-flap display.
+- [Traffic Plugin](https://fiestaboard.app/docs/plugins/traffic): Show real-time commute and traffic times on your Vestaboard using FiestaBoard's Google Routes API plugin.
+- [Transit Plugins](https://fiestaboard.app/docs/plugins/transit): Transit plugins for FiestaBoard: SF Muni, WSDOT Ferries, and Bay Wheels bike share.
+- [Visual Clock](https://fiestaboard.app/docs/plugins/visual-clock): Display a full-screen pixel-art style clock with customizable colors on your split-flap display.
+- [Weather Plugin](https://fiestaboard.app/docs/plugins/weather): Display live weather on your Vestaboard — temperature, conditions, UV index, and more with FiestaBoard's weather plugin.
+- [WSDOT Ferries](https://fiestaboard.app/docs/plugins/wsdot): Display Washington State Ferry schedules, vessel names, car spots, and alerts on your split-flap display.
+- [Home Assistant Control (MQTT)](https://fiestaboard.app/docs/features/home-assistant-control): Make FiestaBoard automatically discoverable by Home Assistant via MQTT Discovery. Control your board from HA automations.
+- [Localization (i18n)](https://fiestaboard.app/docs/features/localization): Display your FiestaBoard in multiple languages with community-maintained translations for the web UI and board content.
+- [Page Editor](https://fiestaboard.app/docs/features/page-editor): Use FiestaBoard's WYSIWYG page editor to create and design custom content for your split-flap display, with optional AI-assisted page drafting.
+- [Schedule Mode](https://fiestaboard.app/docs/features/schedule): Configure FiestaBoard's schedule mode to automatically rotate pages on your split-flap display at set times.
+- [Silence Schedule](https://fiestaboard.app/docs/features/silence-schedule): Set quiet hours on your FiestaBoard to silence split-flap display updates during nighttime or specific periods.
+- [In-App Updates](https://fiestaboard.app/docs/features/updating): FiestaBoard 5.0 introduces one-click in-app updates. Learn how Update Now works, how to opt in on Docker installs, and how auto-update works on Fie...
+- [FiestaUpdater](https://fiestaboard.app/docs/deployment/fiestaupdater): Technical reference for the FiestaUpdater sidecar — the companion container that powers FiestaBoard's one-click in-app updates.
+- [Production Deployment](https://fiestaboard.app/docs/deployment/production): Production deployment best practices for running FiestaBoard reliably with Docker, SSL, and monitoring.
+- [Raspberry Pi](https://fiestaboard.app/docs/deployment/raspberry-pi): Run FiestaBoard on a Raspberry Pi. Flash the FiestaPi image for zero-config setup, or use a Pi you already have with Docker.
+- [Accessibility](https://fiestaboard.app/docs/reference/accessibility): FiestaBoard's commitment to WCAG 2.2 Level AA accessibility compliance.
+- [API Endpoints](https://fiestaboard.app/docs/reference/api-endpoints): Complete FiestaBoard REST API reference with endpoints for pages, schedules, plugins, and display control.
+- [Character Codes](https://fiestaboard.app/docs/reference/character-codes): Reference table of split-flap character codes used by FiestaBoard and Vestaboard for display encoding.
+- [Color Guide](https://fiestaboard.app/docs/reference/color-guide): Use FiestaBoard's 8 color codes to add colored tiles and formatting to your split-flap display layouts.
+- [Environment Variables](https://fiestaboard.app/docs/reference/environment-variables): Complete reference of FiestaBoard .env configuration variables for API keys, display settings, and plugin options.
+- [Template Expressions](https://fiestaboard.app/docs/reference/template-formulas): Reference for template expressions — the Excel-like inline formula language for FiestaBoard templates. Use IF/ELSE, math, and string functions in a...
+- [Troubleshooting](https://fiestaboard.app/docs/troubleshooting): Fix common FiestaBoard issues including connection errors, Docker problems, plugin failures, and display troubleshooting.
+- [Contributing](https://fiestaboard.app/docs/development/contributing): Contribute to FiestaBoard - learn about pull requests, coding standards, and how to help improve the project.
+- [Plugin Development Guide](https://fiestaboard.app/docs/development/plugin-guide): End-to-end guide to creating, testing, and submitting a FiestaBoard plugin - from initial idea to merged pull request.
+- [Testing Guide](https://fiestaboard.app/docs/development/testing): Run and write tests for FiestaBoard using pytest for Python and Vitest for TypeScript/React components.

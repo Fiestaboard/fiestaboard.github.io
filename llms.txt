@@ -54,6 +54,7 @@ This file contains links to documentation sections following the llmstxt.org sta
 - [Page Editor](https://fiestaboard.app/docs/features/page-editor): Use FiestaBoard's WYSIWYG page editor to create and design custom content for your split-flap display, with optional AI-assisted page drafting.
 - [Schedule Mode](https://fiestaboard.app/docs/features/schedule): Configure FiestaBoard's schedule mode to automatically rotate pages on your split-flap display at set times.
 - [Silence Schedule](https://fiestaboard.app/docs/features/silence-schedule): Set quiet hours on your FiestaBoard to silence split-flap display updates during nighttime or specific periods.
+- [Transitions](https://fiestaboard.app/docs/features/transitions): Animate how your FiestaBoard changes between messages — built-in Vestaboard flip strategies and beta transition plugins like typewriter, dissolve, ...
 - [In-App Updates](https://fiestaboard.app/docs/features/updating): FiestaBoard 5.0 introduces one-click in-app updates. Learn how Update Now works, how to opt in on Docker installs, and how auto-update works on Fie...
 - [FiestaUpdater](https://fiestaboard.app/docs/deployment/fiestaupdater): Technical reference for the FiestaUpdater sidecar — the companion container that powers FiestaBoard's one-click in-app updates.
 - [Production Deployment](https://fiestaboard.app/docs/deployment/production): Production deployment best practices for running FiestaBoard reliably with Docker, SSL, and monitoring.

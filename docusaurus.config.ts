@@ -399,7 +399,7 @@ const config: Config = {
           className: "navbar-ext-link navbar-ext-dockerhub",
         },
         {
-          href: "https://discord.gg/JvN8y6ahaf",
+          href: "https://discord.gg/2GAqKnRF6h",
           label: "Discord",
           position: "right",
           className: "navbar-ext-link navbar-ext-discord",
@@ -480,7 +480,7 @@ const config: Config = {
             },
             {
               label: "Discord",
-              href: "https://discord.gg/JvN8y6ahaf",
+              href: "https://discord.gg/2GAqKnRF6h",
             },
             {
               label: "GitHub",

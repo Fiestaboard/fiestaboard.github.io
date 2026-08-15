@@ -1,0 +1,23 @@
+# Weekly dependency updates.
+#
+# npm: the Docusaurus site tree at the repo root. Docusaurus packages are
+# grouped into a single PR (core, preset, plugins, and type packages all
+# pin the same release line and must move together).
+version: 2
+
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    groups:
+      docusaurus:
+        patterns:
+          - "@docusaurus/*"
+          - "*docusaurus*"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"

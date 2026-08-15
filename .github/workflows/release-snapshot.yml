@@ -1,0 +1,187 @@
+# On a FiestaBoard release (repository_dispatch type "release", sent from the
+# FiestaBoard release workflow with client_payload.tag = vX.Y.Z), snapshot the
+# docs at that tag into a Docusaurus version X.Y.
+#
+# NOTE: repository_dispatch only triggers the workflow file on the DEFAULT
+# branch (main). Until the cutover promotes this branch to main, the dispatch
+# path is inert; rehearsals use workflow_dispatch with a scratch
+# target_branch instead.
+#
+# Build/deploy: none here, deliberately. build-deploy.yml runs on push and
+# owns the site build; there is no Pages deploy step anywhere yet (production
+# still deploys from Fiestaboard/FiestaBoard docs.yml to this repo's main).
+# When a deploy exists post-cutover it is triggered by the snapshot push —
+# which requires the push to use RELEASE_PAT, because pushes made with the
+# default GITHUB_TOKEN do not trigger other workflows.
+#
+# Tokens:
+#   - Checking out Fiestaboard/FiestaBoard at the tag needs no PAT — the repo
+#     is public, plain actions/checkout works.
+#   - Committing/pushing to THIS repo prefers RELEASE_PAT (so the push
+#     triggers build-deploy.yml) and falls back to the built-in GITHUB_TOKEN
+#     (push works, but triggers nothing) until that secret is provisioned.
+name: Release snapshot
+
+on:
+  repository_dispatch:
+    types: [release]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "FiestaBoard release tag (vX.Y.Z)"
+        required: true
+        type: string
+      target_branch:
+        description: "Branch to snapshot on (rehearsals use a scratch branch)"
+        required: false
+        default: main
+        type: string
+      force_snapshot:
+        description: >-
+          Re-snapshot even if the version already exists (rehearsals only;
+          ignored when target_branch is main)
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: release-snapshot
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    env:
+      TARGET_BRANCH: ${{ github.event_name == 'workflow_dispatch' && inputs.target_branch || 'main' }}
+      FORCE_SNAPSHOT: ${{ github.event_name == 'workflow_dispatch' && inputs.force_snapshot && 'true' || 'false' }}
+    steps:
+      - name: Parse tag vX.Y.Z -> X.Y
+        id: parse
+        env:
+          TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.event.client_payload.tag }}
+        run: |
+          set -euo pipefail
+          if [[ ! "$TAG" =~ ^v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            echo "error: tag '$TAG' is not vX.Y.Z" >&2
+            exit 1
+          fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "docs_version=${BASH_REMATCH[1]}.${BASH_REMATCH[2]}" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout site repo
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ env.TARGET_BRANCH }}
+          token: ${{ secrets.RELEASE_PAT || github.token }}
+
+      # Public repo: plain checkout, no token needed.
+      - name: Checkout FiestaBoard at release tag (sparse)
+        uses: actions/checkout@v7
+        with:
+          repository: Fiestaboard/FiestaBoard
+          ref: ${{ steps.parse.outputs.tag }}
+          path: .fiestaboard-src
+          sparse-checkout: |
+            docs
+            plugin-registry.json
+            plugin-previews.json
+          sparse-checkout-cone-mode: false
+
+      - name: Bail out if version already snapshotted
+        id: version
+        env:
+          DOCS_VERSION: ${{ steps.parse.outputs.docs_version }}
+        run: |
+          set -euo pipefail
+          exists=false
+          if [ -f versions.json ] && \
+             python3 -c 'import json,os,sys; sys.exit(0 if os.environ["DOCS_VERSION"] in json.load(open("versions.json")) else 1)'; then
+            exists=true
+          fi
+          if [ "$exists" = true ]; then
+            # force_snapshot lets rehearsals re-cut an existing version on a
+            # scratch branch; the bail stays mandatory on main.
+            if [ "$FORCE_SNAPSHOT" = "true" ] && [ "$TARGET_BRANCH" != "main" ]; then
+              echo "Version $DOCS_VERSION exists but force_snapshot is set on non-main branch; re-snapshotting."
+              echo "created=true" >> "$GITHUB_OUTPUT"
+              echo "recut=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "Version $DOCS_VERSION already exists in versions.json; nothing to do."
+              echo "created=false" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "created=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Refresh current docs from tag (same allowlist as pull-docs.mjs)
+        if: steps.version.outputs.created == 'true'
+        run: |
+          set -euo pipefail
+          # docs/** minus docs/internal/** -> docs/**  (mirror: deletions
+          # propagate). docs/README.md is this repo's generated banner and
+          # docs/.source-sha is rewritten below — keep both out of the mirror.
+          rsync -a --delete \
+            --exclude='/internal/' --exclude='/.source-sha' --exclude='/README.md' \
+            .fiestaboard-src/docs/ docs/
+          rm -rf docs/internal
+          mkdir -p data
+          cp .fiestaboard-src/plugin-registry.json data/plugin-registry.json
+          cp .fiestaboard-src/plugin-previews.json data/plugin-previews.json
+          git -C .fiestaboard-src rev-parse HEAD > docs/.source-sha
+          rm -rf .fiestaboard-src
+
+      - name: Setup Node
+        if: steps.version.outputs.created == 'true'
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Create Docusaurus version
+        if: steps.version.outputs.created == 'true'
+        env:
+          DOCS_VERSION: ${{ steps.parse.outputs.docs_version }}
+          RECUT: ${{ steps.version.outputs.recut }}
+        run: |
+          set -euo pipefail
+          npm ci
+          if [ "$RECUT" = "true" ]; then
+            # Drop the existing snapshot so docs:version can re-create it.
+            rm -rf "versioned_docs/version-$DOCS_VERSION"
+            rm -f "versioned_sidebars/version-$DOCS_VERSION-sidebars.json"
+            python3 - <<'EOF'
+          import json, os
+          v = os.environ["DOCS_VERSION"]
+          versions = json.load(open("versions.json"))
+          versions = [x for x in versions if x != v]
+          with open("versions.json", "w") as f:
+              json.dump(versions, f, indent=2)
+              f.write("\n")
+          EOF
+          fi
+          npx docusaurus docs:version "$DOCS_VERSION"
+          # docs:version copies docs/ verbatim; the banner README and
+          # .source-sha are working-tree metadata, not part of a snapshot
+          # (imported production snapshots contain neither).
+          rm -f "versioned_docs/version-$DOCS_VERSION/README.md" \
+                "versioned_docs/version-$DOCS_VERSION/.source-sha"
+
+      - name: Commit snapshot
+        if: steps.version.outputs.created == 'true'
+        env:
+          DOCS_VERSION: ${{ steps.parse.outputs.docs_version }}
+        run: |
+          set -euo pipefail
+          git config user.name "FiestaBoard CI"
+          git config user.email "ci@fiestaboard.app"
+          git add -A -- docs versioned_docs versioned_sidebars versions.json data
+          if git diff --cached --quiet; then
+            echo "Nothing to commit."
+            exit 0
+          fi
+          git commit -m "docs: snapshot version $DOCS_VERSION"
+          git push origin "HEAD:$TARGET_BRANCH"

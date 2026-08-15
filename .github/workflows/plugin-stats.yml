@@ -1,0 +1,56 @@
+# Daily plugin stats refresh: runs scripts/fetch_plugin_stats.py (reads
+# data/plugin-registry.json, writes data/plugin-stats.json) and commits the
+# output only when it changed.
+#
+# Tokens:
+#   - GITHUB_TOKEN is enough to commit/push to this repo (contents: write).
+#   - The traffic API (repos/*/traffic/clones) needs push access to the plugin
+#     repos, which the default GITHUB_TOKEN of THIS repo does not have — so the
+#     script prefers RELEASE_PAT (org PAT) for `gh api`, falling back to
+#     GITHUB_TOKEN until that secret is provisioned (traffic then records as
+#     null for every repo, by design; metadata and manifests still resolve).
+name: Plugin stats
+
+on:
+  schedule:
+    - cron: "17 6 * * *" # daily, off the top of the hour
+  workflow_dispatch: {}
+
+concurrency:
+  group: plugin-stats
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    # data/ is owned by the branch this site builds from. Scheduled runs only
+    # ever fire from the default branch's workflow file anyway; this guard is
+    # belt-and-suspenders so a cron run never mutates a non-main ref (e.g.
+    # while this file exists on other branches pre-cutover). workflow_dispatch
+    # stays allowed on any ref for testing.
+    if: github.event_name != 'schedule' || github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Fetch plugin stats
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_PAT || secrets.GITHUB_TOKEN }}
+        run: python3 scripts/fetch_plugin_stats.py
+
+      - name: Commit if changed
+        run: |
+          set -euo pipefail
+          git add -- data/plugin-stats.json
+          if git diff --cached --quiet; then
+            echo "No stats changes; skipping commit."
+            exit 0
+          fi
+          git config user.name "FiestaBoard CI"
+          git config user.email "ci@fiestaboard.app"
+          git commit -m "data: refresh plugin stats"
+          # Rebase-and-retry guards against races with other daily commits.
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

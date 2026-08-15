@@ -1,0 +1,139 @@
+# Production watch: poll https://fiestaboard.app and verify the deployed
+# URL surface still matches this repo's frozen expectations — the
+# hand-picked route fixture (tests/routes.fixture.json, run in live mode by
+# scripts/docs-parity.mjs) plus a diff of the live sitemap's URL set
+# against tests/baseline.json's sitemap set (normalized the same way the
+# parity script normalizes sitemap entries: URL pathname, trailing slash
+# stripped, "" → "/").
+#
+# On any failure the run files an issue on this repo (labeled
+# production-watch) with the captured output, and the run itself fails.
+#
+# NOTE: downgrade the cron to weekly after 2026-08-29 (14 days
+# post-cutover) — every 6 hours is only warranted while the fiestaboard.app
+# cutover settles.
+name: Production watch
+
+on:
+  schedule:
+    - cron: "41 */6 * * *" # every 6 hours, off the top of the hour
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: production-watch
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    name: Watch fiestaboard.app
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+
+      - name: Check production URL surface
+        shell: bash
+        run: |
+          set -uo pipefail
+          OUT="$RUNNER_TEMP/watch-output.txt"
+          : > "$OUT"
+          status=0
+
+          run_check() {
+            local title="$1"
+            shift
+            echo "### $title" | tee -a "$OUT"
+            if "$@" 2>&1 | tee -a "$OUT"; then
+              echo "(ok)" | tee -a "$OUT"
+            else
+              status=1
+            fi
+            echo | tee -a "$OUT"
+          }
+
+          # Sitemap-set diff, using the same normalization as
+          # scripts/docs-parity.mjs (pathname, trailing slash stripped).
+          cat > "$RUNNER_TEMP/sitemap-diff.mjs" <<'JS'
+          import { readFileSync } from "node:fs";
+          const [xmlPath, baselinePath] = process.argv.slice(2);
+          const norm = (loc) => new URL(loc).pathname.replace(/\/$/, "") || "/";
+          const xml = readFileSync(xmlPath, "utf8");
+          const live = [...new Set([...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => norm(m[1])))].sort();
+          const baseline = JSON.parse(readFileSync(baselinePath, "utf8")).sitemap;
+          const liveSet = new Set(live);
+          const baseSet = new Set(baseline);
+          const missing = baseline.filter((p) => !liveSet.has(p));
+          const added = live.filter((p) => !baseSet.has(p));
+          for (const p of missing) console.error(`SITEMAP MISSING ${p}`);
+          for (const p of added) console.error(`SITEMAP ADDED   ${p}`);
+          if (missing.length || added.length) {
+            console.error(`sitemap-diff: live sitemap diverges from baseline (+${added.length} -${missing.length}).`);
+            process.exit(1);
+          }
+          console.log(`sitemap-diff: live sitemap matches baseline (${baseline.length} URLs).`);
+          JS
+
+          run_check "Fetch live sitemap" \
+            curl -fsSL --retry 3 --retry-delay 10 -o "$RUNNER_TEMP/live-sitemap.xml" \
+            https://fiestaboard.app/sitemap.xml
+
+          run_check "Route fixture (live)" \
+            node scripts/docs-parity.mjs --host https://fiestaboard.app --fixture tests/routes.fixture.json
+
+          if [ -s "$RUNNER_TEMP/live-sitemap.xml" ]; then
+            run_check "Sitemap vs baseline" \
+              node "$RUNNER_TEMP/sitemap-diff.mjs" "$RUNNER_TEMP/live-sitemap.xml" tests/baseline.json
+          else
+            echo "### Sitemap vs baseline" | tee -a "$OUT"
+            echo "skipped: live sitemap was not fetched" | tee -a "$OUT"
+            status=1
+          fi
+
+          exit "$status"
+
+      - name: File regression issue
+        if: failure()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -uo pipefail
+          OUT="$RUNNER_TEMP/watch-output.txt"
+          if [ ! -s "$OUT" ]; then
+            echo "No check output was captured (the run failed before the checks produced output)." > "$OUT"
+          fi
+
+          BODY="$RUNNER_TEMP/issue-body.md"
+          {
+            echo "The production watch found a regression on https://fiestaboard.app."
+            echo
+            echo "Run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+            echo
+            echo '```text'
+            cat "$OUT"
+            echo '```'
+          } > "$BODY"
+
+          TITLE="Production watch: regression detected $(date -u +%Y-%m-%d)"
+
+          # Ensure the label exists; ignore failure (already exists / races).
+          gh label create production-watch \
+            --repo "$GITHUB_REPOSITORY" \
+            --description "Filed automatically by the production watch workflow" \
+            --color D93F0B 2>/dev/null || true
+
+          if ! gh issue create --repo "$GITHUB_REPOSITORY" \
+            --title "$TITLE" --label production-watch --body-file "$BODY"; then
+            echo "::warning::issue creation with label failed; retrying without label"
+            gh issue create --repo "$GITHUB_REPOSITORY" \
+              --title "$TITLE" --body-file "$BODY"
+          fi

@@ -7,12 +7,11 @@
 # path is inert; rehearsals use workflow_dispatch with a scratch
 # target_branch instead.
 #
-# Build/deploy: none here, deliberately. build-deploy.yml runs on push and
-# owns the site build; there is no Pages deploy step anywhere yet (production
-# still deploys from Fiestaboard/FiestaBoard docs.yml to this repo's main).
-# When a deploy exists post-cutover it is triggered by the snapshot push —
-# which requires the push to use RELEASE_PAT, because pushes made with the
-# default GITHUB_TOKEN do not trigger other workflows.
+# Build/deploy: none here, deliberately. build-deploy.yml owns the site
+# build and (on main) the Pages deploy. Pushes made with the default
+# GITHUB_TOKEN do not trigger other workflows' push events, so after a
+# snapshot commit lands on main this workflow explicitly dispatches
+# build-deploy.yml (GITHUB_TOKEN CAN start workflow_dispatch runs).
 #
 # Tokens:
 #   - Checking out Fiestaboard/FiestaBoard at the tag needs no PAT — the repo
@@ -171,6 +170,7 @@ jobs:
                 "versioned_docs/version-$DOCS_VERSION/.source-sha"
 
       - name: Commit snapshot
+        id: commit
         if: steps.version.outputs.created == 'true'
         env:
           DOCS_VERSION: ${{ steps.parse.outputs.docs_version }}
@@ -181,7 +181,18 @@ jobs:
           git add -A -- docs versioned_docs versioned_sidebars versions.json data
           if git diff --cached --quiet; then
             echo "Nothing to commit."
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           git commit -m "docs: snapshot version $DOCS_VERSION"
           git push origin "HEAD:$TARGET_BRANCH"
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+
+      # The push above used GITHUB_TOKEN (unless RELEASE_PAT is set), which
+      # never fires other workflows' push triggers — so start the site
+      # build+deploy explicitly. Only when a commit actually landed on main.
+      - name: Trigger site build & deploy
+        if: steps.commit.outputs.pushed == 'true' && env.TARGET_BRANCH == 'main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run build-deploy.yml --repo "$GITHUB_REPOSITORY" --ref "$TARGET_BRANCH"

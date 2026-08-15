@@ -41,11 +41,13 @@ jobs:
         run: python3 scripts/fetch_plugin_stats.py
 
       - name: Commit if changed
+        id: commit
         run: |
           set -euo pipefail
           git add -- data/plugin-stats.json
           if git diff --cached --quiet; then
             echo "No stats changes; skipping commit."
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           git config user.name "FiestaBoard CI"
@@ -54,3 +56,13 @@ jobs:
           # Rebase-and-retry guards against races with other daily commits.
           git pull --rebase origin "${GITHUB_REF_NAME}"
           git push origin "HEAD:${GITHUB_REF_NAME}"
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+
+      # The push above used GITHUB_TOKEN, which never fires other workflows'
+      # push triggers — so start the site build+deploy explicitly. Only when
+      # a commit actually landed and the target branch is main.
+      - name: Trigger site build & deploy
+        if: steps.commit.outputs.pushed == 'true' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run build-deploy.yml --repo "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME"

@@ -1,15 +1,19 @@
 # Full-site build with the deploy configuration (all versions under
 # DEPLOY_VERSION_CAP), enforced URL-surface parity against
-# tests/baseline.json, and a GitHub Pages artifact upload.
+# tests/baseline.json, a GitHub Pages artifact upload, and — on main only —
+# the GitHub Pages deploy itself.
 #
-# NO deploy step yet: production still deploys from
-# Fiestaboard/FiestaBoard's docs.yml pushing built output to this repo's
-# main. The deploy job is added when the cutover happens.
+# Cutover-ready: pushes to main (post-promotion) build, pass the parity
+# gate, and deploy. Pushes to source (pre-promotion / transition) still
+# build + parity-check but the deploy job is skipped. workflow_dispatch
+# exists so release-snapshot.yml and plugin-stats.yml can trigger a deploy
+# after their GITHUB_TOKEN pushes (which never fire push events).
 name: Build & Deploy
 
 on:
   push:
-    branches: [source]
+    branches: [main, source]
+  workflow_dispatch: {}
 
 permissions:
   contents: read
@@ -51,3 +55,22 @@ jobs:
         uses: actions/upload-pages-artifact@v4
         with:
           path: build
+
+  deploy:
+    name: Deploy to GitHub Pages
+    # Deploy only from main (push to main, or workflow_dispatch run on
+    # main). Other refs — e.g. source during the transition — build and
+    # parity-check only.
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

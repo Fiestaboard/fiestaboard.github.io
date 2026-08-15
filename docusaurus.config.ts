@@ -71,6 +71,15 @@ const config: Config = {
   onBrokenLinks: "throw",
 
   markdown: {
+    // Docusaurus 3.10's `future.v4` flips mdx1CompatDisabledByDefault, but our
+    // docs/ and versioned_docs/ are synced snapshots that use HTML comments
+    // (incl. `<!-- truncate -->`); keep MDX v1 compat until the source
+    // markdown in Fiestaboard/FiestaBoard is migrated.
+    mdx1Compat: {
+      comments: true,
+      admonitions: true,
+      headingIds: true,
+    },
     hooks: {
       onBrokenMarkdownLinks: "warn",
     },

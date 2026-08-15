@@ -22,6 +22,25 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          # Depth 2 so the PR merge commit's parents are available for the
+          # synced-paths guard diff below.
+          fetch-depth: 2
+
+      - name: Guard synced paths
+        # docs/, data/plugin-registry.json, and data/plugin-previews.json are
+        # synced copies from Fiestaboard/FiestaBoard (scripts/pull-docs.mjs);
+        # the rest of data/ is owned by automation in this repo. PRs must not
+        # modify any of it — changes belong in the FiestaBoard repo or arrive
+        # via the sync.
+        run: |
+          CHANGED=$(git diff --name-only HEAD^1 HEAD -- docs/ data/)
+          if [ -n "$CHANGED" ]; then
+            echo "::error::PRs must not modify synced paths (docs/, data/):"
+            echo "$CHANGED"
+            exit 1
+          fi
+          echo "No synced-path changes."
 
       - name: Set up Node.js
         uses: actions/setup-node@v7

@@ -9,7 +9,7 @@
     "start": "docusaurus start",
     "prebuild": "npm run build:css",
     "build": "docusaurus build",
-    "postbuild": "node scripts/build-info.mjs",
+    "postbuild": "node scripts/build-info.mjs && node scripts/copy-served-data.mjs",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",

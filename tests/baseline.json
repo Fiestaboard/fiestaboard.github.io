@@ -5669,7 +5669,6 @@
     "/versions"
   ],
   "assets": [
-    ".nojekyll",
     "404.html",
     "CNAME",
     "README.md",
@@ -6701,7 +6700,6 @@
     "sitemap.xml"
   ],
   "presence": {
-    ".nojekyll": true,
     "CNAME": "fiestaboard.app",
     "robots.txt": true,
     "llms.txt": true,

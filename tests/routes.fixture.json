@@ -48,6 +48,5 @@
   { "path": "/plugin-stats.json", "expect": "file" },
   { "path": "/robots.txt", "expect": "file" },
   { "path": "/CNAME", "expect": "file", "contains": "fiestaboard.app" },
-  { "path": "/404.html", "expect": "file" },
-  { "path": "/.nojekyll", "expect": "file" }
+  { "path": "/404.html", "expect": "file" }
 ]

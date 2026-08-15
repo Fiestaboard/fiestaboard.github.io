@@ -1,0 +1,11 @@
+node_modules/
+.docusaurus/
+build/
+static/
+package-lock.json
+versioned_docs/
+versioned_sidebars/
+docs/
+data/
+src/css/fiestaui.generated.css
+vendor/

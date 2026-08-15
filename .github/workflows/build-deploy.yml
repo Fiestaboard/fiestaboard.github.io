@@ -1,0 +1,53 @@
+# Full-site build with the deploy configuration (all versions under
+# DEPLOY_VERSION_CAP), enforced URL-surface parity against
+# tests/baseline.json, and a GitHub Pages artifact upload.
+#
+# NO deploy step yet: production still deploys from
+# Fiestaboard/FiestaBoard's docs.yml pushing built output to this repo's
+# main. The deploy job is added when the cutover happens.
+name: Build & Deploy
+
+on:
+  push:
+    branches: [source]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Full build & parity
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Docusaurus site
+        run: npm run build
+        env:
+          # Headroom above Node's ~4GB default; the version-capped build fits
+          # comfortably, but a single version's docs growing shouldn't brick
+          # deploys again (they OOMed 2026-06-16 → 2026-07-18).
+          NODE_OPTIONS: --max-old-space-size=8192
+
+      - name: URL parity (baseline, enforced)
+        run: node scripts/docs-parity.mjs build --compare tests/baseline.json
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: build

@@ -1,0 +1,54 @@
+# PR CI: lint, typecheck, format check, and a single-version build
+# (DOCS_PR_MODE=1 compiles only the latest docs version so PRs don't
+# recompile historical snapshots that haven't changed).
+#
+# Parity: the full baseline (tests/baseline.json) covers every deployed
+# version, so a PR-mode build cannot match it — the baseline compare runs
+# report-only here. The enforced check is the URL fixture in --pr-mode,
+# which skips entries marked fullBuildOnly. The full baseline compare is
+# enforced in build-deploy.yml.
+name: PR Build
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Lint, typecheck & PR-mode build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Format check
+        run: npm run format:check
+
+      - name: Build (PR mode, latest version only)
+        run: npm run build
+        env:
+          DOCS_PR_MODE: "1"
+
+      - name: URL parity (fixture, PR mode)
+        run: node scripts/docs-parity.mjs build --fixture tests/routes.fixture.json --pr-mode
+
+      - name: URL parity (baseline, report-only in PR mode)
+        run: node scripts/docs-parity.mjs build --compare tests/baseline.json || true

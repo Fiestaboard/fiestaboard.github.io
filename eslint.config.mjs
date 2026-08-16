@@ -54,6 +54,26 @@ export default [
       "no-console": ["warn", { allow: ["warn", "error"] }],
       "simple-import-sort/imports": "error",
       "simple-import-sort/exports": "error",
+      // Import FiestaUI components from the module that owns them, never from
+      // the package root. Since @fiestaboard/ui 3.2.0 the root barrel also
+      // re-exports the TipTap template editor, whose TipTap/CodeMirror peers
+      // are declared *optional* — a consumer that doesn't render the editor is
+      // not meant to install them. Webpack still has to resolve every import in
+      // a barrel it pulls in, so a single `from "@fiestaboard/ui"` anywhere in
+      // this site fails the production build with ~29 "Module not found"
+      // errors. Deep subpaths keep the editor out of the module graph entirely.
+      "@typescript-eslint/no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "@fiestaboard/ui",
+              message:
+                'Import from the owning module instead (e.g. "@fiestaboard/ui/components/layout/box"). The root barrel drags in the TipTap editor, whose optional peer deps this site does not install.',
+            },
+          ],
+        },
+      ],
       "react/jsx-uses-react": "off",
       "react/react-in-jsx-scope": "off",
       "react-hooks/rules-of-hooks": "error",

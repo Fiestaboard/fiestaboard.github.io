@@ -304,7 +304,11 @@ const config: Config = {
           // (includeCurrentVersion: false) — the site serves snapshots only.
           path: "docs",
           sidebarPath: "./sidebars.ts",
-          editUrl: "https://github.com/Fiestaboard/FiestaBoard/tree/main/docs-site/",
+          // "Edit this page" targets this repo: Docusaurus appends the doc's
+          // path relative to the site dir (docs/… or versioned_docs/…), and
+          // since the cutover those trees live here, not in
+          // Fiestaboard/FiestaBoard/docs-site/ (which no longer exists).
+          editUrl: "https://github.com/Fiestaboard/fiestaboard.github.io/tree/main/",
           includeCurrentVersion: false,
           versions: versionsConfig,
           ...(onlyIncludeVersions ? { onlyIncludeVersions } : {}),

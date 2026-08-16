@@ -1,6 +1,9 @@
 import BrowserOnly from "@docusaurus/BrowserOnly";
 import Link from "@docusaurus/Link";
-import { Box, Button, Flex, Text } from "@fiestaboard/ui";
+import { Button } from "@fiestaboard/ui/components/forms/button";
+import { Box } from "@fiestaboard/ui/components/layout/box";
+import { Flex } from "@fiestaboard/ui/components/layout/flex";
+import { Text } from "@fiestaboard/ui/components/typography/text";
 import HeroBoard from "@site/src/components/HeroBoard";
 import HomepageFeatures from "@site/src/components/HomepageFeatures";
 import Layout from "@theme/Layout";

@@ -29,7 +29,7 @@ import isInternalUrl from "@docusaurus/isInternalUrl";
 import Link from "@docusaurus/Link";
 import { isActiveSidebarItem } from "@docusaurus/plugin-content-docs/client";
 import { ThemeClassNames } from "@docusaurus/theme-common";
-import { cn } from "@fiestaboard/ui";
+import { cn } from "@fiestaboard/ui/lib/utils";
 import type { Props } from "@theme/DocSidebarItem/Link";
 import IconExternalLink from "@theme/Icon/ExternalLink";
 import type { ReactNode } from "react";

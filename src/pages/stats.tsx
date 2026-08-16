@@ -1,5 +1,11 @@
 import Link from "@docusaurus/Link";
-import { Badge, Box, Button, Heading, List, ListItem, StaticBoardDisplay, Text } from "@fiestaboard/ui";
+import { StaticBoardDisplay } from "@fiestaboard/ui/components/board/static-board-display";
+import { Badge } from "@fiestaboard/ui/components/feedback/badge";
+import { Button } from "@fiestaboard/ui/components/forms/button";
+import { Box } from "@fiestaboard/ui/components/layout/box";
+import { Heading } from "@fiestaboard/ui/components/typography/heading";
+import { List, ListItem } from "@fiestaboard/ui/components/typography/list";
+import { Text } from "@fiestaboard/ui/components/typography/text";
 import type { PluginEntry } from "@site/src/plugin-data";
 import {
   CATEGORY_LABELS as REGISTRY_CATEGORY_LABELS,

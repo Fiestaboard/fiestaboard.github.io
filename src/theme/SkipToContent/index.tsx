@@ -41,7 +41,7 @@ import { useHistory } from "@docusaurus/router";
 import { SkipToContentFallbackId } from "@docusaurus/theme-common";
 import { useLocationChange } from "@docusaurus/theme-common/internal";
 import { translate } from "@docusaurus/Translate";
-import { SkipToContent as FiestaSkipToContent } from "@fiestaboard/ui";
+import { SkipToContent as FiestaSkipToContent } from "@fiestaboard/ui/components/chrome/skip-to-content";
 import type { MouseEvent, ReactNode } from "react";
 import { useCallback, useRef } from "react";
 

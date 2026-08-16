@@ -13,7 +13,8 @@
  * public class name that user CSS may target.
  */
 
-import { Box, cn } from "@fiestaboard/ui";
+import { Box } from "@fiestaboard/ui/components/layout/box";
+import { cn } from "@fiestaboard/ui/lib/utils";
 import type { Props } from "@theme/Footer/Copyright";
 import type { ReactNode } from "react";
 

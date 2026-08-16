@@ -10,7 +10,9 @@
  */
 
 import Link from "@docusaurus/Link";
-import { Card, CardDescription, cn, Text } from "@fiestaboard/ui";
+import { Card, CardDescription } from "@fiestaboard/ui/components/containment/card";
+import { Text } from "@fiestaboard/ui/components/typography/text";
+import { cn } from "@fiestaboard/ui/lib/utils";
 import type { Props } from "@theme/PaginatorNavLink";
 import type { ReactNode } from "react";
 

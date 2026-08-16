@@ -18,7 +18,9 @@
  */
 
 import type { FooterLinkItem } from "@docusaurus/theme-common";
-import { cn, Flex, Text } from "@fiestaboard/ui";
+import { Flex } from "@fiestaboard/ui/components/layout/flex";
+import { Text } from "@fiestaboard/ui/components/typography/text";
+import { cn } from "@fiestaboard/ui/lib/utils";
 import LinkItem from "@theme/Footer/LinkItem";
 import type { Props } from "@theme/Footer/Links/Simple";
 import { Fragment, type ReactNode } from "react";

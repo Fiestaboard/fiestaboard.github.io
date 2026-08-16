@@ -1,5 +1,6 @@
 import { useColorMode } from "@docusaurus/theme-common";
-import { Box, Button } from "@fiestaboard/ui";
+import { Button } from "@fiestaboard/ui/components/forms/button";
+import { Box } from "@fiestaboard/ui/components/layout/box";
 import clsx from "clsx";
 import { X } from "lucide-react";
 import { type ReactNode, useCallback, useEffect, useState } from "react";

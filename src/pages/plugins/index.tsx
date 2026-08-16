@@ -1,6 +1,12 @@
 import Link from "@docusaurus/Link";
 import { useColorMode } from "@docusaurus/theme-common";
-import { Box, Button, EmptyState, Flex, Input, PluginCard, Text } from "@fiestaboard/ui";
+import { EmptyState } from "@fiestaboard/ui/components/feedback/empty-state";
+import { Button } from "@fiestaboard/ui/components/forms/button";
+import { Input } from "@fiestaboard/ui/components/forms/input";
+import { Box } from "@fiestaboard/ui/components/layout/box";
+import { Flex } from "@fiestaboard/ui/components/layout/flex";
+import { PluginCard } from "@fiestaboard/ui/components/plugin/plugin-card";
+import { Text } from "@fiestaboard/ui/components/typography/text";
 import type { PluginEntry } from "@site/src/plugin-data";
 import { CATEGORIES, CATEGORY_LABELS, pluginPreviews, plugins } from "@site/src/plugin-data";
 import Layout from "@theme/Layout";

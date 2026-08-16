@@ -1,4 +1,11 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@fiestaboard/ui";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@fiestaboard/ui/components/containment/table";
 import BoardScreenshot from "@site/src/components/BoardScreenshot";
 import ThemedScreenshot from "@site/src/components/ThemedScreenshot";
 import MDXComponents from "@theme-original/MDXComponents";

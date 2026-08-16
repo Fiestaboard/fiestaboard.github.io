@@ -33,7 +33,9 @@
  */
 
 import { ThemeClassNames } from "@docusaurus/theme-common";
-import { Box, cn, Stack } from "@fiestaboard/ui";
+import { Box } from "@fiestaboard/ui/components/layout/box";
+import { Stack } from "@fiestaboard/ui/components/layout/stack";
+import { cn } from "@fiestaboard/ui/lib/utils";
 import type { Props } from "@theme/Footer/Layout";
 import type { ReactNode } from "react";
 

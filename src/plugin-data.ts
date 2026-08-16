@@ -6,15 +6,15 @@
  * scripts/sync_plugin_previews.py — manifest teaser/previews win, seed
  * entries are the fallback).
  */
-import type { BoardPreviewEntry } from "@fiestaboard/ui";
+import type { BoardPreviewEntry } from "@fiestaboard/ui/lib/board-previews";
 
 import previewsSeed from "../data/plugin-previews.json";
 import registry from "../data/plugin-registry.json";
 
 // The preview contract (types + label/message helpers) is shared with the app
 // marketplace through the design system; re-export for local call sites.
-export type { BoardPreviewEntry } from "@fiestaboard/ui";
-export { previewLabel, previewLabels, previewMessage } from "@fiestaboard/ui";
+export type { BoardPreviewEntry } from "@fiestaboard/ui/lib/board-previews";
+export { previewLabel, previewLabels, previewMessage } from "@fiestaboard/ui/lib/board-previews";
 
 export interface PluginEntry {
   id: string;

@@ -1,6 +1,12 @@
 import Link from "@docusaurus/Link";
 import { type GlobalVersion, useLatestVersion, useVersions } from "@docusaurus/plugin-content-docs/client";
-import { Box, Button, Flex, Heading, Table, TableBody, TableCell, TableRow, Text, TextLink } from "@fiestaboard/ui";
+import { Table, TableBody, TableCell, TableRow } from "@fiestaboard/ui/components/containment/table";
+import { Button } from "@fiestaboard/ui/components/forms/button";
+import { Box } from "@fiestaboard/ui/components/layout/box";
+import { Flex } from "@fiestaboard/ui/components/layout/flex";
+import { Heading } from "@fiestaboard/ui/components/typography/heading";
+import { Text } from "@fiestaboard/ui/components/typography/text";
+import { TextLink } from "@fiestaboard/ui/components/typography/text-link";
 import allVersions from "@site/versions.json";
 import Layout from "@theme/Layout";
 import type { ReactNode } from "react";

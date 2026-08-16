@@ -16,7 +16,8 @@
 
 import Link from "@docusaurus/Link";
 import { useBaseUrlUtils } from "@docusaurus/useBaseUrl";
-import { Box, cn } from "@fiestaboard/ui";
+import { Box } from "@fiestaboard/ui/components/layout/box";
+import { cn } from "@fiestaboard/ui/lib/utils";
 import type { Props } from "@theme/Footer/Logo";
 import ThemedImage from "@theme/ThemedImage";
 import type { ReactNode } from "react";

@@ -46,7 +46,7 @@ import { Collapsible, ThemeClassNames, useCollapsible, usePrevious, useThemeConf
 import { isSamePath } from "@docusaurus/theme-common/internal";
 import { translate } from "@docusaurus/Translate";
 import useIsBrowser from "@docusaurus/useIsBrowser";
-import { cn } from "@fiestaboard/ui";
+import { cn } from "@fiestaboard/ui/lib/utils";
 import type { Props } from "@theme/DocSidebarItem/Category";
 import DocSidebarItemLink from "@theme/DocSidebarItem/Link";
 import DocSidebarItems from "@theme/DocSidebarItems";

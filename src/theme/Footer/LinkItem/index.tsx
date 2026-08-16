@@ -32,7 +32,8 @@
 import isInternalUrl from "@docusaurus/isInternalUrl";
 import Link from "@docusaurus/Link";
 import useBaseUrl from "@docusaurus/useBaseUrl";
-import { cn, Text } from "@fiestaboard/ui";
+import { Text } from "@fiestaboard/ui/components/typography/text";
+import { cn } from "@fiestaboard/ui/lib/utils";
 import type { Props } from "@theme/Footer/LinkItem";
 import IconExternalLink from "@theme/Icon/ExternalLink";
 import type { ReactNode } from "react";

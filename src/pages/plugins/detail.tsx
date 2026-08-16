@@ -1,21 +1,16 @@
 import BrowserOnly from "@docusaurus/BrowserOnly";
 import Link from "@docusaurus/Link";
-import {
-  BoardShowcase,
-  Box,
-  Button,
-  EmptyState,
-  Flex,
-  Heading,
-  PluginCategoryBadge,
-  Skeleton,
-  Table,
-  TableCell,
-  TableHead,
-  TableHeader,
-  Text,
-  TextLink,
-} from "@fiestaboard/ui";
+import { Table, TableCell, TableHead, TableHeader } from "@fiestaboard/ui/components/containment/table";
+import { EmptyState } from "@fiestaboard/ui/components/feedback/empty-state";
+import { Skeleton } from "@fiestaboard/ui/components/feedback/skeleton";
+import { Button } from "@fiestaboard/ui/components/forms/button";
+import { Box } from "@fiestaboard/ui/components/layout/box";
+import { Flex } from "@fiestaboard/ui/components/layout/flex";
+import { BoardShowcase } from "@fiestaboard/ui/components/plugin/board-showcase";
+import { PluginCategoryBadge } from "@fiestaboard/ui/components/plugin/plugin-category-badge";
+import { Heading } from "@fiestaboard/ui/components/typography/heading";
+import { Text } from "@fiestaboard/ui/components/typography/text";
+import { TextLink } from "@fiestaboard/ui/components/typography/text-link";
 import { fetchPluginReadme, rewriteMarkdownImageUrls, rewriteMarkdownRepoLinks } from "@site/src/lib/github-readme";
 import type { PluginEntry } from "@site/src/plugin-data";
 import { CATEGORY_LABELS, pluginBoardImagePath, pluginPreviews, plugins } from "@site/src/plugin-data";

@@ -24,7 +24,8 @@
 
 import { ThemeClassNames } from "@docusaurus/theme-common";
 import Translate from "@docusaurus/Translate";
-import { Alert, AlertDescription, AlertTitle, cn } from "@fiestaboard/ui";
+import { Alert, AlertDescription, AlertTitle } from "@fiestaboard/ui/components/feedback/alert";
+import { cn } from "@fiestaboard/ui/lib/utils";
 import type { Props } from "@theme/Admonition";
 import type { LucideIcon } from "lucide-react";
 import { Info, Lightbulb, NotepadText, OctagonAlert, TriangleAlert } from "lucide-react";

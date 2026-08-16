@@ -34,7 +34,11 @@
 
 import type { FooterColumnItem, FooterLinkItem } from "@docusaurus/theme-common";
 import { ThemeClassNames } from "@docusaurus/theme-common";
-import { Box, cn, Flex, List, ListItem, Text } from "@fiestaboard/ui";
+import { Box } from "@fiestaboard/ui/components/layout/box";
+import { Flex } from "@fiestaboard/ui/components/layout/flex";
+import { List, ListItem } from "@fiestaboard/ui/components/typography/list";
+import { Text } from "@fiestaboard/ui/components/typography/text";
+import { cn } from "@fiestaboard/ui/lib/utils";
 import LinkItem from "@theme/Footer/LinkItem";
 import type { Props } from "@theme/Footer/Links/MultiColumn";
 import type { ReactNode } from "react";

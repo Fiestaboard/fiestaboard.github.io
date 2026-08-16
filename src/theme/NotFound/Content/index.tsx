@@ -13,7 +13,8 @@
 import Link from "@docusaurus/Link";
 import { translate } from "@docusaurus/Translate";
 import useBaseUrl from "@docusaurus/useBaseUrl";
-import { Button, EmptyState } from "@fiestaboard/ui";
+import { EmptyState } from "@fiestaboard/ui/components/feedback/empty-state";
+import { Button } from "@fiestaboard/ui/components/forms/button";
 import type { Props } from "@theme/NotFound/Content";
 import clsx from "clsx";
 import { Compass } from "lucide-react";

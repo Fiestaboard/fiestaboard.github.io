@@ -1,7 +1,14 @@
 import BrowserOnly from "@docusaurus/BrowserOnly";
 import Link from "@docusaurus/Link";
 import { useColorMode } from "@docusaurus/theme-common";
-import { Badge, Box, Button, Code, Heading, ScaledBoardDisplay, Text, TextLink } from "@fiestaboard/ui";
+import { ScaledBoardDisplay } from "@fiestaboard/ui/components/board/scaled-board-display";
+import { Badge } from "@fiestaboard/ui/components/feedback/badge";
+import { Button } from "@fiestaboard/ui/components/forms/button";
+import { Box } from "@fiestaboard/ui/components/layout/box";
+import { Code } from "@fiestaboard/ui/components/typography/code";
+import { Heading } from "@fiestaboard/ui/components/typography/heading";
+import { Text } from "@fiestaboard/ui/components/typography/text";
+import { TextLink } from "@fiestaboard/ui/components/typography/text-link";
 import { type ReactNode } from "react";
 
 import { pluginPreviews, plugins, previewMessage } from "../../plugin-data";

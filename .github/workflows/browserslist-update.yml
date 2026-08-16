@@ -1,0 +1,90 @@
+# Monthly caniuse-lite refresh: runs `update-browserslist-db`, which rewrites
+# the caniuse-lite entry in package-lock.json. Without it, every build logs
+# "Browserslist: browsers data (caniuse-lite) is N months old".
+#
+# Unlike plugin-stats.yml (which commits straight to main), this touches
+# package-lock.json — a reviewed path — so it opens a PR instead.
+#
+# Tokens:
+#   - A PR opened with the default GITHUB_TOKEN does NOT fire `pull_request`
+#     workflows, so pr-build.yml would never run and the required
+#     "Lint, typecheck & PR-mode build" check would sit pending forever.
+#     RELEASE_PAT (org PAT) is used when provisioned so CI runs normally;
+#     until then the PR still opens but needs a manual close/reopen to
+#     trigger its checks.
+name: Browserslist update
+
+on:
+  schedule:
+    - cron: "23 7 1 * *" # 1st of the month, off the top of the hour
+  workflow_dispatch: {}
+
+concurrency:
+  group: browserslist-update
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    # Scheduled runs only ever fire from the default branch's workflow file;
+    # this guard is belt-and-suspenders so cron never targets another ref.
+    # workflow_dispatch stays allowed on any ref for testing.
+    if: github.event_name != 'schedule' || github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Update browserslist DB
+        run: npx --yes update-browserslist-db@latest
+
+      # npm's install/uninstall cycle inside update-browserslist-db can also
+      # re-sort package.json's dependency keys, so both files are staged —
+      # but nothing else is, so an unrelated dirty file can never ride along.
+      - name: Open PR if changed
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_PAT || secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          git add -- package.json package-lock.json
+          if git diff --cached --quiet; then
+            echo "caniuse-lite already current; nothing to do."
+            exit 0
+          fi
+
+          VERSION=$(node -p "require('./node_modules/caniuse-lite/package.json').version")
+          BRANCH="ci/browserslist-${VERSION}"
+
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
+            echo "Branch $BRANCH already exists; a PR for this version is open or merged."
+            exit 0
+          fi
+
+          git config user.name "FiestaBoard CI"
+          git config user.email "ci@fiestaboard.app"
+          git checkout -b "$BRANCH"
+          git commit -m "chore(deps): update caniuse-lite to ${VERSION}"
+          git push origin "$BRANCH"
+
+          BODY=$(printf '%s\n\n%s\n' \
+            'Monthly `npx update-browserslist-db@latest` run: refreshes the `caniuse-lite` entry in `package-lock.json` so builds stop warning that browsers data is out of date.' \
+            'Opened by `.github/workflows/browserslist-update.yml`.')
+
+          gh pr create \
+            --base "${GITHUB_REF_NAME}" \
+            --head "$BRANCH" \
+            --title "chore(deps): update caniuse-lite to ${VERSION}" \
+            --body "$BODY"

@@ -23,16 +23,27 @@
   --ifm-color-content: var(--foreground);
   --ifm-color-content-secondary: var(--muted-foreground);
 
-  /* Brand / primary - DS `--brand` is WCAG 2.2 AA tuned in both themes. */
+  /* Brand / primary - DS `--brand` is WCAG 2.2 AA tuned in both themes.
+     The `-dark*` steps and the link hover used to route through
+     `--brand-emphasis`, which fixed a live AA failure when it landed here:
+     hovering a docs link in dark mode dropped from 9.86:1 to 3.99:1, BELOW
+     AA, because that token got darker in a theme where darker means less
+     contrast. `--brand-hover` is derived toward `--foreground` instead, so
+     hover always *increases* contrast (light 5.08 -> 6.51, dark 8.34 -> 9.51)
+     in both themes rather than in whichever one it was tuned for.
+
+     The var() fallback is deliberate: this repo can be on either side of the
+     FiestaUI release that introduces `--brand-hover`, and a bridge that only
+     works after the bump is a bridge that breaks the site before it. */
   --ifm-color-primary: var(--brand);
-  --ifm-color-primary-dark: var(--brand-emphasis);
-  --ifm-color-primary-darker: var(--brand-emphasis);
-  --ifm-color-primary-darkest: var(--brand-emphasis);
+  --ifm-color-primary-dark: var(--brand-hover, var(--brand-emphasis));
+  --ifm-color-primary-darker: var(--brand-hover, var(--brand-emphasis));
+  --ifm-color-primary-darkest: var(--brand-hover, var(--brand-emphasis));
   --ifm-color-primary-light: var(--brand);
   --ifm-color-primary-lighter: var(--brand);
   --ifm-color-primary-lightest: var(--brand);
   --ifm-link-color: var(--brand);
-  --ifm-link-hover-color: var(--brand-emphasis);
+  --ifm-link-hover-color: var(--brand-hover, var(--brand-emphasis));
 
   /* Chrome / borders */
   --ifm-navbar-background-color: var(--background);

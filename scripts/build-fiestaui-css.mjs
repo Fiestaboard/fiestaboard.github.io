@@ -64,7 +64,16 @@ fs.writeFileSync(output, banner + css);
 
 // Fail loudly if the FiestaUI component utilities didn't make it in — that is
 // the exact failure mode that motivated precompiling in the first place.
-if (!result.css.includes("bg-brand-emphasis")) {
+//
+// The sentinel used to be `bg-brand-emphasis`. That token is now a deprecated
+// alias with no consumers inside FiestaUI, so Tailwind stopped emitting the
+// utility and this check would have failed for the one reason it is not
+// meant to catch: the scan working perfectly on a palette that moved on.
+// `bg-brand-tile` replaces it because it is load-bearing — it is the fill of
+// Button/Badge variant="brand" — and it exists nowhere but FiestaUI, which is
+// exactly what makes it evidence that the @source scan reached the package.
+// Both are accepted so this check passes on either side of that release.
+if (!result.css.includes("bg-brand-tile") && !result.css.includes("bg-brand-emphasis")) {
   console.error("[build-fiestaui-css] FiestaUI utilities missing from output — @source scan produced nothing.");
   process.exit(1);
 }

@@ -45,9 +45,12 @@
   font-family: inherit;
 }
 
+/* Was `rgba(245, 166, 35, 0.15)` — the literal board-orange tile hex, hand
+   written into a focus ring while --ring exists and means exactly this. It
+   also could not follow a theme or a season. */
 .searchInput:focus {
   border-color: var(--ifm-color-primary);
-  box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.15);
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring) 25%, transparent);
 }
 
 .categoryFilters {

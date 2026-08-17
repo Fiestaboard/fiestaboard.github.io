@@ -1,5 +1,4 @@
 import Link from "@docusaurus/Link";
-import { useColorMode } from "@docusaurus/theme-common";
 import { EmptyState } from "@fiestaboard/ui/components/feedback/empty-state";
 import { Button } from "@fiestaboard/ui/components/forms/button";
 import { Input } from "@fiestaboard/ui/components/forms/input";
@@ -17,18 +16,15 @@ import { type ReactNode, useMemo, useState } from "react";
 import styles from "./index.module.css";
 
 function DirectoryCard({ plugin }: { plugin: PluginEntry }) {
-  const { colorMode } = useColorMode();
   const teaser = pluginPreviews[plugin.id]?.teaser ?? plugin.name;
 
   return (
     <PluginCard
       name={plugin.name}
       description={plugin.description}
-      authorLabel={`by ${plugin.author}`}
       category={plugin.category}
       categoryLabel={CATEGORY_LABELS[plugin.category] ?? plugin.category}
       teaser={teaser}
-      boardType={colorMode === "dark" ? "black" : "white"}
       renderLink={({ className, children }) => (
         <Link to={`/plugins/detail?id=${plugin.id}`} className={className}>
           {children}

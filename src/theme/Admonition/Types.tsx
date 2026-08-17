@@ -44,11 +44,19 @@ interface AdmonitionConfig {
 /**
  * Build an admonition type component from its design-system configuration.
  *
- * `AlertDescription` is pinned back to `text-foreground` at body size: the
- * `info`/`success`/`warning`/`destructive` variants colour *all* their text,
- * which reads fine for a one-line app alert but is unreadable for a docs
- * callout carrying paragraphs, links, and code. The colour therefore lands on
- * the icon and title only, and the body stays at prose contrast and prose size.
+ * `AlertDescription` is pinned to `text-foreground` at body size. The size is
+ * the substantive half: `Alert` is `text-sm`, which is right for a one-line
+ * app alert and too small for a docs callout carrying paragraphs, links, and
+ * code.
+ *
+ * `text-foreground` is now belt-and-braces rather than a correction. Through
+ * @fiestaboard/ui 3.4.0 the `info`/`success`/`warning`/`destructive` variants
+ * coloured *all* their text, so a long warning body rendered as amber prose
+ * and had to be pinned back. 4.0.0 moved status off the container entirely —
+ * it lives on the icon, the full-strength border and an 8% fill, and the
+ * container sets `text-foreground` itself. Keeping the class costs nothing and
+ * keeps the docs body at prose contrast if a future variant reaches for hue
+ * again.
  */
 function createAdmonitionType({ variant, icon: Icon, defaultTitle }: AdmonitionConfig): ComponentType<Props> {
   return function AdmonitionType({ type, title, icon, className, children }: Props) {
@@ -63,9 +71,12 @@ function createAdmonitionType({ variant, icon: Icon, defaultTitle }: AdmonitionC
         )}
       >
         {icon ?? <Icon className="size-4" aria-hidden="true" />}
-        {/* `text-current` re-inherits the variant colour from `Alert`: `AlertTitle`
-            renders an `h5`, and Infima's `h1-h6 { color: var(--ifm-heading-color) }`
-            would otherwise beat the inherited `text-success`/`text-warning`/… */}
+        {/* `text-current` keeps the title on whatever colour `Alert` sets:
+            `AlertTitle` renders an `h5`, and Infima's
+            `h1-h6 { color: var(--ifm-heading-color) }` would otherwise decide it.
+            The two agree today — the bridge maps `--ifm-heading-color` to
+            `--foreground`, and since 4.0.0 that is what `Alert` sets too — so
+            this is the DS staying authoritative over Infima, not a fix. */}
         {/* `first-letter:uppercase`, not `capitalize`: the default titles are
             lowercase words ("tip", "info") that need a capital, but author-written
             titles must survive intact — `capitalize` would title-case every word

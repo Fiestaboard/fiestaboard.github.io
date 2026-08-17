@@ -24,26 +24,26 @@
   --ifm-color-content-secondary: var(--muted-foreground);
 
   /* Brand / primary - DS `--brand` is WCAG 2.2 AA tuned in both themes.
-     The `-dark*` steps and the link hover used to route through
-     `--brand-emphasis`, which fixed a live AA failure when it landed here:
-     hovering a docs link in dark mode dropped from 9.86:1 to 3.99:1, BELOW
-     AA, because that token got darker in a theme where darker means less
-     contrast. `--brand-hover` is derived toward `--foreground` instead, so
-     hover always *increases* contrast (light 5.08 -> 6.51, dark 8.34 -> 9.51)
-     in both themes rather than in whichever one it was tuned for.
 
-     The var() fallback is deliberate: this repo can be on either side of the
-     FiestaUI release that introduces `--brand-hover`, and a bridge that only
-     works after the bump is a bridge that breaks the site before it. */
+     Infima's `-dark`/`-darker`/`-darkest` steps are its hover and active
+     shades, so they take `--brand-hover`, not `--brand-emphasis`. The names
+     are Infima's and mean "away from the page", which is what `--brand-hover`
+     does: it mixes toward `--foreground`, so it darkens in light mode and
+     lightens in dark, and a hover raises contrast in both. `--brand-emphasis`
+     went the other way - it was a *lighter* amber in dark mode, which is how
+     this bridge shipped a 3.99:1 link hover there. As of @fiestaboard/ui 4.0.0
+     it is a deprecated alias of `--brand`, so it would now leave every hover
+     resolving to the resting colour before it is removed outright next minor.
+     scripts/build-fiestaui-css.mjs fails the build if it reappears here. */
   --ifm-color-primary: var(--brand);
-  --ifm-color-primary-dark: var(--brand-hover, var(--brand-emphasis));
-  --ifm-color-primary-darker: var(--brand-hover, var(--brand-emphasis));
-  --ifm-color-primary-darkest: var(--brand-hover, var(--brand-emphasis));
+  --ifm-color-primary-dark: var(--brand-hover);
+  --ifm-color-primary-darker: var(--brand-hover);
+  --ifm-color-primary-darkest: var(--brand-hover);
   --ifm-color-primary-light: var(--brand);
   --ifm-color-primary-lighter: var(--brand);
   --ifm-color-primary-lightest: var(--brand);
   --ifm-link-color: var(--brand);
-  --ifm-link-hover-color: var(--brand-hover, var(--brand-emphasis));
+  --ifm-link-hover-color: var(--brand-hover);
 
   /* Chrome / borders */
   --ifm-navbar-background-color: var(--background);
@@ -70,7 +70,60 @@
   --ifm-menu-color: var(--muted-foreground);
   --ifm-menu-color-active: var(--foreground);
   --ifm-menu-color-background-active: var(--accent);
-  --ifm-menu-color-background-hover: var(--accent);
+  /* Sidebar row hover. This is now the *only* source of that fill: the row
+     swizzles used to stack FiestaUI's `.nav-active-hover` on top, and 4.0.0
+     retuned that class's token to `oklch(1 0 0 / 14%)` — a white alpha that
+     works on FiestaUI's rail (a surface a step DARKER than the page) and
+     vanishes here, where the rows sit on `--background` itself: 1.015:1, down
+     from the 1.242:1 the indigo tint gave on 3.4.0.
+     A foreground tint is the same recipe FiestaUI uses on its own rail
+     (`color-mix(… var(--sidebar-foreground) 10%, transparent)`), resolved
+     against the surface this site actually has, so it follows the theme
+     instead of assuming one: 1.236:1 light, 1.234:1 dark. `--accent` was
+     measured first and is too quiet for a full-height nav column at 1.061:1
+     light. */
+  --ifm-menu-color-background-hover: color-mix(in oklch, var(--foreground) 10%, transparent);
+}
+
+/* The hover above is the one place this bridge carries alpha, so it owes this
+   branch an opaque answer. FiestaUI ships one for `.nav-active-hover`, but it
+   is a rail value — `oklch(0.34 0.02 73)`, a near-black fill that assumes a
+   dark surround, and 4.0.0 stopped scoping it to the rail. Inheriting it here
+   would paint a dark row under `--ifm-menu-color` on light paper. `--secondary`
+   is the opaque page-surface step and follows the theme: 1.127:1 light,
+   1.255:1 dark. */
+@media (prefers-reduced-transparency: reduce) {
+  :root,
+  [data-theme="dark"] {
+    --ifm-menu-color-background-hover: var(--secondary);
+  }
+}
+
+/* Active sidebar row under `prefers-contrast: more`.
+
+   FiestaUI lifts the active pill's FILL there - `.nav-active { --nav-active:
+   oklch(0.86 0.115 73) }` - and deliberately leaves `--nav-active-foreground`
+   alone, because on its rail (and here in dark) the label is board ink, so
+   lifting the fill lifts the pair: 8.84 -> 11.54:1, exactly as intended.
+
+   Through 3.4.0 that rule was scoped to the rail itself (`.sidebar-gradient
+   .nav-active`), which this site has never rendered, so it never applied here.
+   4.0.0 retired the gradient rail and rewrote the selector as a bare
+   `.nav-active`, which is what our row swizzles carry - so it reaches them now.
+
+   In light mode this site's pair is inverted: `--nav-active` is `--foreground`
+   under a `--background` label. Lifting only the fill moves one half of that
+   pair, taking the label from 17.54:1 to 1.40:1 and the pill's own separation
+   from the page to 1.40:1 (under SC 1.4.11), i.e. the branch for readers who
+   asked for MORE contrast becomes the least legible one on the site. There is
+   no "more" to give: 17.54:1 is already the most this palette holds. So light
+   mode keeps its own fill and dark mode keeps the DS lift.
+   scripts/build-fiestaui-css.mjs fails the build if this branch goes missing
+   while FiestaUI is still retuning the token. */
+@media (prefers-contrast: more) {
+  html:not(.dark):not([data-theme="dark"]) .nav-active {
+    --nav-active: var(--foreground);
+  }
 }
 
 /* Navbar/footer sit flush on the page background with a hairline divider,
@@ -197,19 +250,35 @@ div[class*="codeBlockContainer"] {
 
 /* Inline prose links carry FiestaUI's `TextLink` treatment: underlined at rest
    (WCAG 1.4.1 - colour alone must not distinguish a link inside a text block)
-   and the DS 3px soft focus ring. Excludes anchors that are really controls:
-   heading hash-links, card tiles, and buttons. */
+   and the DS focus ring. Excludes anchors that are really controls: heading
+   hash-links, card tiles, and buttons. */
 .markdown a:not(.hash-link):not(.card):not([class*="button"]),
 .theme-doc-markdown a:not(.hash-link):not(.card):not([class*="button"]) {
   text-decoration: underline;
   text-underline-offset: 4px;
 }
 
+/* The two-tone `.focus-ring` recipe, copied out of FiestaUI's theme.css. That
+   class cannot be used directly - MDX renders these anchors, so there is no
+   call site to put it on - so the declaration is mirrored and
+   scripts/build-fiestaui-css.mjs fails the build if the two drift apart.
+
+   Until 4.0.0 this was a single 3px band of `--ring` at 50%, which is the
+   recipe FiestaUI itself shipped then. `--ring` is declared as an alias of
+   `--primary`, and 4.0.0 made `--primary` the literal #f5a623 tile, so that
+   band went from 2.19:1 to 1.36:1 against the page in light mode - and since
+   the rule also clears `outline`, a keyboard user got no focus indicator at
+   all. Bounding the band in `--ring-edge` board ink puts the boundary on the
+   hairline in light (16.19:1) and on the orange band in dark (9.77:1), so it
+   clears SC 2.4.11's 3:1 in both themes for different reasons. */
 .markdown a:not(.hash-link):focus-visible,
 .theme-doc-markdown a:not(.hash-link):focus-visible {
   outline: none;
   border-radius: calc(var(--radius) - 4px);
-  box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring) 50%, transparent);
+  box-shadow:
+    0 0 0 1px var(--ring-edge),
+    0 0 0 3px var(--ring),
+    0 0 0 4px var(--ring-edge);
 }
 
 /* Blockquotes: hairline rule + muted copy, matching DS surfaces. */

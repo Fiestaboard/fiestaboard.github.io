@@ -93,9 +93,22 @@ const NAV_ROW = "flex items-center gap-3 rounded-lg! px-3! py-2! text-sm font-me
  *
  * Upstream's `menu__link--active` is kept — user CSS and our own `custom.css`
  * (`.menu__link--active:not(.menu__link--sublist)`) target it.
+ *
+ * There is deliberately no companion class on the INACTIVE row. FiestaUI's
+ * `.nav-active-hover` is the rail's hover tint, and 4.0.0 retuned it to
+ * `oklch(1 0 0 / 14%)` — a white alpha that reads only because the rail sits
+ * below the page in lightness. These rows sit on `--background`, where it
+ * composites to 1.015:1 and disappears. With the class gone, Infima's own
+ * `.menu__link:hover` supplies the fill from
+ * `--ifm-menu-color-background-hover`, which `custom.css` owns and points at a
+ * foreground tint (1.236:1 light, 1.234:1 dark) — the same recipe FiestaUI
+ * applies on the rail, resolved against the surface these rows actually have.
+ * The eslint guard in `eslint.config.mjs` keeps the rail class from coming
+ * back. Infima's hover rule is layered (`docusaurus.infima`) and so loses to
+ * the active row's important utilities, which is what keeps an active row from
+ * repainting on hover.
  */
 const NAV_ROW_ACTIVE = "menu__link--active nav-active bg-nav-active! text-nav-active-foreground!";
-const NAV_ROW_INACTIVE = "nav-active-hover";
 
 function LinkLabel({ label }: { label: string }) {
   // Upstream clamps the label to two lines via its CSS module; `line-clamp-2`
@@ -127,7 +140,7 @@ export default function DocSidebarItemLink({
       key={label}
     >
       <Link
-        className={cn("menu__link", NAV_ROW, isActive ? NAV_ROW_ACTIVE : NAV_ROW_INACTIVE)}
+        className={cn("menu__link", NAV_ROW, isActive && NAV_ROW_ACTIVE)}
         autoAddBaseUrl={autoAddBaseUrl}
         aria-current={isActive ? "page" : undefined}
         to={href}

@@ -88,6 +88,28 @@ export default [
           message:
             'variant="brand" is a deprecated alias of the default variant since @fiestaboard/ui 4.0.0 and is removed in the next minor. Drop the prop.',
         },
+        // `.nav-active-hover` is scoped to FiestaUI's own sidebar RAIL, and as
+        // of 4.0.0 its token says so: `--nav-active-hover` went from an indigo
+        // tint (`oklch(0.5 0.17 265 / 15%)`, opaque enough to read on any
+        // surface) to `oklch(1 0 0 / 14%)` — a white alpha that only lifts a
+        // row because the rail sits *below* the page in lightness.
+        //
+        // This site has no rail. Its sidebar rows sit directly on
+        // `--background`, where white/14% composites to 1.015:1 — a 1.5%
+        // lightness lift on near-white paper, i.e. no hover at all in light
+        // mode. It read 1.242:1 on 3.4.0, and nothing in a build, a typecheck
+        // or a route diff can see it go.
+        //
+        // The active-state classes (`nav-active`, `bg-nav-active`,
+        // `text-nav-active-foreground`) are deliberately NOT restricted:
+        // `--nav-active` is `--foreground` in light and `--primary` in dark,
+        // both of which are opaque and read correctly on this site's page
+        // surface. Only the hover tint is rail-relative.
+        {
+          selector: "Literal[value=/\\bnav-active-hover\\b/]",
+          message:
+            "`nav-active-hover` is FiestaUI's sidebar-rail hover tint; since 4.0.0 it is a white alpha that composites to 1.015:1 on this site's page surface. Let Infima's own hover rule apply and set --ifm-menu-color-background-hover in custom.css instead.",
+        },
       ],
       "react/jsx-uses-react": "off",
       "react/react-in-jsx-scope": "off",

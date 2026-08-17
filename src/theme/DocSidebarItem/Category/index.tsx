@@ -143,7 +143,12 @@ function CollapseButton({
       type="button"
       // Only rendered for categories that have their own page; it is a second
       // hover target inside the row, so it gets the same pill treatment.
-      className="clean-btn menu__caret rounded-lg! nav-active-hover"
+      // Infima's `.menu__caret:hover` reads the same
+      // `--ifm-menu-color-background-hover` as `.menu__link:hover`, so the two
+      // halves of the row still fill identically — see the note in
+      // `src/theme/DocSidebarItem/Link` for why the fill is no longer borrowed
+      // from FiestaUI's rail-scoped `.nav-active-hover`.
+      className="clean-btn menu__caret rounded-lg!"
       onClick={onClick}
     />
   );
@@ -278,7 +283,12 @@ function DocSidebarItemCategoryCollapsible({
           // isn't the current page would misread. The branch-is-active hint
           // stays where upstream put it: the label's `menu__link--active`
           // colour below.
-          isCurrentPage ? "menu__list-item-collapsible--active nav-active bg-nav-active!" : "nav-active-hover",
+          // Inactive rows carry no hover class: Infima's own
+          // `.menu__list-item-collapsible:hover` reads
+          // `--ifm-menu-color-background-hover` from `custom.css`, and its
+          // layered rule loses to the important `bg-nav-active!` above, so an
+          // active row still holds its fill while hovered.
+          isCurrentPage && "menu__list-item-collapsible--active nav-active bg-nav-active!",
         )}
       >
         <Link

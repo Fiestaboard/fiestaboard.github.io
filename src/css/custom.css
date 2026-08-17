@@ -70,7 +70,33 @@
   --ifm-menu-color: var(--muted-foreground);
   --ifm-menu-color-active: var(--foreground);
   --ifm-menu-color-background-active: var(--accent);
-  --ifm-menu-color-background-hover: var(--accent);
+  /* Sidebar row hover. This is now the *only* source of that fill: the row
+     swizzles used to stack FiestaUI's `.nav-active-hover` on top, and 4.0.0
+     retuned that class's token to `oklch(1 0 0 / 14%)` — a white alpha that
+     works on FiestaUI's rail (a surface a step DARKER than the page) and
+     vanishes here, where the rows sit on `--background` itself: 1.015:1, down
+     from the 1.242:1 the indigo tint gave on 3.4.0.
+     A foreground tint is the same recipe FiestaUI uses on its own rail
+     (`color-mix(… var(--sidebar-foreground) 10%, transparent)`), resolved
+     against the surface this site actually has, so it follows the theme
+     instead of assuming one: 1.236:1 light, 1.234:1 dark. `--accent` was
+     measured first and is too quiet for a full-height nav column at 1.061:1
+     light. */
+  --ifm-menu-color-background-hover: color-mix(in oklch, var(--foreground) 10%, transparent);
+}
+
+/* The hover above is the one place this bridge carries alpha, so it owes this
+   branch an opaque answer. FiestaUI ships one for `.nav-active-hover`, but it
+   is a rail value — `oklch(0.34 0.02 73)`, a near-black fill that assumes a
+   dark surround, and 4.0.0 stopped scoping it to the rail. Inheriting it here
+   would paint a dark row under `--ifm-menu-color` on light paper. `--secondary`
+   is the opaque page-surface step and follows the theme: 1.127:1 light,
+   1.255:1 dark. */
+@media (prefers-reduced-transparency: reduce) {
+  :root,
+  [data-theme="dark"] {
+    --ifm-menu-color-background-hover: var(--secondary);
+  }
 }
 
 /* Navbar/footer sit flush on the page background with a hairline divider,

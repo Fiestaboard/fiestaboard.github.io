@@ -74,6 +74,21 @@ export default [
           ],
         },
       ],
+      // @fiestaboard/ui 4.0.0 locked the palette onto the board's six tile
+      // colours, and in doing so made `--primary` the literal #f5a623 tile.
+      // `variant="brand"` existed only to put that tile on a control while
+      // `--primary` was a mustard, so on Button and Badge it is now a
+      // character-for-character alias of the default variant — kept for one
+      // minor, then removed. Rendering it is already a no-op; leaving it in
+      // place is a build break on the next bump.
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector: 'JSXAttribute[name.name="variant"][value.value="brand"]',
+          message:
+            'variant="brand" is a deprecated alias of the default variant since @fiestaboard/ui 4.0.0 and is removed in the next minor. Drop the prop.',
+        },
+      ],
       "react/jsx-uses-react": "off",
       "react/react-in-jsx-scope": "off",
       "react-hooks/rules-of-hooks": "error",

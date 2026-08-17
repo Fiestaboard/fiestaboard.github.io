@@ -29,7 +29,7 @@ function Hero() {
             Weather, stocks, sports &amp; more - flash a Raspberry Pi or run with Docker
           </Text>
           <Flex gap="3" wrap className={styles.heroButtons}>
-            <Button variant="brand" size="lg" asChild>
+            <Button size="lg" asChild>
               <Link to="/docs/intro">Get Started</Link>
             </Button>
             <Button variant="outline" size="lg" asChild>

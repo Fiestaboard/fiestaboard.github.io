@@ -340,7 +340,7 @@ export default function HomepageFeatures(): ReactNode {
             FiestaBoard is free, open source, and runs anywhere Docker does. Get up and running in minutes.
           </Text>
           <Box className={styles.centerAction}>
-            <Button variant="brand" size="lg" asChild>
+            <Button size="lg" asChild>
               <Link to="/docs/setup/beginners-guide">Beginner&apos;s Guide</Link>
             </Button>
             <Button variant="outline" size="lg" asChild>

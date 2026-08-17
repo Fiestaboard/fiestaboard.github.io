@@ -23,16 +23,27 @@
   --ifm-color-content: var(--foreground);
   --ifm-color-content-secondary: var(--muted-foreground);
 
-  /* Brand / primary - DS `--brand` is WCAG 2.2 AA tuned in both themes. */
+  /* Brand / primary - DS `--brand` is WCAG 2.2 AA tuned in both themes.
+
+     Infima's `-dark`/`-darker`/`-darkest` steps are its hover and active
+     shades, so they take `--brand-hover`, not `--brand-emphasis`. The names
+     are Infima's and mean "away from the page", which is what `--brand-hover`
+     does: it mixes toward `--foreground`, so it darkens in light mode and
+     lightens in dark, and a hover raises contrast in both. `--brand-emphasis`
+     went the other way - it was a *lighter* amber in dark mode, which is how
+     this bridge shipped a 3.99:1 link hover there. As of @fiestaboard/ui 4.0.0
+     it is a deprecated alias of `--brand`, so it would now leave every hover
+     resolving to the resting colour before it is removed outright next minor.
+     scripts/build-fiestaui-css.mjs fails the build if it reappears here. */
   --ifm-color-primary: var(--brand);
-  --ifm-color-primary-dark: var(--brand-emphasis);
-  --ifm-color-primary-darker: var(--brand-emphasis);
-  --ifm-color-primary-darkest: var(--brand-emphasis);
+  --ifm-color-primary-dark: var(--brand-hover);
+  --ifm-color-primary-darker: var(--brand-hover);
+  --ifm-color-primary-darkest: var(--brand-hover);
   --ifm-color-primary-light: var(--brand);
   --ifm-color-primary-lighter: var(--brand);
   --ifm-color-primary-lightest: var(--brand);
   --ifm-link-color: var(--brand);
-  --ifm-link-hover-color: var(--brand-emphasis);
+  --ifm-link-hover-color: var(--brand-hover);
 
   /* Chrome / borders */
   --ifm-navbar-background-color: var(--background);

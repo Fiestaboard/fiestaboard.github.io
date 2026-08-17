@@ -84,7 +84,10 @@ const NAV_ROW = "flex items-center gap-3 rounded-lg! px-3! py-2! text-sm font-me
  * `--color-nav-active-foreground`). That is deliberate belt-and-braces against
  * Infima's hover pair — `.menu__link:hover` and `.menu__link--active:hover`,
  * neither of which is `!important` — so hovering an active row can never swap
- * the indigo fill for Infima's accent and repaint the label dark-on-indigo.
+ * the active fill for Infima's accent and repaint the label against it.
+ * (That fill was indigo-600 until @fiestaboard/ui 4.0.0 locked the palette
+ * onto the board; it is now `--foreground` in light and `--primary` in dark.
+ * Only the values moved — this swizzle names the tokens, not the colours.)
  * Leaf links are not inside `.menu__list-item-collapsible`, so Infima's one
  * `background: none !important` rule (see above) does not reach them.
  *

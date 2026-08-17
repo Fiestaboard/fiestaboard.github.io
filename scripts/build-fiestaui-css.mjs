@@ -166,4 +166,24 @@ if (/\.dark\{/.test(css)) {
   process.exit(1);
 }
 
+// The docs sidebar swizzles `.nav-active` onto rows that sit on the PAGE, and
+// FiestaUI tunes that class for its RAIL. The two agree on the token names and
+// disagree on which way the pair points: on the rail (and here in dark) the
+// pill is a bright fill under a board-ink label, so retuning `--nav-active`
+// alone lifts both halves. In light mode this site inverts it — `--nav-active`
+// is `--foreground` under a `--background` label — so a fill-only retune moves
+// one half of a pair and destroys the contrast instead of raising it.
+//
+// So: any DS rule that sets `--nav-active` by itself (a media-query branch,
+// today `prefers-contrast: more`) owes this site a light-mode answer, and this
+// catches the next one FiestaUI adds as well as the one 4.0.0 unscoped.
+if (/\.nav-active\{--nav-active:/.test(css) && !/--nav-active:\s*var\(--foreground\)/.test(bridge)) {
+  console.error(
+    "[build-fiestaui-css] @fiestaboard/ui retunes --nav-active without --nav-active-foreground, and custom.css\n" +
+      "  does not pin a light-mode fill. On this site's page surface that inverts the active row's pair.\n" +
+      "  Add a `--nav-active: var(--foreground)` branch for light mode in custom.css.",
+  );
+  process.exit(1);
+}
+
 console.log(`[build-fiestaui-css] wrote ${output} (${result.css.length} bytes)`);

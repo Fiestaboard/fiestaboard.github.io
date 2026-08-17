@@ -99,6 +99,33 @@
   }
 }
 
+/* Active sidebar row under `prefers-contrast: more`.
+
+   FiestaUI lifts the active pill's FILL there - `.nav-active { --nav-active:
+   oklch(0.86 0.115 73) }` - and deliberately leaves `--nav-active-foreground`
+   alone, because on its rail (and here in dark) the label is board ink, so
+   lifting the fill lifts the pair: 8.84 -> 11.54:1, exactly as intended.
+
+   Through 3.4.0 that rule was scoped to the rail itself (`.sidebar-gradient
+   .nav-active`), which this site has never rendered, so it never applied here.
+   4.0.0 retired the gradient rail and rewrote the selector as a bare
+   `.nav-active`, which is what our row swizzles carry - so it reaches them now.
+
+   In light mode this site's pair is inverted: `--nav-active` is `--foreground`
+   under a `--background` label. Lifting only the fill moves one half of that
+   pair, taking the label from 17.54:1 to 1.40:1 and the pill's own separation
+   from the page to 1.40:1 (under SC 1.4.11), i.e. the branch for readers who
+   asked for MORE contrast becomes the least legible one on the site. There is
+   no "more" to give: 17.54:1 is already the most this palette holds. So light
+   mode keeps its own fill and dark mode keeps the DS lift.
+   scripts/build-fiestaui-css.mjs fails the build if this branch goes missing
+   while FiestaUI is still retuning the token. */
+@media (prefers-contrast: more) {
+  html:not(.dark):not([data-theme="dark"]) .nav-active {
+    --nav-active: var(--foreground);
+  }
+}
+
 /* Navbar/footer sit flush on the page background with a hairline divider,
    matching FiestaboardSite.dc.html / FiestaboardDocs.dc.html. */
 .navbar {

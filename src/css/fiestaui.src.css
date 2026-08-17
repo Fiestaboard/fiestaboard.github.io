@@ -18,7 +18,11 @@
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
 
-/* FiestaUI design tokens, `.dark` variant, fonts, and seasonal palettes. */
+/* FiestaUI design tokens, `.dark` variant, and the font token stacks.
+   Through 3.4.0 this also pulled in a seasonal palette: theme.css carried
+   `@import "./seasons/pride.css"`, and any other season could be layered on
+   from `@fiestaboard/ui/seasons/<id>.css`. 4.0.0 retired seasons outright —
+   there is no `dist/seasons/` any more — so this import is tokens only. */
 @import "@fiestaboard/ui/theme.css";
 
 /* Geist @font-face registrations became opt-in after v1.5.0 (theme.css no

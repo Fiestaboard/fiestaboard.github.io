@@ -223,19 +223,35 @@ div[class*="codeBlockContainer"] {
 
 /* Inline prose links carry FiestaUI's `TextLink` treatment: underlined at rest
    (WCAG 1.4.1 - colour alone must not distinguish a link inside a text block)
-   and the DS 3px soft focus ring. Excludes anchors that are really controls:
-   heading hash-links, card tiles, and buttons. */
+   and the DS focus ring. Excludes anchors that are really controls: heading
+   hash-links, card tiles, and buttons. */
 .markdown a:not(.hash-link):not(.card):not([class*="button"]),
 .theme-doc-markdown a:not(.hash-link):not(.card):not([class*="button"]) {
   text-decoration: underline;
   text-underline-offset: 4px;
 }
 
+/* The two-tone `.focus-ring` recipe, copied out of FiestaUI's theme.css. That
+   class cannot be used directly - MDX renders these anchors, so there is no
+   call site to put it on - so the declaration is mirrored and
+   scripts/build-fiestaui-css.mjs fails the build if the two drift apart.
+
+   Until 4.0.0 this was a single 3px band of `--ring` at 50%, which is the
+   recipe FiestaUI itself shipped then. `--ring` is declared as an alias of
+   `--primary`, and 4.0.0 made `--primary` the literal #f5a623 tile, so that
+   band went from 2.19:1 to 1.36:1 against the page in light mode - and since
+   the rule also clears `outline`, a keyboard user got no focus indicator at
+   all. Bounding the band in `--ring-edge` board ink puts the boundary on the
+   hairline in light (16.19:1) and on the orange band in dark (9.77:1), so it
+   clears SC 2.4.11's 3:1 in both themes for different reasons. */
 .markdown a:not(.hash-link):focus-visible,
 .theme-doc-markdown a:not(.hash-link):focus-visible {
   outline: none;
   border-radius: calc(var(--radius) - 4px);
-  box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring) 50%, transparent);
+  box-shadow:
+    0 0 0 1px var(--ring-edge),
+    0 0 0 3px var(--ring),
+    0 0 0 4px var(--ring-edge);
 }
 
 /* Blockquotes: hairline rule + muted copy, matching DS surfaces. */

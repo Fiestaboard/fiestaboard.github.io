@@ -115,6 +115,38 @@ if (staleTokens.length > 0) {
   process.exit(1);
 }
 
+// A bridge rule that suppresses the UA focus outline owes a keyboard user a
+// replacement they can actually see, and the replacement has to be built from
+// tokens whose CONTRAST — not just whose name — survives a palette change.
+//
+// This bridge hand-rolled FiestaUI's pre-4.0.0 recipe, `ring-ring/50` at 3px.
+// That band was always thin (2.19:1 light, 2.65:1 dark, both under SC 2.4.11's
+// 3:1), but 4.0.0 made it invisible: --ring is declared as an alias of
+// --primary, and --primary is now the literal #f5a623 tile, so a 50% band of
+// it composites to 1.36:1 against the page in light mode. Nothing in a build,
+// a typecheck or a route diff can see a focus ring go — the selector still
+// matches and the declaration still resolves.
+//
+// FiestaUI's answer is `.focus-ring`: an orange band bounded by --ring-edge
+// board-ink hairlines, so the hairline carries the boundary in light (16.19:1)
+// and the band carries it in dark (9.77:1). It is class-based, and MDX renders
+// prose anchors with no way to opt in, so the bridge mirrors the recipe by
+// hand — which is exactly why it needs a check keeping the two from drifting.
+const unboundedFocus = [...bridge.matchAll(/(?:^|\})\s*([^{}]*:focus-visible[^{}]*)\{([^}]*)\}/g)]
+  .map(([, selector, body]) => ({ selector, body }))
+  .filter(({ body }) => /outline:\s*none/.test(body) && !body.includes("var(--ring-edge)"));
+if (unboundedFocus.length > 0) {
+  for (const { selector } of unboundedFocus) {
+    console.error(
+      `[build-fiestaui-css] custom.css drops the UA focus outline without an --ring-edge-bounded indicator:\n` +
+        `    ${selector.trim().replace(/\s*\n\s*/g, " ")}\n` +
+        `  Since @fiestaboard/ui 4.0.0 a band of --ring alone is 1.36:1 on the page. Mirror .focus-ring:\n` +
+        `    box-shadow: 0 0 0 1px var(--ring-edge), 0 0 0 3px var(--ring), 0 0 0 4px var(--ring-edge);`,
+    );
+  }
+  process.exit(1);
+}
+
 // Likewise if the dark-mode token block was not rewritten: a Tailwind change to
 // how the `dark` variant compiles would silently leave the site light-only.
 if (!css.includes('html.dark,html[data-theme="dark"]{')) {

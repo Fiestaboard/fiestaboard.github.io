@@ -201,7 +201,7 @@ function FeatureCard({ title, icon, description }: FeatureItem) {
 function HighlightCard({ title, description, primary, secondary }: HighlightItem) {
   return (
     <Box className={styles.highlightCard}>
-      <Badge variant="success" className={styles.newBadge}>
+      <Badge variant="success">
         New
       </Badge>
       <Heading level={3} className={styles.highlightTitle}>

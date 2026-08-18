@@ -102,21 +102,14 @@
   padding: 24px;
 }
 
-/* The DS success badge (translucent tint + tint-colored text) collapses to
-   ~1.5:1 on the dark card, so override the "New" badge with opaque, theme-aware
-   green that clears WCAG 2.2 AA (6.5:1 light / 7.5:1 dark). App-level only; no
-   FiestaUI change. */
-.newBadge {
-  background-color: #dcfce7 !important;
-  border-color: #a7f3d0 !important;
-  color: #166534 !important;
-}
-
-[data-theme="dark"] .newBadge {
-  background-color: #14532d !important;
-  border-color: #22683c !important;
-  color: #bbf7d0 !important;
-}
+/* The "New" badge is the bare DS `Badge variant="success"` again. A hardcoded
+   green override lived here claiming the DS badge collapsed to ~1.5:1 on the
+   dark card — FiestaUI#231 re-measured and found that number only reproduces
+   when the LIGHT tag tokens composite over the dark card, i.e. it captured a
+   theme-bridging failure from before scripts/build-fiestaui-css.mjs widened
+   `.dark` selectors to `[data-theme="dark"]`, not a recipe failure. With the
+   bridge in place the DS pair measures 6.62:1 light / 10.61:1 dark here, and
+   these were the last hardcoded palette values in the repo. */
 
 .highlightTitle {
   margin: 14px 0 0;

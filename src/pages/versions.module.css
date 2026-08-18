@@ -22,7 +22,7 @@
 }
 
 .currentLabel {
-  font-family: var(--font-geist-mono);
+  font-family: var(--font-mono-stack);
   font-size: 18px;
   font-weight: 600;
   color: var(--foreground);
@@ -30,7 +30,7 @@
 
 .currentTag {
   margin-left: 10px;
-  font-family: var(--font-geist-sans);
+  font-family: var(--font-sans-stack);
   font-size: 13px;
   font-weight: 500;
   color: var(--muted-foreground);
@@ -57,7 +57,7 @@
   padding: 5px 10px;
   border: 1px solid var(--border);
   border-radius: 8px;
-  font-family: var(--font-geist-mono);
+  font-family: var(--font-mono-stack);
   font-size: 13px;
   color: var(--foreground);
   text-decoration: none;

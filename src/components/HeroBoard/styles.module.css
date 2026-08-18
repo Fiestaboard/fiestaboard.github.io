@@ -59,7 +59,7 @@
 
 /* Two lines: what the board is showing, over what it is running on. */
 .caption {
-  font-family: var(--font-geist-mono);
+  font-family: var(--font-mono-stack);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   text-align: center;

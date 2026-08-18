@@ -2,8 +2,8 @@
  * FiestaBoard docs - Infima → FiestaUI (@fiestaboard/ui) token bridge.
  *
  * `fiestaui.generated.css` loads before this file and defines the FiestaUI
- * design tokens (`--background`, `--brand`, `--border`, `--radius`, the Geist
- * fonts, …) on `:root` (light) and `.dark` (dark). `scripts/build-fiestaui-css.mjs`
+ * design tokens (`--background`, `--brand`, `--border`, `--radius`, the font
+ * stacks, …) on `:root` (light) and `.dark` (dark). `scripts/build-fiestaui-css.mjs`
  * widens every compiled `.dark` selector to also match `[data-theme="dark"]`,
  * Docusaurus's native theme attribute, so every token below resolves to the
  * correct value for the active theme automatically with no JS - one bridge
@@ -58,9 +58,17 @@
   --ifm-code-background: var(--secondary);
   --docusaurus-highlighted-code-line-bg: color-mix(in oklch, var(--brand) 16%, transparent);
 
-  /* Type & radius */
-  --ifm-font-family-base: var(--font-geist-sans);
-  --ifm-font-family-monospace: var(--font-geist-mono);
+  /* Type & radius.
+
+     The font tokens are role-named as of @fiestaboard/ui 5.0.0 - the faces
+     behind them went Geist -> Archivo and Geist Mono -> Spline Sans Mono, and
+     the token names stopped naming the vendor so the next such change is not
+     also a rename. `--font-geist-sans` / `--font-geist-mono` still resolve as
+     aliases and are removed in the next major;
+     scripts/build-fiestaui-css.mjs fails the build if either reappears in any
+     of this site's stylesheets. */
+  --ifm-font-family-base: var(--font-sans-stack);
+  --ifm-font-family-monospace: var(--font-mono-stack);
   --ifm-global-radius: var(--radius);
   --ifm-card-border-radius: var(--radius);
 

@@ -25,9 +25,20 @@
    there is no `dist/seasons/` any more — so this import is tokens only. */
 @import "@fiestaboard/ui/theme.css";
 
-/* Geist @font-face registrations became opt-in after v1.5.0 (theme.css no
+/* The @font-face registrations became opt-in after v1.5.0 (theme.css no
    longer registers them) — without this import the token font stacks fall
-   back to system fonts. */
+   back to system fonts.
+
+   The faces behind this import changed in 5.0.0: Geist → Archivo (sans) and
+   Geist Mono → Spline Sans Mono (mono). This site names neither, which is the
+   point of the import — it registers whichever faces the token stacks in
+   theme.css point at, so the typeface follows the design system with no
+   change here. What did change is the subset coverage the build emits:
+   Geist shipped a cyrillic subset and neither new face does, so
+   tests/baseline.json lists three Archivo files (latin, latin-ext,
+   vietnamese) and two Spline Sans Mono files (latin, latin-ext) where it
+   used to list six Geist ones. This site is `locales: ["en"]`, so nothing it
+   renders falls outside the remaining subsets. */
 @import "@fiestaboard/ui/fonts.css";
 
 /* Generate utilities for the class strings inside the FiestaUI package... */

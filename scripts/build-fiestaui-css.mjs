@@ -93,24 +93,53 @@ if (!/\.text-brand[,{]/.test(result.css)) {
   process.exit(1);
 }
 
-// The Infima bridge in custom.css consumes DS tokens by name, and a token that
-// FiestaUI has deprecated does not disappear — it becomes an alias of its
-// replacement and keeps resolving, so the bridge silently renders the wrong
-// value for a whole minor and then breaks at the removal. Nothing else in the
-// pipeline reads custom.css against the installed theme, so the check lives
-// here, next to the other DS-integration canaries.
+// This site's stylesheets consume DS tokens by name, and a token that FiestaUI
+// has deprecated does not disappear — it becomes an alias of its replacement
+// and keeps resolving, so a stale name renders plausibly for a whole minor and
+// then breaks outright at the removal. Nothing else in the pipeline reads this
+// site's CSS against the installed theme, so the check lives here, next to the
+// other DS-integration canaries.
+//
+// The scan covers every hand-written stylesheet, not just custom.css. That
+// widening is what 5.0.0 forced: it deprecated the font tokens, and this site
+// named them from four files — the bridge plus three CSS modules — so a
+// custom.css-only scan would have gone green while three call sites sat on
+// names scheduled for deletion. The generated stylesheet is excluded because
+// it is FiestaUI's own output, not a call site: it *declares* the aliases.
 const DEPRECATED_TOKENS = {
   // 4.0.0: --brand-emphasis is an alias of --brand, so every hover that used
   // it now resolves to the resting colour. --brand-hover is the replacement
   // and moves toward --foreground, i.e. hover raises contrast in both themes.
   "--brand-emphasis": "--brand-hover",
+  // 5.0.0: the font tokens are role-named now. Geist is gone — the faces are
+  // Archivo and Spline Sans Mono — and the point of the rename is that the
+  // token no longer carries a vendor's name that the next typeface change
+  // would falsify. The old names survive only as aliases, "removed in the
+  // next major" per theme.css.
+  "--font-geist-sans": "--font-sans-stack",
+  "--font-geist-mono": "--font-mono-stack",
 };
 
-const bridge = fs.readFileSync(path.join(siteDir, "src/css/custom.css"), "utf8");
-const staleTokens = Object.entries(DEPRECATED_TOKENS).filter(([token]) => bridge.includes(`var(${token})`));
+function stylesheets(dir, found = []) {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) stylesheets(full, found);
+    else if (entry.name.endsWith(".css") && entry.name !== "fiestaui.generated.css") found.push(full);
+  }
+  return found;
+}
+
+const bridgePath = path.join(siteDir, "src/css/custom.css");
+const bridge = fs.readFileSync(bridgePath, "utf8");
+
+const staleTokens = stylesheets(path.join(siteDir, "src")).flatMap((file) =>
+  Object.entries(DEPRECATED_TOKENS)
+    .filter(([token]) => fs.readFileSync(file, "utf8").includes(`var(${token})`))
+    .map(([token, replacement]) => ({ file: path.relative(siteDir, file), token, replacement })),
+);
 if (staleTokens.length > 0) {
-  for (const [token, replacement] of staleTokens) {
-    console.error(`[build-fiestaui-css] custom.css uses ${token}, deprecated by @fiestaboard/ui — use ${replacement}.`);
+  for (const { file, token, replacement } of staleTokens) {
+    console.error(`[build-fiestaui-css] ${file} uses ${token}, deprecated by @fiestaboard/ui — use ${replacement}.`);
   }
   process.exit(1);
 }

@@ -94,19 +94,23 @@ const NAV_ROW = "flex items-center gap-3 rounded-lg! px-3! py-2! text-sm font-me
  * Upstream's `menu__link--active` is kept — user CSS and our own `custom.css`
  * (`.menu__link--active:not(.menu__link--sublist)`) target it.
  *
- * There is deliberately no companion class on the INACTIVE row. FiestaUI's
- * `.nav-active-hover` is the rail's hover tint, and 4.0.0 retuned it to
- * `oklch(1 0 0 / 14%)` — a white alpha that reads only because the rail sits
- * below the page in lightness. These rows sit on `--background`, where it
- * composites to 1.015:1 and disappears. With the class gone, Infima's own
- * `.menu__link:hover` supplies the fill from
- * `--ifm-menu-color-background-hover`, which `custom.css` owns and points at a
- * foreground tint (1.236:1 light, 1.234:1 dark) — the same recipe FiestaUI
- * applies on the rail, resolved against the surface these rows actually have.
- * The eslint guard in `eslint.config.mjs` keeps the rail class from coming
- * back. Infima's hover rule is layered (`docusaurus.infima`) and so loses to
- * the active row's important utilities, which is what keeps an active row from
- * repainting on hover.
+ * There is still deliberately no companion class on the INACTIVE row, but the
+ * reason has changed. It used to be that `.nav-active-hover` was unusable
+ * here: 4.0.0 retuned its token to `oklch(1 0 0 / 14%)`, a white alpha that
+ * reads only because the rail sits below the page in lightness, and these rows
+ * sit on `--background`, where it composites to 1.015:1 and disappears. An
+ * eslint rule kept it out. @fiestaboard/ui 5.3.0 made the token
+ * surface-relative, so the class is merely redundant now rather than wrong,
+ * and the ban is gone with the hazard.
+ *
+ * What keeps it off the row is that the fill has three targets, not one —
+ * `.menu__link:hover`, `.menu__caret:hover` and
+ * `.menu__list-item-collapsible:hover` — and Infima routes all three through
+ * `--ifm-menu-color-background-hover`, which `custom.css` points straight at
+ * `var(--nav-active-hover)`. One binding paints the whole row; the class would
+ * paint whichever element it was spelled on. Infima's hover rule is layered
+ * (`docusaurus.infima`) and so loses to the active row's important utilities,
+ * which is what keeps an active row from repainting on hover.
  */
 const NAV_ROW_ACTIVE = "menu__link--active nav-active bg-nav-active! text-nav-active-foreground!";
 

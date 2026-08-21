@@ -234,44 +234,92 @@ if (unpairedNavActive.length > 0 && !/--nav-active:\s*var\(--foreground\)/.test(
   process.exit(1);
 }
 
-// This bridge hand-mixes the sidebar row hover (`--ifm-menu-color-background-hover`
-// above) because the DS token for it could not be used: 4.0.0 retuned
-// `--nav-active-hover` to `oklch(1 0 0 / 14%)`, a white alpha tuned on the RAIL
-// — a surface a step darker than the page — which composites to 1.015:1 on this
-// site's rows. Three compensations followed, and all three are load-bearing
-// only while that token stays rail-relative: the hand-mix itself, its
-// `prefers-reduced-transparency` answer (`--secondary`, because the DS's opaque
-// fallback is a near-black rail literal), and the eslint ban that keeps the
-// rail class off the row swizzles.
+// The sidebar row hover reads the DS token directly now.
 //
-// @fiestaboard/ui 5.0.1's SOURCE retires the literal (#228): the token becomes
-// `color-mix(in oklch, var(--foreground) 14%, transparent)` — this bridge's own
-// recipe, at 14% rather than 10% — re-declared from `--sidebar-foreground`
-// inside `.sidebar-gradient`, with a `prefers-contrast: more` lift to 24% that
-// the hand-mix has no equivalent of. The PUBLISHED 5.0.1 tarball does not carry
-// any of it: `dist/theme.css` there is byte-identical to 5.0.0's, and JsonTree
-// is the only thing in the package that actually changed. So the three
-// compensations stay, and a reader diffing FiestaUI's tags would conclude the
-// opposite and delete them.
+// It could not always. 4.0.0 retuned `--nav-active-hover` to
+// `oklch(1 0 0 / 14%)`, a white alpha tuned on the RAIL — a surface a step
+// darker than the page — which composites to 1.015:1 on this site's rows. So
+// this bridge hand-mixed the same recipe against the surface it actually has,
+// answered the transparency branch itself because the DS's opaque fallback was
+// a near-black rail literal, and banned the rail class from the row swizzles
+// in eslint.
 //
-// Hence this check reads the INSTALLED stylesheet rather than the release
-// notes. While the token is an absolute colour, nothing fires. The bump that
-// really ships the surface-relative form trips it, and the three compensations
-// get retired together in favour of `var(--nav-active-hover)`.
+// @fiestaboard/ui 5.3.0 is the bump that finally ships the surface-relative
+// form (#228 — in 5.0.1's source, absent from its tarball): the token is
+// `color-mix(in oklch, var(--foreground) 14%, transparent)`, re-declared from
+// `--sidebar-foreground` inside `.sidebar-gradient`, with a
+// `prefers-contrast: more` lift to 24%. That is this bridge's own recipe, two
+// points louder and self-adapting, so the hand-mix and the eslint ban are
+// retired in favour of `var(--nav-active-hover)`.
+//
+// Two invariants outlive that swap, and nothing in a build, a typecheck or a
+// route diff can see either one break:
+//
+// 1. While the token is surface-relative, the bridge must CONSUME it. A
+//    hand-mix reintroduced here would render identically at rest and silently
+//    drop the prefers-contrast lift — the one branch a stand-in never had.
+//    And symmetrically: if FiestaUI ever puts an absolute colour back, the
+//    bridge has to stop consuming it, because that is the 1.015:1 row again.
+//
+// 2. The token still carries alpha — it is the only chrome token that does —
+//    and the DS's opaque answer for it is scoped to `.nav-active-hover:hover`,
+//    a class these rows do not render: the fill reaches them through Infima's
+//    `.menu__link:hover`, `.menu__caret:hover` and
+//    `.menu__list-item-collapsible:hover`, all three reading
+//    `--ifm-menu-color-background-hover`. So the bridge still owes
+//    `prefers-reduced-transparency` an answer, and it owes it the DS's
+//    PAGE-surface one rather than a second opinion. That value is read back
+//    out of the compiled DS rule instead of being written down here, so the
+//    two cannot drift apart quietly.
+const hoverBindings = [...bridge.matchAll(/--ifm-menu-color-background-hover:\s*([^;}]+)/g)].map(([, value]) =>
+  value.trim(),
+);
 const surfaceRelativeHover = [...css.matchAll(/(?<![\w-])--nav-active-hover:\s*([^;}]+)/g)]
   .map(([, value]) => value.trim())
   .filter((value) => /var\(--(?:sidebar-)?foreground\)/.test(value));
-if (surfaceRelativeHover.length > 0) {
+
+const bindsDsHover = hoverBindings.includes("var(--nav-active-hover)");
+const handMixedHover = hoverBindings.filter((value) => value.startsWith("color-mix("));
+
+if (surfaceRelativeHover.length > 0 && (!bindsDsHover || handMixedHover.length > 0)) {
   console.error(
-    "[build-fiestaui-css] @fiestaboard/ui's --nav-active-hover is surface-relative now:\n" +
+    "[build-fiestaui-css] @fiestaboard/ui's --nav-active-hover is surface-relative:\n" +
       `    ${surfaceRelativeHover.join("\n    ")}\n` +
-      "  It no longer assumes the rail, so this site's stand-ins for it are obsolete and now DIVERGE\n" +
-      "  from the DS (they have no prefers-contrast lift). Retire all three together:\n" +
-      "    1. custom.css: --ifm-menu-color-background-hover: var(--nav-active-hover)\n" +
-      "    2. custom.css: drop the hand-rolled prefers-reduced-transparency branch for it\n" +
-      "    3. eslint.config.mjs: drop the no-restricted-syntax ban on `nav-active-hover`",
+      "  It no longer assumes the rail, so this site must consume it rather than stand in for it —\n" +
+      "  a stand-in matches it at rest and has no prefers-contrast: more lift.\n" +
+      `  custom.css binds --ifm-menu-color-background-hover to: ${hoverBindings.join(", ") || "(nothing)"}\n` +
+      "  Set the resting binding to `var(--nav-active-hover)` and drop any hand-mix.",
+  );
+  process.exit(1);
+}
+if (surfaceRelativeHover.length === 0 && bindsDsHover) {
+  console.error(
+    "[build-fiestaui-css] @fiestaboard/ui's --nav-active-hover is an absolute colour again, and custom.css\n" +
+      "  still points --ifm-menu-color-background-hover at it. A rail-tuned literal composites to 1.015:1\n" +
+      "  on this site's page surface, i.e. no hover at all. Hand-mix the recipe against --foreground again,\n" +
+      "  and restore the eslint ban that keeps the rail class off the row swizzles.",
   );
   process.exit(1);
 }
 
+const dsOpaqueHover = css
+  .match(
+    /@media\s*\(prefers-reduced-transparency:\s*reduce\)\s*\{\.nav-active-hover:hover\{background:\s*([^;}]+)/,
+  )?.[1]
+  ?.trim();
+const bridgeTransparencyBranch =
+  bridge.match(/@media\s*\(prefers-reduced-transparency:\s*reduce\)\s*\{(?:[^{}]|\{[^{}]*\})*\}/)?.[0] ?? "";
+const bridgeOpaqueHover = [...bridgeTransparencyBranch.matchAll(/--ifm-menu-color-background-hover:\s*([^;}]+)/g)].map(
+  ([, value]) => value.trim(),
+);
+if (dsOpaqueHover && !bridgeOpaqueHover.includes(dsOpaqueHover)) {
+  console.error(
+    "[build-fiestaui-css] @fiestaboard/ui answers prefers-reduced-transparency for the row hover with\n" +
+      `    .nav-active-hover:hover { background: ${dsOpaqueHover} }\n` +
+      "  but that rule is class-scoped and this site's rows take the tint through Infima's\n" +
+      `  --ifm-menu-color-background-hover, which the branch in custom.css sets to: ${bridgeOpaqueHover.join(", ") || "(nothing)"}\n` +
+      `  Point that branch at ${dsOpaqueHover} so the opaque fill matches the DS's page-surface answer.`,
+  );
+  process.exit(1);
+}
 console.log(`[build-fiestaui-css] wrote ${output} (${result.css.length} bytes)`);

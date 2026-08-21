@@ -234,4 +234,44 @@ if (unpairedNavActive.length > 0 && !/--nav-active:\s*var\(--foreground\)/.test(
   process.exit(1);
 }
 
+// This bridge hand-mixes the sidebar row hover (`--ifm-menu-color-background-hover`
+// above) because the DS token for it could not be used: 4.0.0 retuned
+// `--nav-active-hover` to `oklch(1 0 0 / 14%)`, a white alpha tuned on the RAIL
+// — a surface a step darker than the page — which composites to 1.015:1 on this
+// site's rows. Three compensations followed, and all three are load-bearing
+// only while that token stays rail-relative: the hand-mix itself, its
+// `prefers-reduced-transparency` answer (`--secondary`, because the DS's opaque
+// fallback is a near-black rail literal), and the eslint ban that keeps the
+// rail class off the row swizzles.
+//
+// @fiestaboard/ui 5.0.1's SOURCE retires the literal (#228): the token becomes
+// `color-mix(in oklch, var(--foreground) 14%, transparent)` — this bridge's own
+// recipe, at 14% rather than 10% — re-declared from `--sidebar-foreground`
+// inside `.sidebar-gradient`, with a `prefers-contrast: more` lift to 24% that
+// the hand-mix has no equivalent of. The PUBLISHED 5.0.1 tarball does not carry
+// any of it: `dist/theme.css` there is byte-identical to 5.0.0's, and JsonTree
+// is the only thing in the package that actually changed. So the three
+// compensations stay, and a reader diffing FiestaUI's tags would conclude the
+// opposite and delete them.
+//
+// Hence this check reads the INSTALLED stylesheet rather than the release
+// notes. While the token is an absolute colour, nothing fires. The bump that
+// really ships the surface-relative form trips it, and the three compensations
+// get retired together in favour of `var(--nav-active-hover)`.
+const surfaceRelativeHover = [...css.matchAll(/(?<![\w-])--nav-active-hover:\s*([^;}]+)/g)]
+  .map(([, value]) => value.trim())
+  .filter((value) => /var\(--(?:sidebar-)?foreground\)/.test(value));
+if (surfaceRelativeHover.length > 0) {
+  console.error(
+    "[build-fiestaui-css] @fiestaboard/ui's --nav-active-hover is surface-relative now:\n" +
+      `    ${surfaceRelativeHover.join("\n    ")}\n` +
+      "  It no longer assumes the rail, so this site's stand-ins for it are obsolete and now DIVERGE\n" +
+      "  from the DS (they have no prefers-contrast lift). Retire all three together:\n" +
+      "    1. custom.css: --ifm-menu-color-background-hover: var(--nav-active-hover)\n" +
+      "    2. custom.css: drop the hand-rolled prefers-reduced-transparency branch for it\n" +
+      "    3. eslint.config.mjs: drop the no-restricted-syntax ban on `nav-active-hover`",
+  );
+  process.exit(1);
+}
+
 console.log(`[build-fiestaui-css] wrote ${output} (${result.css.length} bytes)`);

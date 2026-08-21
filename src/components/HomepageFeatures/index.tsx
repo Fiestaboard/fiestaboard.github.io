@@ -201,9 +201,16 @@ function FeatureCard({ title, icon, description }: FeatureItem) {
 function HighlightCard({ title, description, primary, secondary }: HighlightItem) {
   return (
     <Box className={styles.highlightCard}>
-      <Badge variant="success" className={styles.newBadge}>
-        New
-      </Badge>
+      {/* No className: the "New" chip is the DS `success` tag pair as shipped.
+          It used to be overridden here with opaque hexes, on the claim that the
+          translucent tint collapsed to ~1.5:1 on the dark card. It does not -
+          recomputed from theme.css it is 9.20:1 at the resting fill and 7.18:1
+          at the anchor-hover one (7.17 / 6.22 in light), where the hexes that
+          replaced it were 7.52:1 and 6.49:1. The fork measured worse than the
+          thing it overrode, and a hex cannot follow a retune of the pair;
+          @fiestaboard/ui 5.4.0 now recomputes that whole matrix in CI, so there
+          is nothing left for a consumer to second-guess. */}
+      <Badge variant="success">New</Badge>
       <Heading level={3} className={styles.highlightTitle}>
         {title}
       </Heading>

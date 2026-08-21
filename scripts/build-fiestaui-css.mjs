@@ -203,13 +203,32 @@ if (/\.dark\{/.test(css)) {
 // is `--foreground` under a `--background` label — so a fill-only retune moves
 // one half of a pair and destroys the contrast instead of raising it.
 //
-// So: any DS rule that sets `--nav-active` by itself (a media-query branch,
-// today `prefers-contrast: more`) owes this site a light-mode answer, and this
-// catches the next one FiestaUI adds as well as the one 4.0.0 unscoped.
-if (/\.nav-active\{--nav-active:/.test(css) && !/--nav-active:\s*var\(--foreground\)/.test(bridge)) {
+// So: any DS rule that sets `--nav-active` by itself owes this site a
+// light-mode answer, and custom.css pins one under `prefers-contrast: more`.
+//
+// The scan is over emitted BLOCKS, not over one selector spelling. It used to
+// grep for the literal `.nav-active{--nav-active:` that 4.0.0 unscoped, and
+// @fiestaboard/ui 5.0.1 moves that exact retune into the dark token block
+// (`.dark { --nav-active: … }`, #228) — a re-spelling that leaves the grep
+// matching nothing, i.e. a guard that goes quiet because it can no longer see
+// its subject rather than because the subject became safe. A guard that cannot
+// fail is the failure mode this whole file exists to prevent, so it now checks
+// the invariant instead of the spelling: a block that sets `--nav-active`
+// without restating `--nav-active-foreground` beside it, in a scope that can
+// reach light mode. Scoped to dark is fine — dark's pair here IS the rail's
+// pair, ink on a bright fill, so lifting the fill lifts both halves. Which is
+// precisely why 5.0.1's re-scoping needs no answer from this site, and why
+// saying so has to be a decision the check reaches, not one it skips.
+const DARK_SCOPED = /html\.dark|\[data-theme="dark"\]/;
+const unpairedNavActive = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)]
+  .filter(([, , body]) => /(?<![\w-])--nav-active:/.test(body) && !/--nav-active-foreground:/.test(body))
+  .map(([, selector]) => selector.trim())
+  .filter((selector) => !DARK_SCOPED.test(selector));
+if (unpairedNavActive.length > 0 && !/--nav-active:\s*var\(--foreground\)/.test(bridge)) {
   console.error(
     "[build-fiestaui-css] @fiestaboard/ui retunes --nav-active without --nav-active-foreground, and custom.css\n" +
       "  does not pin a light-mode fill. On this site's page surface that inverts the active row's pair.\n" +
+      `  Unpaired in: ${unpairedNavActive.join(", ")}\n` +
       "  Add a `--nav-active: var(--foreground)` branch for light mode in custom.css.",
   );
   process.exit(1);

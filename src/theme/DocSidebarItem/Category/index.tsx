@@ -146,8 +146,8 @@ function CollapseButton({
       // Infima's `.menu__caret:hover` reads the same
       // `--ifm-menu-color-background-hover` as `.menu__link:hover`, so the two
       // halves of the row still fill identically — see the note in
-      // `src/theme/DocSidebarItem/Link` for why the fill is no longer borrowed
-      // from FiestaUI's rail-scoped `.nav-active-hover`.
+      // `src/theme/DocSidebarItem/Link` for why the fill arrives through that
+      // one variable rather than through FiestaUI's `.nav-active-hover` class.
       className="clean-btn menu__caret rounded-lg!"
       onClick={onClick}
     />

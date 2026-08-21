@@ -159,17 +159,70 @@ if (staleTokens.length > 0) {
 // FiestaUI's answer is `.focus-ring`: an orange band bounded by --ring-edge
 // board-ink hairlines, so the hairline carries the boundary in light (16.19:1)
 // and the band carries it in dark (9.77:1). It is class-based, and MDX renders
-// prose anchors with no way to opt in, so the bridge mirrors the recipe by
-// hand — which is exactly why it needs a check keeping the two from drifting.
-const unboundedFocus = [...bridge.matchAll(/(?:^|\})\s*([^{}]*:focus-visible[^{}]*)\{([^}]*)\}/g)]
-  .map(([, selector, body]) => ({ selector, body }))
-  .filter(({ body }) => /outline:\s*none/.test(body) && !body.includes("var(--ring-edge)"));
+// prose anchors with no way to opt in, so for two majors the bridge mirrored
+// the three stops by hand.
+//
+// @fiestaboard/ui 5.4.0 ends the mirroring: the recipe is published as
+// `--focus-ring-shadow` on :root, and `.focus-ring` is now one CALLER of that
+// property rather than the place it is written down (#228 item 5). Both stops
+// resolve through --ring and --ring-edge, which are already themed, so the
+// property re-resolves per theme with no dark counterpart to keep in sync —
+// which is what makes it usable from a stylesheet a consumer owns. The DS
+// names this bridge as the reason it exists, and names the failure too: the
+// hand-mirrored copy has already gone stale once. A stale copy is invisible
+// here by construction — it is still three valid declarations resolving to
+// three valid colours, just no longer the DS's three.
+//
+// So the check is now two-sided, the same shape as the --nav-active-hover one
+// below:
+//
+// 1. While the DS publishes the property, a rule that clears `outline` must
+//    CONSUME it. Re-spelling the stops renders identically today, which is
+//    precisely why nothing catches it drifting tomorrow.
+//
+// 2. If the DS ever stops publishing it, the bridge has to go back to spelling
+//    a bounded recipe itself — `var(--focus-ring-shadow)` would then resolve
+//    to nothing, leaving a rule that suppresses the UA outline and paints no
+//    replacement at all. That is a worse failure than the one this guard was
+//    written for, and it arrives with no edit to this site to notice it by.
+//
+// The scan runs over the bridge with its comments stripped. Every rule here is
+// preceded by a block comment arguing it, and `[^{}]*` before the `{` happily
+// swallows one — so an un-stripped scan quotes a paragraph back at you instead
+// of the selector, and worse, would read a rule that had been COMMENTED OUT as
+// a live one.
+const dsFocusRing = css.match(/(?<![\w-])--focus-ring-shadow:\s*([^;}]+)/)?.[1]?.trim();
+const bridgeRules = bridge.replaceAll(/\/\*[\s\S]*?\*\//g, "");
+const outlineClearing = [...bridgeRules.matchAll(/(?:^|\})\s*([^{}]*:focus-visible[^{}]*)\{([^}]*)\}/g)]
+  .map(([, selector, body]) => ({ selector: selector.trim().replace(/\s*\n\s*/g, " "), body }))
+  .filter(({ body }) => /outline:\s*none/.test(body));
+
+const handMirroredFocus = dsFocusRing
+  ? outlineClearing.filter(({ body }) => !/box-shadow:\s*var\(--focus-ring-shadow\)/.test(body))
+  : [];
+if (handMirroredFocus.length > 0) {
+  for (const { selector } of handMirroredFocus) {
+    console.error(
+      `[build-fiestaui-css] @fiestaboard/ui publishes the focus ring as a property now:\n` +
+        `    --focus-ring-shadow: ${dsFocusRing}\n` +
+        `  but custom.css still spells the stops out itself:\n` +
+        `    ${selector}\n` +
+        `  A re-spelling renders identically today and stops tracking a retune, which is the drift the\n` +
+        `  DS cites this bridge for. Set the rule's box-shadow to \`var(--focus-ring-shadow)\`.`,
+    );
+  }
+  process.exit(1);
+}
+
+const unboundedFocus = dsFocusRing ? [] : outlineClearing.filter(({ body }) => !body.includes("var(--ring-edge)"));
 if (unboundedFocus.length > 0) {
   for (const { selector } of unboundedFocus) {
     console.error(
       `[build-fiestaui-css] custom.css drops the UA focus outline without an --ring-edge-bounded indicator:\n` +
-        `    ${selector.trim().replace(/\s*\n\s*/g, " ")}\n` +
-        `  Since @fiestaboard/ui 4.0.0 a band of --ring alone is 1.36:1 on the page. Mirror .focus-ring:\n` +
+        `    ${selector}\n` +
+        `  @fiestaboard/ui no longer publishes --focus-ring-shadow, so a box-shadow reading it resolves to\n` +
+        `  nothing and this rule paints no indicator at all. Since 4.0.0 a band of --ring alone is 1.36:1\n` +
+        `  on the page, so spell the bounded recipe out again:\n` +
         `    box-shadow: 0 0 0 1px var(--ring-edge), 0 0 0 3px var(--ring), 0 0 0 4px var(--ring-edge);`,
     );
   }

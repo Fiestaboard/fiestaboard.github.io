@@ -129,6 +129,18 @@ function stylesheets(dir, found = []) {
   return found;
 }
 
+// Same walk, for the site's own components. The tag-tint check below starts
+// from a JSX call site rather than from a class name, because the class it is
+// looking for belongs to this site and can be renamed out from under a grep.
+function sources(dir, found = []) {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) sources(full, found);
+    else if (entry.name.endsWith(".tsx")) found.push(full);
+  }
+  return found;
+}
+
 const bridgePath = path.join(siteDir, "src/css/custom.css");
 const bridge = fs.readFileSync(bridgePath, "utf8");
 
@@ -375,4 +387,113 @@ if (dsOpaqueHover && !bridgeOpaqueHover.includes(dsOpaqueHover)) {
   );
   process.exit(1);
 }
+// A Badge tag tint is a PAIR composited over whatever surface the badge landed
+// on, and this site forks one.
+//
+// The three tag variants paint as `bg-tag-x/15` under `text-tag-x-foreground`
+// (lifting to /25 when the badge is an anchor being hovered), so the thing the
+// label is actually measured against is not a token at all — it is the tint
+// composited over the live surface. That is why the pair has to move together,
+// and why a consumer cannot fork half of it and stay correct.
+//
+// @fiestaboard/ui 5.4.0 makes the whole matrix a CI-computed proof (every
+// variant x surface x theme x tint, recomputed from theme.css and failed under
+// 4.5:1) and names this site while doing it: the "New" badge on the homepage
+// pins all three properties to hex literals with `!important`. A hex cannot
+// follow a theme and cannot follow a retune, so the fork stops tracking the DS
+// the moment either moves — and it does so invisibly, because a forked badge is
+// still valid colours on a valid fill, just no longer the design system's.
+//
+// So: while the DS paints a variant from a `--tag-*` pair, a site rule on that
+// badge may not restate its colours as hexes.
+//
+// The check reads the variant map out of the DS's own bundle rather than
+// hard-coding which variants are tag-backed, and it reaches the site's rule
+// through the CALL SITE (`<Badge variant=… className={styles.x}>`) rather than
+// through a class name spelled here — a class this site owns can be renamed,
+// and a guard that stops finding its subject is the failure this file exists to
+// prevent. Same reason the map being unparseable is itself an error: no map
+// means no variants, which would let the whole check pass by seeing nothing.
+const badgeModule = path.join(siteDir, "node_modules/@fiestaboard/ui/dist/components/feedback/badge.js");
+const badgeVariantBlock = fs
+  .readFileSync(badgeModule, "utf8")
+  .match(/variants:\s*\{\s*variant:\s*\{([\s\S]*?)\}\s*\}/)?.[1];
+if (!badgeVariantBlock) {
+  console.error(
+    "[build-fiestaui-css] cannot read Badge's variant map out of @fiestaboard/ui — the tag-tint fork check\n" +
+      `  has no subject and would pass by seeing nothing. Re-derive it from ${path.relative(siteDir, badgeModule)}.`,
+  );
+  process.exit(1);
+}
+const tagBackedVariants = new Map(
+  [...badgeVariantBlock.matchAll(/(\w+):\s*"([^"]*)"/g)]
+    .map(([, variant, classes]) => [
+      variant,
+      [...new Set([...classes.matchAll(/-(tag-[a-z]+)(?:\/|\b)/g)].map(([, t]) => t))],
+    ])
+    .filter(([, tokens]) => tokens.length > 0),
+);
+
+// `<Badge variant="x" className={styles.y}>` — the two attributes in either
+// order, so the scan is per-element rather than per-attribute-pair.
+const HEX_COLOR_DECL =
+  /(?:^|[;{])\s*(color|background|background-color|border|border-color)\s*:\s*[^;}]*#[0-9a-fA-F]{3,8}/;
+const forkedTagBadges = [];
+for (const file of sources(path.join(siteDir, "src"))) {
+  const source = fs.readFileSync(file, "utf8");
+  for (const [, element] of source.matchAll(/<Badge\b([^>]*)>/g)) {
+    const variant = element.match(/variant=\{?"([^"]+)"\}?/)?.[1];
+    const tokens = variant && tagBackedVariants.get(variant);
+    if (!tokens) continue;
+
+    // Side two: the tint tokens this variant paints from must still be
+    // published. If the DS withdraws one, `bg-tag-x/15` still compiles and
+    // still applies — it just resolves to nothing, so the chip loses its field
+    // on every surface and this site would need its own colours back.
+    const withdrawn = tokens
+      .flatMap((t) => [`--${t}`, `--${t}-foreground`])
+      .filter((n) => !new RegExp(`${n}:`).test(css));
+    if (withdrawn.length > 0) {
+      console.error(
+        `[build-fiestaui-css] ${path.relative(siteDir, file)} renders <Badge variant="${variant}">, but @fiestaboard/ui\n` +
+          `  no longer publishes ${withdrawn.join(", ")}. The variant's utilities still apply and resolve to nothing,\n` +
+          "  which is a chip with no field on any surface. This site needs its own treatment for it again.",
+      );
+      process.exit(1);
+    }
+
+    const local = element.match(/className=\{(\w+)\.(\w+)\}/);
+    if (!local) continue;
+    const specifier = source.match(new RegExp(`import\\s+${local[1]}\\s+from\\s+"([^"]+\\.css)"`))?.[1];
+    if (!specifier) continue;
+    const modulePath = path.resolve(path.dirname(file), specifier);
+    // Comments stripped first, for the same two reasons as the focus scan
+    // above: `[^{}]+` before the `{` swallows the paragraph arguing the rule
+    // and quotes it back at you instead of the selector, and a rule that had
+    // been commented OUT would otherwise read as a live one.
+    const module = fs.readFileSync(modulePath, "utf8").replaceAll(/\/\*[\s\S]*?\*\//g, "");
+    const rules = [...module.matchAll(/([^{}]+)\{([^{}]*)\}/g)]
+      .filter(
+        ([, selector, body]) => new RegExp(`\\.${local[2]}(?![\\w-])`).test(selector) && HEX_COLOR_DECL.test(body),
+      )
+      .map(([, selector]) => selector.trim().replace(/\s*\n\s*/g, " "));
+    for (const selector of rules) {
+      forkedTagBadges.push({ file: path.relative(siteDir, modulePath), selector, variant, tokens });
+    }
+  }
+}
+if (forkedTagBadges.length > 0) {
+  for (const { file, selector, variant, tokens } of forkedTagBadges) {
+    console.error(
+      `[build-fiestaui-css] ${file} forks a @fiestaboard/ui tag pair into hex literals:\n` +
+        `    ${selector}\n` +
+        `  It overrides <Badge variant="${variant}">, which the DS paints from ${tokens.map((t) => `--${t}`).join(", ")}\n` +
+        "  and its `-foreground` half — a pair 5.4.0 recomputes in CI for every surface, theme and tint.\n" +
+        "  A hex follows neither the theme nor a retune, and the divergence renders as perfectly valid\n" +
+        "  colours, so nothing else in this pipeline can see it. Drop the override and take the pair.",
+    );
+  }
+  process.exit(1);
+}
+
 console.log(`[build-fiestaui-css] wrote ${output} (${result.css.length} bytes)`);

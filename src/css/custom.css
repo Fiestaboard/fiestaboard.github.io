@@ -78,28 +78,51 @@
   --ifm-menu-color: var(--muted-foreground);
   --ifm-menu-color-active: var(--foreground);
   --ifm-menu-color-background-active: var(--accent);
-  /* Sidebar row hover. This is now the *only* source of that fill: the row
-     swizzles used to stack FiestaUI's `.nav-active-hover` on top, and 4.0.0
-     retuned that class's token to `oklch(1 0 0 / 14%)` — a white alpha that
-     works on FiestaUI's rail (a surface a step DARKER than the page) and
-     vanishes here, where the rows sit on `--background` itself: 1.015:1, down
-     from the 1.242:1 the indigo tint gave on 3.4.0.
-     A foreground tint is the same recipe FiestaUI uses on its own rail
-     (`color-mix(… var(--sidebar-foreground) 10%, transparent)`), resolved
-     against the surface this site actually has, so it follows the theme
-     instead of assuming one: 1.236:1 light, 1.234:1 dark. `--accent` was
-     measured first and is too quiet for a full-height nav column at 1.061:1
-     light. */
-  --ifm-menu-color-background-hover: color-mix(in oklch, var(--foreground) 10%, transparent);
+  /* Sidebar row hover, straight off the DS token again.
+
+     It was hand-mixed here for two majors. 4.0.0 retuned `--nav-active-hover`
+     to `oklch(1 0 0 / 14%)` — a white alpha that works on FiestaUI's rail (a
+     surface a step DARKER than the page) and vanishes here, where the rows sit
+     on `--background` itself: 1.015:1, down from the 1.242:1 the indigo tint
+     gave on 3.4.0. So this bridge mixed the rail's own recipe against the
+     surface it actually has and pointed Infima at that instead.
+
+     @fiestaboard/ui 5.3.0 makes the token itself surface-relative
+     (`color-mix(in oklch, var(--foreground) 14%, transparent)`, re-declared
+     from `--sidebar-foreground` on the rail), which is that hand-mix two
+     points louder — and it carries a `prefers-contrast: more` lift to 24% that
+     a stand-in never had. Both are declared on `html`, so the token has
+     already resolved against this page's `--foreground` by the time it lands
+     here rather than against a rail that is not rendered: 1.352:1 light and
+     1.392:1 dark, up from the hand-mix's 1.236:1 / 1.234:1, and 1.715:1 /
+     1.970:1 under `prefers-contrast: more`.
+     `--accent` was measured before the hand-mix and is too quiet for a
+     full-height nav column at 1.061:1 light.
+
+     The fill stays on the variable rather than moving onto FiestaUI's
+     `.nav-active-hover` class because Infima already routes all three of this
+     row's hover targets through it — `.menu__link:hover`, `.menu__caret:hover`
+     and `.menu__list-item-collapsible:hover` — so one binding covers the whole
+     row, where the class would cover only the element it is spelled on. The
+     two paths now resolve to the same fill in every branch, which is why the
+     eslint ban on the class is gone; this is a choice about where the row's
+     fill is declared, not about which value is safe.
+     scripts/build-fiestaui-css.mjs fails the build if this drifts back off the
+     token, or if the token stops being surface-relative while it is bound. */
+  --ifm-menu-color-background-hover: var(--nav-active-hover);
 }
 
-/* The hover above is the one place this bridge carries alpha, so it owes this
-   branch an opaque answer. FiestaUI ships one for `.nav-active-hover`, but it
-   is a rail value — `oklch(0.34 0.02 73)`, a near-black fill that assumes a
-   dark surround, and 4.0.0 stopped scoping it to the rail. Inheriting it here
-   would paint a dark row under `--ifm-menu-color` on light paper. `--secondary`
-   is the opaque page-surface step and follows the theme: 1.127:1 light,
-   1.255:1 dark. */
+/* The hover above is the one place this bridge carries alpha — the DS token is
+   a `color-mix(… transparent)` — so it still owes this branch an opaque
+   answer, and 5.3.0 says which one. FiestaUI now ships two, split by surface
+   (#228): the rail keeps its near-black literal, and the page gets
+   `.nav-active-hover:hover { background: var(--secondary) }`, the opaque
+   page-surface step that follows the theme (1.127:1 light, 1.255:1 dark).
+   That page answer is this branch's value, arrived at independently before the
+   DS had one. It is restated here rather than inherited because the DS scopes
+   it to `.nav-active-hover`, a class these rows deliberately do not carry (see
+   the note on the token above); scripts/build-fiestaui-css.mjs reads the
+   compiled DS rule and fails the build if the two ever disagree. */
 @media (prefers-reduced-transparency: reduce) {
   :root,
   [data-theme="dark"] {

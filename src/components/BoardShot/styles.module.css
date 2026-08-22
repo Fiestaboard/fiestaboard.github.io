@@ -1,0 +1,10 @@
+.container {
+  margin: 1.5rem 0;
+}
+
+.caption {
+  margin-top: 0.6rem;
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.85rem;
+  text-align: center;
+}

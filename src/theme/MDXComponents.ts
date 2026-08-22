@@ -8,6 +8,7 @@ import {
 } from "@fiestaboard/ui/components/containment/table";
 import AppShot from "@site/src/components/AppShot";
 import BoardScreenshot from "@site/src/components/BoardScreenshot";
+import BoardShot from "@site/src/components/BoardShot";
 import ThemedScreenshot from "@site/src/components/ThemedScreenshot";
 import MDXComponents from "@theme-original/MDXComponents";
 
@@ -23,6 +24,9 @@ export default {
   // which is what docs pages should use for UI screenshots. <ThemedScreenshot>
   // remains for the PNGs not yet migrated.
   AppShot,
+  // <BoardShot> renders a plugin's board output live from plugin-previews.json.
+  // <BoardScreenshot> remains for the PNGs not yet migrated.
+  BoardShot,
   ThemedScreenshot,
   BoardScreenshot,
   table: Table,

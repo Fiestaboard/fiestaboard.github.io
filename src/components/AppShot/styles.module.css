@@ -1,0 +1,85 @@
+/**
+ * A shot is a figure, not an app.
+ *
+ * `pointer-events: none` on the frame is what actually stops it scrolling —
+ * wheel events never reach the iframe — and the capture inside is `inert`, so
+ * it cannot be tabbed into either.
+ */
+
+.container {
+  margin: 1.5rem 0;
+}
+
+.host {
+  width: 100%;
+}
+
+.viewport {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 10px;
+  background: var(--ifm-background-surface-color);
+  box-shadow: 0 6px 24px rgb(0 0 0 / 12%);
+}
+
+[data-theme="dark"] .viewport {
+  box-shadow: 0 6px 24px rgb(0 0 0 / 40%);
+}
+
+.frame {
+  display: block;
+  border: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.highlight {
+  position: absolute;
+  border-radius: 8px;
+  z-index: 1;
+}
+
+.spotlight {
+  box-shadow: 0 0 0 9999px rgb(8 10 14 / 62%);
+  outline: 2px solid var(--ifm-color-primary);
+}
+
+.outline {
+  outline: 2.5px solid var(--ifm-color-primary);
+  box-shadow: 0 0 0 4px rgb(var(--ifm-color-primary-rgb, 224 145 63) / 25%);
+}
+
+.label {
+  position: absolute;
+  z-index: 2;
+  padding: 3px 9px;
+  border-radius: 6px;
+  background: var(--ifm-color-primary);
+  color: var(--ifm-color-primary-contrast-foreground, #1a1206);
+  font-size: 0.75rem;
+  font-weight: 650;
+  white-space: nowrap;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 35%);
+}
+
+.fallback {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 10px;
+}
+
+.caption {
+  margin-top: 0.6rem;
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.85rem;
+  text-align: center;
+}

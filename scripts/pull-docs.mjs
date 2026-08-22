@@ -8,6 +8,7 @@
  *   plugin-registry.json     → data/plugin-registry.json
  *   plugin-previews.json     → data/plugin-previews.json
  *   assets/img/branding/     → static/img/branding/
+ *   assets/docs-captures/    → static/captures/   (serialised app screens; see AppShot)
  *
  * Also writes docs/.source-sha (the FiestaBoard commit synced from — baked
  * into build-info.json by scripts/build-info.mjs) and generated-file banner
@@ -35,6 +36,7 @@ const refresh = process.argv.includes("--refresh");
 const docsDir = join(siteDir, "docs");
 const dataDir = join(siteDir, "data");
 const brandingDir = join(siteDir, "static", "img", "branding");
+const capturesDir = join(siteDir, "static", "captures");
 
 function docsPopulated() {
   if (!existsSync(docsDir)) return false;
@@ -81,6 +83,7 @@ try {
       `${prefix}/plugin-registry.json`,
       `${prefix}/plugin-previews.json`,
       `${prefix}/assets/img/branding`,
+      `${prefix}/assets/docs-captures`,
     ],
     { stdio: "inherit" },
   );
@@ -133,7 +136,15 @@ try {
   rmSync(brandingDir, { recursive: true, force: true });
   cpSync(join(extractDir, "assets", "img", "branding"), brandingDir, { recursive: true });
 
-  console.log("pull-docs: synced docs/, data/plugin-registry.json, data/plugin-previews.json, static/img/branding/.");
+  // static/captures/ — DOM captures of app screens, rendered by <AppShot>
+  // instead of PNG screenshots. Replaced wholesale so a screen removed
+  // upstream disappears here too.
+  rmSync(capturesDir, { recursive: true, force: true });
+  cpSync(join(extractDir, "assets", "docs-captures"), capturesDir, { recursive: true });
+
+  console.log(
+    "pull-docs: synced docs/, data/plugin-registry.json, data/plugin-previews.json, static/img/branding/, static/captures/.",
+  );
 } finally {
   rmSync(tmp, { recursive: true, force: true });
 }

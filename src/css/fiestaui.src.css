@@ -45,3 +45,9 @@
 @source "../../node_modules/@fiestaboard/ui/dist";
 /* ...and for any Tailwind utilities used directly in the site's own source. */
 @source "../";
+/* ...and for the utility classes inside the serialised app screens that
+   <AppShot> renders. These are captured from the running FiestaBoard app, so
+   they use the same FiestaUI vocabulary as the components above — measured, a
+   full Settings capture added no compiled bytes. Without this scan a capture
+   renders unstyled. */
+@source "../../static/captures";

@@ -6,6 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@fiestaboard/ui/components/containment/table";
+import AppShot from "@site/src/components/AppShot";
 import BoardScreenshot from "@site/src/components/BoardScreenshot";
 import ThemedScreenshot from "@site/src/components/ThemedScreenshot";
 import MDXComponents from "@theme-original/MDXComponents";
@@ -18,6 +19,10 @@ import MDXComponents from "@theme-original/MDXComponents";
  */
 export default {
   ...MDXComponents,
+  // <AppShot> renders a serialised capture of the real app (static/captures/),
+  // which is what docs pages should use for UI screenshots. <ThemedScreenshot>
+  // remains for the PNGs not yet migrated.
+  AppShot,
   ThemedScreenshot,
   BoardScreenshot,
   table: Table,

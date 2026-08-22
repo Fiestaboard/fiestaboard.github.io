@@ -17,6 +17,7 @@
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
     "typecheck": "tsc",
+    "test": "node --test \"tests/**/*.test.mjs\"",
     "version:docs": "docusaurus docs:version",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",

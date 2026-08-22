@@ -225,21 +225,53 @@ async function runFixtureStatic(fixture, buildDir) {
   return failures;
 }
 
+// GitHub Pages' edge answers the occasional single request with a transient
+// 503 (or drops the connection). Left unhandled that fails the production
+// watch and files a false-positive regression issue, so retry those. A 4xx is
+// a real regression and fails immediately.
+const LIVE_ATTEMPTS = 3;
+const LIVE_RETRY_DELAY_MS = [1000, 3000];
+const LIVE_TIMEOUT_MS = 20000;
+
+const isTransient = (status) => status === 408 || status === 429 || status >= 500;
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// Resolves to { res } as soon as a request completes non-transiently, or —
+// once the attempts run out — to the last attempt's { res } / { error }.
+// `tried` lists the transient outcomes that were retried past.
+async function fetchLive(url) {
+  const tried = [];
+  for (let attempt = 1; ; attempt++) {
+    let outcome;
+    try {
+      const res = await fetch(url, { redirect: "follow", signal: AbortSignal.timeout(LIVE_TIMEOUT_MS) });
+      if (res.ok || !isTransient(res.status)) return { res, tried };
+      outcome = { res, why: `HTTP ${res.status}` };
+    } catch (e) {
+      outcome = { error: e, why: `fetch failed (${e.message})` };
+    }
+    tried.push(outcome.why);
+    if (attempt >= LIVE_ATTEMPTS) return { ...outcome, tried };
+    await sleep(LIVE_RETRY_DELAY_MS[attempt - 1] ?? LIVE_RETRY_DELAY_MS.at(-1));
+  }
+}
+
 async function runFixtureLive(fixture, host) {
   const failures = [];
   for (const entry of fixture) {
     const url = host.replace(/\/$/, "") + entry.path;
-    let res;
-    try {
-      res = await fetch(url, { redirect: "follow" });
-    } catch (e) {
-      failures.push(`${entry.path}: fetch failed (${e.message})`);
+    const { res, error, tried } = await fetchLive(url);
+    if (error) {
+      failures.push(`${entry.path}: fetch failed (${error.message})`);
       continue;
     }
     if (!res.ok) {
       failures.push(`${entry.path}: HTTP ${res.status}`);
       continue;
     }
+    // Report recoveries: a URL that keeps needing retries is worth knowing about.
+    if (tried.length)
+      console.log(`docs-parity: ${entry.path} recovered after ${tried.length + 1} attempts (${tried.join(", ")}).`);
     const body = await res.text();
     const target = redirectTarget(body);
     if (entry.expect === "redirect") {

@@ -60,14 +60,87 @@
   padding: 8px 16px;
 }
 
-/* The icons are small pixel art (~200px square); `contain` + pixelated keeps
-   each one whole and crisp on its pixel grid. */
-.featureCardImage {
-  display: block;
-  width: auto;
-  height: 92px;
-  object-fit: contain;
-  image-rendering: pixelated;
+/* One split-flap tile per feature - no frame, just the flap.
+
+   Geometry and surfaces are what `static-board-display` renders for a black
+   board, scaled up: the 13 x 18 flap aspect and its 1.35/13 corner radius from
+   FiestaUI's `board-metrics`, the tile bevel, the board surface gradient, and
+   the seam. A feature tile and a hero board tile are the same object at two
+   sizes - keep them in lockstep if the DS retunes either.
+
+   The dark face is load-bearing, not styling. Six of the eight hardware colors
+   are bright by design - they have to read as light on a black flap - so on the
+   near-white light-mode page they collapse: yellow lands at 1.1:1, green 1.6:1,
+   orange 1.8:1. The glyph is only legible over the flap. Dropping it would mean
+   forking the palette into local light-mode hexes, which is exactly the thing
+   the note on HighlightCard says not to do. */
+.featureFlap {
+  --tile-w: clamp(84px, 10vw, 100px);
+  position: relative;
+  width: var(--tile-w);
+  aspect-ratio: 13 / 18;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: calc(var(--tile-w) * 0.104);
+  /* The DS board-surface gradient (#0d0d0d -> #1a1a1a). It replaces the bezel
+     that used to frame this tile: the flat face and the dark-mode page
+     background are the same value, so a flat flap dissolves into the page. The
+     lit corner gives the object an edge without drawing a border around it. */
+  background: linear-gradient(135deg, var(--color-board-surface-dark) 0%, var(--color-board-black) 100%);
+  /* Lifted off the page, lit from below, both vertical edges reading as molded
+     plastic - the DS tile shadow at md/lg on a black board. */
+  box-shadow:
+    0 2px 6px rgb(0 0 0 / 0.5),
+    inset 0 1px 2px rgb(0 0 0 / 0.8),
+    inset 0 -1px 1px rgb(255 255 255 / 0.08),
+    inset 1px 0 1px rgb(0 0 0 / 0.5),
+    inset -1px 0 1px rgb(255 255 255 / 0.05);
+}
+
+/* The fold. Sits *over* the glyph, exactly as the DS layers it over a character
+   leaf (`SEAM_CLASS` + `seamStyle.black`, z-index 5) - a character split by the
+   seam is the whole tell that this is a flap and not a rounded square. */
+.featureFlap::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  height: 2px;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgb(0 0 0 / 0.35) 0 1px, rgb(255 255 255 / 0.13) 1px 2px);
+}
+
+/* A board character mid-rotation, before the tile lands on its icon. Same
+   treatment BoardDisplay gives a character leaf - `font-mono font-semibold
+   select-none leading-none` in the board's own text color - sized off the flap
+   rather than a fixed step so it scales with the tile.
+
+   `--font-mono-stack` is what the DS's `font-mono` utility resolves to, so this
+   is the board's typeface, not a lookalike. The color is the board text token,
+   not the tile's `--flap-color`: on real hardware a character flap is off-white
+   and only the landing is colored, which also makes the icon's arrival read as
+   an arrival rather than one more frame of the same color. */
+.featureFlapChar {
+  margin: 0;
+  font-family: var(--font-mono-stack);
+  font-size: calc(var(--tile-w) * 0.78);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--color-board-text-on-dark);
+  user-select: none;
+}
+
+/* Blown up to character scale - a flap is mostly glyph, the way a real one is.
+   Sized off the width alone (`height: auto`) so the square lucide viewBox is not
+   handed a portrait box to letterbox itself inside. `--flap-color` is set per
+   feature in index.tsx from a `--color-board-*` token. */
+.featureFlapGlyph {
+  width: 66%;
+  height: auto;
+  color: var(--flap-color);
 }
 
 .featureCardBody {

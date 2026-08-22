@@ -9,7 +9,6 @@ import { Text } from "@fiestaboard/ui/components/typography/text";
 import type { PluginEntry } from "@site/src/plugin-data";
 import { CATEGORIES, CATEGORY_LABELS, pluginPreviews, plugins } from "@site/src/plugin-data";
 import Layout from "@theme/Layout";
-import clsx from "clsx";
 import { SearchX } from "lucide-react";
 import { type ReactNode, useMemo, useState } from "react";
 
@@ -67,11 +66,14 @@ export default function PluginDirectory(): ReactNode {
             </Text>
           </Box>
 
-          {/* Search and filters */}
+          {/* Search and filters. The input and pills are unstyled DS components -
+              the module CSS used to repaint both (hand-rolled focus ring, literal
+              #fff on the active pill); `Input` and the `default`/`outline` Button
+              variants already carry the right tokens, so only layout is local. */}
           <Box className={styles.controls}>
             <Input
               type="search"
-              className={styles.searchInput}
+              className="mx-auto mb-4 block max-w-[480px]"
               placeholder="Search plugins..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -80,9 +82,10 @@ export default function PluginDirectory(): ReactNode {
             <Flex wrap gap="2" className={styles.categoryFilters}>
               <Button
                 type="button"
-                variant="ghost"
+                size="sm"
+                variant={activeCategory === null ? "default" : "outline"}
                 aria-pressed={activeCategory === null}
-                className={clsx(styles.filterButton, activeCategory === null && styles.filterButtonActive)}
+                className="rounded-full"
                 onClick={() => setActiveCategory(null)}
               >
                 All
@@ -91,9 +94,10 @@ export default function PluginDirectory(): ReactNode {
                 <Button
                   key={cat}
                   type="button"
-                  variant="ghost"
+                  size="sm"
+                  variant={activeCategory === cat ? "default" : "outline"}
                   aria-pressed={activeCategory === cat}
-                  className={clsx(styles.filterButton, activeCategory === cat && styles.filterButtonActive)}
+                  className="rounded-full"
                   onClick={() => setActiveCategory(cat === activeCategory ? null : cat)}
                 >
                   {CATEGORY_LABELS[cat]}

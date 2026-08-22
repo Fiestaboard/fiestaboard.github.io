@@ -22,71 +22,14 @@
   margin: 0 auto;
 }
 
-/* Search & filter controls */
+/* Search & filter controls. The input and pill buttons style themselves
+   (FiestaUI `Input` + Button variants); only placement lives here. */
 .controls {
   margin-bottom: 2rem;
 }
 
-.searchInput {
-  display: block;
-  width: 100%;
-  max-width: 480px;
-  margin: 0 auto 1rem;
-  padding: 0.6rem 1rem;
-  font-size: 0.95rem;
-  border: 1px solid var(--ifm-color-emphasis-300);
-  border-radius: 8px;
-  background: var(--ifm-background-color);
-  color: var(--ifm-font-color-base);
-  outline: none;
-  transition:
-    border-color 0.15s ease,
-    box-shadow 0.15s ease;
-  font-family: inherit;
-}
-
-/* Was `rgba(245, 166, 35, 0.15)` — the literal board-orange tile hex, hand
-   written into a focus ring while --ring exists and means exactly this. It
-   also could not follow a theme or a season. */
-.searchInput:focus {
-  border-color: var(--ifm-color-primary);
-  box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring) 25%, transparent);
-}
-
 .categoryFilters {
-  display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  gap: 0.5rem;
-}
-
-.filterButton {
-  padding: 0.35rem 0.85rem;
-  font-size: 0.82rem;
-  font-family: inherit;
-  border: 1px solid var(--ifm-color-emphasis-300);
-  border-radius: 20px;
-  background: transparent;
-  color: var(--ifm-color-emphasis-700);
-  cursor: pointer;
-  transition: all 0.15s ease;
-  line-height: 1.4;
-}
-
-.filterButton:hover {
-  border-color: var(--ifm-color-primary);
-  color: var(--ifm-color-primary);
-}
-
-.filterButtonActive {
-  background: var(--ifm-color-primary);
-  border-color: var(--ifm-color-primary);
-  color: #fff;
-  font-weight: 600;
-}
-
-.filterButtonActive:hover {
-  color: #fff;
 }
 
 /* Plugin grid */

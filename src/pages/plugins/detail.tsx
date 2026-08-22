@@ -15,7 +15,6 @@ import { fetchPluginReadme, rewriteMarkdownImageUrls, rewriteMarkdownRepoLinks }
 import type { PluginEntry } from "@site/src/plugin-data";
 import { CATEGORY_LABELS, pluginBoardImagePath, pluginPreviews, plugins } from "@site/src/plugin-data";
 import Layout from "@theme/Layout";
-import clsx from "clsx";
 import { PackageX } from "lucide-react";
 import { type ReactNode, useEffect, useState } from "react";
 
@@ -260,14 +259,18 @@ function DetailContent() {
               }}
             />
           </Box>
+          {/* Same DS pill pattern as the directory's category filters: the
+              module CSS used to hand-build a joined segment control with a
+              literal #fff label on the active half. */}
           <Box className={styles.boardColorToggle} role="radiogroup" aria-label="Board color">
             {(["black", "white"] as const).map((color) => (
               <Button
                 key={color}
                 type="button"
-                variant="ghost"
+                size="sm"
+                variant={boardColor === color ? "default" : "outline"}
                 role="radio"
-                className={clsx(styles.boardColorOption, boardColor === color && styles.boardColorOptionActive)}
+                className="rounded-full"
                 onClick={() => setBoardColor(color)}
                 aria-checked={boardColor === color}
               >

@@ -1,5 +1,6 @@
 import Link from "@docusaurus/Link";
 import { type GlobalVersion, useLatestVersion, useVersions } from "@docusaurus/plugin-content-docs/client";
+import { Card } from "@fiestaboard/ui/components/containment/card";
 import { Table, TableBody, TableCell, TableRow } from "@fiestaboard/ui/components/containment/table";
 import { Button } from "@fiestaboard/ui/components/forms/button";
 import { Box } from "@fiestaboard/ui/components/layout/box";
@@ -70,19 +71,24 @@ export default function Versions(): ReactNode {
         </Text>
 
         <Heading level={2}>Current version</Heading>
-        <Flex align="center" justify="between" gap="4" wrap className={styles.currentCard}>
-          <Box>
-            <Text as="span" className={styles.currentLabel}>
-              {latest.label}
-            </Text>
-            <Text as="span" className={styles.currentTag}>
-              recommended
-            </Text>
-          </Box>
-          <Button asChild>
-            <Link to={versionEntryPath(latest)}>Read the docs</Link>
-          </Button>
-        </Flex>
+        {/* DS `Card` instead of the hand-rolled border/background block that
+            used to live in the module CSS; `mt-3.5`/`p-5` keep its old
+            placement and density. */}
+        <Card className="mt-3.5 gap-0 p-5 py-5">
+          <Flex align="center" justify="between" gap="4" wrap>
+            <Box>
+              <Text as="span" className={styles.currentLabel}>
+                {latest.label}
+              </Text>
+              <Text as="span" className={styles.currentTag}>
+                recommended
+              </Text>
+            </Box>
+            <Button asChild>
+              <Link to={versionEntryPath(latest)}>Read the docs</Link>
+            </Button>
+          </Flex>
+        </Card>
 
         {maintained.length > 0 && (
           <Box className={styles.section}>

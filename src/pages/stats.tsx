@@ -1,6 +1,8 @@
 import Link from "@docusaurus/Link";
 import { StaticBoardDisplay } from "@fiestaboard/ui/components/board/static-board-display";
+import { Card } from "@fiestaboard/ui/components/containment/card";
 import { Badge } from "@fiestaboard/ui/components/feedback/badge";
+import { Spinner } from "@fiestaboard/ui/components/feedback/spinner";
 import { Button } from "@fiestaboard/ui/components/forms/button";
 import { Box } from "@fiestaboard/ui/components/layout/box";
 import { Heading } from "@fiestaboard/ui/components/typography/heading";
@@ -104,45 +106,50 @@ function TopPluginSpotlight({
 
   return (
     <Link to={`/plugins/detail?id=${plugin.id}`} className={styles.spotlight}>
-      {preview ? (
-        <Box className={styles.spotlightBoard}>
-          <StaticBoardDisplay
-            message={previewMessage(preview)}
-            size="sm"
-            boardType="black"
-            deviceType={preview.device_type ?? "flagship"}
-            notesWide={preview.notes_wide ?? 1}
-            notesTall={preview.notes_tall ?? 1}
-            previewLabel={`${plugin.name} on a split-flap board`}
-          />
-        </Box>
-      ) : imgOk ? (
-        <img
-          className={styles.spotlightImage}
-          src={pluginBoardImagePath(entry, "dark")}
-          alt={`${plugin.name} on a split-flap board`}
-          loading="lazy"
-          onError={() => setImgOk(false)}
-        />
-      ) : (
-        <Box className={styles.spotlightImagePlaceholder}>
-          <PluginIcon name={entry.icon} size={32} />
-        </Box>
-      )}
-      <Box className={styles.spotlightFooter}>
-        <Box className={styles.spotlightIcon}>
-          <PluginIcon name={entry.icon} size={20} />
-        </Box>
-        <Box className={styles.spotlightBody}>
-          <Box className={styles.spotlightName}>{plugin.name}</Box>
-          <Box className={styles.spotlightStat}>
-            {(plugin.clones_14d_uniques ?? 0).toLocaleString()} unique cloners in the last {windowDays} days
+      {/* The anchor keeps only placement; the box (surface, border, radius,
+          hover) is the DS Card, zero-padded because the board preview and the
+          footer run edge to edge. */}
+      <Card className="w-fit max-w-full gap-0 overflow-hidden py-0 hover:border-ring">
+        {preview ? (
+          <Box className={styles.spotlightBoard}>
+            <StaticBoardDisplay
+              message={previewMessage(preview)}
+              size="sm"
+              boardType="black"
+              deviceType={preview.device_type ?? "flagship"}
+              notesWide={preview.notes_wide ?? 1}
+              notesTall={preview.notes_tall ?? 1}
+              previewLabel={`${plugin.name} on a split-flap board`}
+            />
           </Box>
+        ) : imgOk ? (
+          <img
+            className={styles.spotlightImage}
+            src={pluginBoardImagePath(entry, "dark")}
+            alt={`${plugin.name} on a split-flap board`}
+            loading="lazy"
+            onError={() => setImgOk(false)}
+          />
+        ) : (
+          <Box className={styles.spotlightImagePlaceholder}>
+            <PluginIcon name={entry.icon} size={32} />
+          </Box>
+        )}
+        <Box className={styles.spotlightFooter}>
+          <Box className={styles.spotlightIcon}>
+            <PluginIcon name={entry.icon} size={20} />
+          </Box>
+          <Box className={styles.spotlightBody}>
+            <Box className={styles.spotlightName}>{plugin.name}</Box>
+            <Box className={styles.spotlightStat}>
+              {(plugin.clones_14d_uniques ?? 0).toLocaleString()} unique cloners in the last {windowDays} days
+            </Box>
+          </Box>
+          <Badge variant="secondary" className={styles.spotlightBadge}>
+            Most popular
+          </Badge>
         </Box>
-        <Badge variant="secondary" className={styles.spotlightBadge}>
-          Most popular
-        </Badge>
-      </Box>
+      </Card>
     </Link>
   );
 }
@@ -226,7 +233,11 @@ export default function StatsPage(): ReactNode {
 
           {error && <Text className={styles.error}>Stats are unavailable right now - check back soon.</Text>}
 
-          {!data && !error && <Box className={styles.loading}>Loading…</Box>}
+          {!data && !error && (
+            <Box className={styles.loading}>
+              <Spinner size="lg" label="Loading plugin stats" />
+            </Box>
+          )}
 
           {data && (
             <>
@@ -282,10 +293,14 @@ export default function StatsPage(): ReactNode {
                 </Text>
                 <Box className={styles.categoryGrid}>
                   {byCategory.map(([cat, count]) => (
-                    <Box key={cat} className={styles.categoryCard}>
-                      <Box className={styles.categoryCount}>{count.toLocaleString()}</Box>
-                      <Box className={styles.categoryName}>{CATEGORY_LABELS[cat] ?? cat}</Box>
-                    </Box>
+                    <Card key={cat} className="gap-1 p-4 py-4 text-center">
+                      <Text as="span" className="text-2xl font-bold text-brand">
+                        {count.toLocaleString()}
+                      </Text>
+                      <Text as="span" size="xs" tone="muted">
+                        {CATEGORY_LABELS[cat] ?? cat}
+                      </Text>
+                    </Card>
                   ))}
                 </Box>
               </Box>
@@ -299,9 +314,7 @@ export default function StatsPage(): ReactNode {
                         <ListItem key={p.id} className={styles.recentItem}>
                           <Link to={`/plugins/detail?id=${p.id}`}>{p.name}</Link>
                           <Text as="span" className={styles.recentMeta}>
-                            <Text as="span" className={styles.recentCategory}>
-                              {CATEGORY_LABELS[p.category] ?? p.category}
-                            </Text>
+                            <Badge variant="secondary">{CATEGORY_LABELS[p.category] ?? p.category}</Badge>
                             <Text as="span" className={styles.recentDate}>
                               {new Date(p.created_at!).toLocaleDateString("en-US", {
                                 month: "short",
@@ -321,9 +334,7 @@ export default function StatsPage(): ReactNode {
                         <ListItem key={p.id} className={styles.recentItem}>
                           <Link to={`/plugins/detail?id=${p.id}`}>{p.name}</Link>
                           <Text as="span" className={styles.recentMeta}>
-                            <Text as="span" className={styles.recentCategory}>
-                              {CATEGORY_LABELS[p.category] ?? p.category}
-                            </Text>
+                            <Badge variant="secondary">{CATEGORY_LABELS[p.category] ?? p.category}</Badge>
                             <Text as="span" className={styles.recentVersion}>
                               v{p.version}
                             </Text>

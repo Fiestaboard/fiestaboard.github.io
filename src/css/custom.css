@@ -259,6 +259,38 @@ div[class*="codeBlockContainer"] {
   color: var(--foreground);
 }
 
+/* Theme toggle pre-hydration glyph.
+
+   The navbar toggle is FiestaUI's `ThemeToggle` (see src/theme/ColorModeToggle).
+   Its Sun/Moon split keys on the widened `.dark`/[data-theme="dark"] variants,
+   which the pre-paint inline script stamps, so the resolved-theme glyph is
+   right before React loads. The Monitor (system) glyph is different: it keys on
+   the component's `data-resolved-theme` attribute, and SSR bakes that as
+   "system" for everyone because the stored choice lives in localStorage. So a
+   visitor who explicitly picked light or dark would watch Monitor swap to
+   Sun/Moon at hydration.
+
+   Docusaurus's inline script also stamps `data-theme-choice` on <html> before
+   first paint — the signal its own toggle keys on — so these rules borrow it:
+   when the baked attribute still says "system" but the visitor's stored choice
+   is explicit, show the Sun/Moon pair and hide Monitor. After hydration the
+   component's attribute reflects the real choice and these selectors go inert.
+   The rules are unlayered, so they outrank the component's `@layer utilities`
+   classes by cascade-layer order, not specificity. `.fiesta-theme-toggle` is
+   the wrapper the swizzle renders; the child combinators mirror ThemeToggle's
+   documented DOM (sun+moon wrapper span first, Monitor svg beside it). If
+   FiestaUI restructures that DOM these rules fail soft: the flash comes back,
+   nothing breaks. */
+html[data-theme-choice="light"] .fiesta-theme-toggle [data-resolved-theme="system"] > span:first-child,
+html[data-theme-choice="dark"] .fiesta-theme-toggle [data-resolved-theme="system"] > span:first-child {
+  display: contents;
+}
+
+html[data-theme-choice="light"] .fiesta-theme-toggle [data-resolved-theme="system"] > svg,
+html[data-theme-choice="dark"] .fiesta-theme-toggle [data-resolved-theme="system"] > svg {
+  display: none;
+}
+
 /* Hide the per-page version badge - the navbar version dropdown is sufficient. */
 .theme-doc-version-badge {
   display: none;

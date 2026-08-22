@@ -289,27 +289,37 @@ div[class*="codeBlockContainer"] {
   text-underline-offset: 4px;
 }
 
-/* The two-tone `.focus-ring` recipe, copied out of FiestaUI's theme.css. That
-   class cannot be used directly - MDX renders these anchors, so there is no
-   call site to put it on - so the declaration is mirrored and
-   scripts/build-fiestaui-css.mjs fails the build if the two drift apart.
+/* The two-tone focus ring, taken from FiestaUI as a value.
 
-   Until 4.0.0 this was a single 3px band of `--ring` at 50%, which is the
-   recipe FiestaUI itself shipped then. `--ring` is declared as an alias of
-   `--primary`, and 4.0.0 made `--primary` the literal #f5a623 tile, so that
-   band went from 2.19:1 to 1.36:1 against the page in light mode - and since
-   the rule also clears `outline`, a keyboard user got no focus indicator at
-   all. Bounding the band in `--ring-edge` board ink puts the boundary on the
-   hairline in light (16.19:1) and on the orange band in dark (9.77:1), so it
-   clears SC 2.4.11's 3:1 in both themes for different reasons. */
+   `.focus-ring` is a class and MDX renders these anchors, so there is no call
+   site to put it on. For two majors that meant mirroring its three stops here
+   by hand: an orange band bounded by `--ring-edge` board ink, so the boundary
+   is carried by the hairline in light (16.19:1) and by the band itself in dark
+   (9.77:1), clearing SC 2.4.11's 3:1 in both themes for different reasons.
+   (Before 4.0.0 the recipe was a single 3px band of `--ring` at 50%. `--ring`
+   is an alias of `--primary`, and 4.0.0 made `--primary` the literal #f5a623
+   tile, which took that band from 2.19:1 to 1.36:1 on a light page - and since
+   the rule also clears `outline`, to no focus indicator at all.)
+
+   @fiestaboard/ui 5.4.0 ends the mirroring. The recipe is published as
+   `--focus-ring-shadow` on `:root` and `.focus-ring` now consumes it rather
+   than declaring it (#228 item 5), specifically so a consumer with no call
+   site - this one - can read the value instead of retyping it. Both stops
+   resolve through `--ring` and `--ring-edge`, which are already themed, so one
+   declaration covers both modes with no dark counterpart to keep in sync.
+
+   This matters because a stale copy is invisible: it stays three valid
+   declarations resolving to three valid colours, just no longer the DS's
+   three, and nothing in a build or a route diff can tell the difference. The
+   DS notes the copy here had already gone stale once.
+   scripts/build-fiestaui-css.mjs fails the build if this drifts back onto
+   hand-written stops, or if the DS stops publishing the property while this
+   rule still reads it - which would clear the UA outline and paint nothing. */
 .markdown a:not(.hash-link):focus-visible,
 .theme-doc-markdown a:not(.hash-link):focus-visible {
   outline: none;
   border-radius: calc(var(--radius) - 4px);
-  box-shadow:
-    0 0 0 1px var(--ring-edge),
-    0 0 0 3px var(--ring),
-    0 0 0 4px var(--ring-edge);
+  box-shadow: var(--focus-ring-shadow);
 }
 
 /* Blockquotes: hairline rule + muted copy, matching DS surfaces. */

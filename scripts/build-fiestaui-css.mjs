@@ -129,6 +129,18 @@ function stylesheets(dir, found = []) {
   return found;
 }
 
+// Same walk, for the site's own components. The tag-tint check below starts
+// from a JSX call site rather than from a class name, because the class it is
+// looking for belongs to this site and can be renamed out from under a grep.
+function sources(dir, found = []) {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) sources(full, found);
+    else if (entry.name.endsWith(".tsx")) found.push(full);
+  }
+  return found;
+}
+
 const bridgePath = path.join(siteDir, "src/css/custom.css");
 const bridge = fs.readFileSync(bridgePath, "utf8");
 
@@ -159,17 +171,70 @@ if (staleTokens.length > 0) {
 // FiestaUI's answer is `.focus-ring`: an orange band bounded by --ring-edge
 // board-ink hairlines, so the hairline carries the boundary in light (16.19:1)
 // and the band carries it in dark (9.77:1). It is class-based, and MDX renders
-// prose anchors with no way to opt in, so the bridge mirrors the recipe by
-// hand — which is exactly why it needs a check keeping the two from drifting.
-const unboundedFocus = [...bridge.matchAll(/(?:^|\})\s*([^{}]*:focus-visible[^{}]*)\{([^}]*)\}/g)]
-  .map(([, selector, body]) => ({ selector, body }))
-  .filter(({ body }) => /outline:\s*none/.test(body) && !body.includes("var(--ring-edge)"));
+// prose anchors with no way to opt in, so for two majors the bridge mirrored
+// the three stops by hand.
+//
+// @fiestaboard/ui 5.4.0 ends the mirroring: the recipe is published as
+// `--focus-ring-shadow` on :root, and `.focus-ring` is now one CALLER of that
+// property rather than the place it is written down (#228 item 5). Both stops
+// resolve through --ring and --ring-edge, which are already themed, so the
+// property re-resolves per theme with no dark counterpart to keep in sync —
+// which is what makes it usable from a stylesheet a consumer owns. The DS
+// names this bridge as the reason it exists, and names the failure too: the
+// hand-mirrored copy has already gone stale once. A stale copy is invisible
+// here by construction — it is still three valid declarations resolving to
+// three valid colours, just no longer the DS's three.
+//
+// So the check is now two-sided, the same shape as the --nav-active-hover one
+// below:
+//
+// 1. While the DS publishes the property, a rule that clears `outline` must
+//    CONSUME it. Re-spelling the stops renders identically today, which is
+//    precisely why nothing catches it drifting tomorrow.
+//
+// 2. If the DS ever stops publishing it, the bridge has to go back to spelling
+//    a bounded recipe itself — `var(--focus-ring-shadow)` would then resolve
+//    to nothing, leaving a rule that suppresses the UA outline and paints no
+//    replacement at all. That is a worse failure than the one this guard was
+//    written for, and it arrives with no edit to this site to notice it by.
+//
+// The scan runs over the bridge with its comments stripped. Every rule here is
+// preceded by a block comment arguing it, and `[^{}]*` before the `{` happily
+// swallows one — so an un-stripped scan quotes a paragraph back at you instead
+// of the selector, and worse, would read a rule that had been COMMENTED OUT as
+// a live one.
+const dsFocusRing = css.match(/(?<![\w-])--focus-ring-shadow:\s*([^;}]+)/)?.[1]?.trim();
+const bridgeRules = bridge.replaceAll(/\/\*[\s\S]*?\*\//g, "");
+const outlineClearing = [...bridgeRules.matchAll(/(?:^|\})\s*([^{}]*:focus-visible[^{}]*)\{([^}]*)\}/g)]
+  .map(([, selector, body]) => ({ selector: selector.trim().replace(/\s*\n\s*/g, " "), body }))
+  .filter(({ body }) => /outline:\s*none/.test(body));
+
+const handMirroredFocus = dsFocusRing
+  ? outlineClearing.filter(({ body }) => !/box-shadow:\s*var\(--focus-ring-shadow\)/.test(body))
+  : [];
+if (handMirroredFocus.length > 0) {
+  for (const { selector } of handMirroredFocus) {
+    console.error(
+      `[build-fiestaui-css] @fiestaboard/ui publishes the focus ring as a property now:\n` +
+        `    --focus-ring-shadow: ${dsFocusRing}\n` +
+        `  but custom.css still spells the stops out itself:\n` +
+        `    ${selector}\n` +
+        `  A re-spelling renders identically today and stops tracking a retune, which is the drift the\n` +
+        `  DS cites this bridge for. Set the rule's box-shadow to \`var(--focus-ring-shadow)\`.`,
+    );
+  }
+  process.exit(1);
+}
+
+const unboundedFocus = dsFocusRing ? [] : outlineClearing.filter(({ body }) => !body.includes("var(--ring-edge)"));
 if (unboundedFocus.length > 0) {
   for (const { selector } of unboundedFocus) {
     console.error(
       `[build-fiestaui-css] custom.css drops the UA focus outline without an --ring-edge-bounded indicator:\n` +
-        `    ${selector.trim().replace(/\s*\n\s*/g, " ")}\n` +
-        `  Since @fiestaboard/ui 4.0.0 a band of --ring alone is 1.36:1 on the page. Mirror .focus-ring:\n` +
+        `    ${selector}\n` +
+        `  @fiestaboard/ui no longer publishes --focus-ring-shadow, so a box-shadow reading it resolves to\n` +
+        `  nothing and this rule paints no indicator at all. Since 4.0.0 a band of --ring alone is 1.36:1\n` +
+        `  on the page, so spell the bounded recipe out again:\n` +
         `    box-shadow: 0 0 0 1px var(--ring-edge), 0 0 0 3px var(--ring), 0 0 0 4px var(--ring-edge);`,
     );
   }
@@ -322,4 +387,113 @@ if (dsOpaqueHover && !bridgeOpaqueHover.includes(dsOpaqueHover)) {
   );
   process.exit(1);
 }
+// A Badge tag tint is a PAIR composited over whatever surface the badge landed
+// on, and this site forks one.
+//
+// The three tag variants paint as `bg-tag-x/15` under `text-tag-x-foreground`
+// (lifting to /25 when the badge is an anchor being hovered), so the thing the
+// label is actually measured against is not a token at all — it is the tint
+// composited over the live surface. That is why the pair has to move together,
+// and why a consumer cannot fork half of it and stay correct.
+//
+// @fiestaboard/ui 5.4.0 makes the whole matrix a CI-computed proof (every
+// variant x surface x theme x tint, recomputed from theme.css and failed under
+// 4.5:1) and names this site while doing it: the "New" badge on the homepage
+// pins all three properties to hex literals with `!important`. A hex cannot
+// follow a theme and cannot follow a retune, so the fork stops tracking the DS
+// the moment either moves — and it does so invisibly, because a forked badge is
+// still valid colours on a valid fill, just no longer the design system's.
+//
+// So: while the DS paints a variant from a `--tag-*` pair, a site rule on that
+// badge may not restate its colours as hexes.
+//
+// The check reads the variant map out of the DS's own bundle rather than
+// hard-coding which variants are tag-backed, and it reaches the site's rule
+// through the CALL SITE (`<Badge variant=… className={styles.x}>`) rather than
+// through a class name spelled here — a class this site owns can be renamed,
+// and a guard that stops finding its subject is the failure this file exists to
+// prevent. Same reason the map being unparseable is itself an error: no map
+// means no variants, which would let the whole check pass by seeing nothing.
+const badgeModule = path.join(siteDir, "node_modules/@fiestaboard/ui/dist/components/feedback/badge.js");
+const badgeVariantBlock = fs
+  .readFileSync(badgeModule, "utf8")
+  .match(/variants:\s*\{\s*variant:\s*\{([\s\S]*?)\}\s*\}/)?.[1];
+if (!badgeVariantBlock) {
+  console.error(
+    "[build-fiestaui-css] cannot read Badge's variant map out of @fiestaboard/ui — the tag-tint fork check\n" +
+      `  has no subject and would pass by seeing nothing. Re-derive it from ${path.relative(siteDir, badgeModule)}.`,
+  );
+  process.exit(1);
+}
+const tagBackedVariants = new Map(
+  [...badgeVariantBlock.matchAll(/(\w+):\s*"([^"]*)"/g)]
+    .map(([, variant, classes]) => [
+      variant,
+      [...new Set([...classes.matchAll(/-(tag-[a-z]+)(?:\/|\b)/g)].map(([, t]) => t))],
+    ])
+    .filter(([, tokens]) => tokens.length > 0),
+);
+
+// `<Badge variant="x" className={styles.y}>` — the two attributes in either
+// order, so the scan is per-element rather than per-attribute-pair.
+const HEX_COLOR_DECL =
+  /(?:^|[;{])\s*(color|background|background-color|border|border-color)\s*:\s*[^;}]*#[0-9a-fA-F]{3,8}/;
+const forkedTagBadges = [];
+for (const file of sources(path.join(siteDir, "src"))) {
+  const source = fs.readFileSync(file, "utf8");
+  for (const [, element] of source.matchAll(/<Badge\b([^>]*)>/g)) {
+    const variant = element.match(/variant=\{?"([^"]+)"\}?/)?.[1];
+    const tokens = variant && tagBackedVariants.get(variant);
+    if (!tokens) continue;
+
+    // Side two: the tint tokens this variant paints from must still be
+    // published. If the DS withdraws one, `bg-tag-x/15` still compiles and
+    // still applies — it just resolves to nothing, so the chip loses its field
+    // on every surface and this site would need its own colours back.
+    const withdrawn = tokens
+      .flatMap((t) => [`--${t}`, `--${t}-foreground`])
+      .filter((n) => !new RegExp(`${n}:`).test(css));
+    if (withdrawn.length > 0) {
+      console.error(
+        `[build-fiestaui-css] ${path.relative(siteDir, file)} renders <Badge variant="${variant}">, but @fiestaboard/ui\n` +
+          `  no longer publishes ${withdrawn.join(", ")}. The variant's utilities still apply and resolve to nothing,\n` +
+          "  which is a chip with no field on any surface. This site needs its own treatment for it again.",
+      );
+      process.exit(1);
+    }
+
+    const local = element.match(/className=\{(\w+)\.(\w+)\}/);
+    if (!local) continue;
+    const specifier = source.match(new RegExp(`import\\s+${local[1]}\\s+from\\s+"([^"]+\\.css)"`))?.[1];
+    if (!specifier) continue;
+    const modulePath = path.resolve(path.dirname(file), specifier);
+    // Comments stripped first, for the same two reasons as the focus scan
+    // above: `[^{}]+` before the `{` swallows the paragraph arguing the rule
+    // and quotes it back at you instead of the selector, and a rule that had
+    // been commented OUT would otherwise read as a live one.
+    const module = fs.readFileSync(modulePath, "utf8").replaceAll(/\/\*[\s\S]*?\*\//g, "");
+    const rules = [...module.matchAll(/([^{}]+)\{([^{}]*)\}/g)]
+      .filter(
+        ([, selector, body]) => new RegExp(`\\.${local[2]}(?![\\w-])`).test(selector) && HEX_COLOR_DECL.test(body),
+      )
+      .map(([, selector]) => selector.trim().replace(/\s*\n\s*/g, " "));
+    for (const selector of rules) {
+      forkedTagBadges.push({ file: path.relative(siteDir, modulePath), selector, variant, tokens });
+    }
+  }
+}
+if (forkedTagBadges.length > 0) {
+  for (const { file, selector, variant, tokens } of forkedTagBadges) {
+    console.error(
+      `[build-fiestaui-css] ${file} forks a @fiestaboard/ui tag pair into hex literals:\n` +
+        `    ${selector}\n` +
+        `  It overrides <Badge variant="${variant}">, which the DS paints from ${tokens.map((t) => `--${t}`).join(", ")}\n` +
+        "  and its `-foreground` half — a pair 5.4.0 recomputes in CI for every surface, theme and tint.\n" +
+        "  A hex follows neither the theme nor a retune, and the divergence renders as perfectly valid\n" +
+        "  colours, so nothing else in this pipeline can see it. Drop the override and take the pair.",
+    );
+  }
+  process.exit(1);
+}
+
 console.log(`[build-fiestaui-css] wrote ${output} (${result.css.length} bytes)`);

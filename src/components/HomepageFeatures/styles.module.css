@@ -102,22 +102,6 @@
   padding: 24px;
 }
 
-/* The DS success badge (translucent tint + tint-colored text) collapses to
-   ~1.5:1 on the dark card, so override the "New" badge with opaque, theme-aware
-   green that clears WCAG 2.2 AA (6.5:1 light / 7.5:1 dark). App-level only; no
-   FiestaUI change. */
-.newBadge {
-  background-color: #dcfce7 !important;
-  border-color: #a7f3d0 !important;
-  color: #166534 !important;
-}
-
-[data-theme="dark"] .newBadge {
-  background-color: #14532d !important;
-  border-color: #22683c !important;
-  color: #bbf7d0 !important;
-}
-
 .highlightTitle {
   margin: 14px 0 0;
   font-size: 20px;

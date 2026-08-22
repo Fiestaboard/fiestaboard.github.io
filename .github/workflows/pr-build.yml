@@ -61,6 +61,9 @@ jobs:
       - name: Format check
         run: npm run format:check
 
+      - name: Test
+        run: npm test
+
       - name: Build (PR mode, latest version only)
         run: npm run build
         env:

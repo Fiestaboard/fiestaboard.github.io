@@ -174,6 +174,7 @@ jobs:
         if: steps.version.outputs.created == 'true'
         env:
           DOCS_VERSION: ${{ steps.parse.outputs.docs_version }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           git config user.name "FiestaBoard CI"
@@ -185,8 +186,31 @@ jobs:
             exit 0
           fi
           git commit -m "docs: snapshot version $DOCS_VERSION"
-          git push origin "HEAD:$TARGET_BRANCH"
-          echo "pushed=true" >> "$GITHUB_OUTPUT"
+
+          # main is protected (PR required), and this repo has no RELEASE_PAT to
+          # bypass with, so a direct push is rejected with GH013 — which is what
+          # had been silently failing this workflow on every release, leaving
+          # the site without a snapshot for the version just shipped. Push a
+          # branch and open a PR instead.
+          #
+          # A rehearsal against a scratch target_branch still pushes directly;
+          # only main is protected.
+          if [ "$TARGET_BRANCH" != "main" ]; then
+            git push origin "HEAD:$TARGET_BRANCH"
+            echo "pushed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          BRANCH="docs/snapshot-$DOCS_VERSION"
+          git push --force origin "HEAD:$BRANCH"
+          if ! gh pr view "$BRANCH" --json number >/dev/null 2>&1; then
+            gh pr create --base main --head "$BRANCH" \
+              --title "docs: snapshot version $DOCS_VERSION" \
+              --body "Docs snapshot for FiestaBoard $DOCS_VERSION, cut by \`release-snapshot.yml\`. Merging publishes it as the latest version on the site."
+          fi
+          # A snapshot behind a PR is not on main yet, so the deploy trigger
+          # below must not fire.
+          echo "pushed=false" >> "$GITHUB_OUTPUT"
 
       # The push above used GITHUB_TOKEN (unless RELEASE_PAT is set), which
       # never fires other workflows' push triggers — so start the site

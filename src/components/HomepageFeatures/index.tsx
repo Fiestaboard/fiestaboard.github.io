@@ -316,7 +316,6 @@ const PluginList: PluginItem[] = FEATURED_PLUGINS.flatMap(({ id, description, de
   ];
 });
 
-
 /**
  * `glyph` is the board character this tile is showing mid-rotation; `null` means
  * landed, so it draws its icon. The flap stays this feature's color throughout -

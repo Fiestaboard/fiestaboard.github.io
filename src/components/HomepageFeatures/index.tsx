@@ -1,6 +1,5 @@
 import BrowserOnly from "@docusaurus/BrowserOnly";
 import Link from "@docusaurus/Link";
-import { useColorMode } from "@docusaurus/theme-common";
 import { useReducedMotion } from "@fiestaboard/ui/components/board/reduced-motion";
 import { ScaledBoardDisplay } from "@fiestaboard/ui/components/board/scaled-board-display";
 import { Badge } from "@fiestaboard/ui/components/feedback/badge";
@@ -11,6 +10,7 @@ import { Heading } from "@fiestaboard/ui/components/typography/heading";
 import { Text } from "@fiestaboard/ui/components/typography/text";
 import { TextLink } from "@fiestaboard/ui/components/typography/text-link";
 import { BOARD_CHARS } from "@fiestaboard/ui/lib/board-characters";
+import AppShot from "@site/src/components/AppShot";
 import type { LucideIcon } from "lucide-react";
 import { Calendar, Container, Heart, Palette, Pencil, Puzzle } from "lucide-react";
 import { type CSSProperties, type ReactNode, useEffect, useRef, useState } from "react";
@@ -236,7 +236,8 @@ const HighlightList: HighlightItem[] = [
 
 type ShowcaseItem = {
   title: string;
-  image: string;
+  /** Capture name in static/captures — rendered live, not a screenshot. */
+  capture: string;
   alt: string;
   description: string;
   link: string;
@@ -245,14 +246,14 @@ type ShowcaseItem = {
 const FeatureShowcaseList: ShowcaseItem[] = [
   {
     title: "Dashboard & Web UI",
-    image: "/img/web-ui-home.png",
+    capture: "web-ui-home",
     alt: "FiestaBoard web dashboard showing active display with stock ticker data",
     description: "Monitor your display, manage pages, and configure plugins from a modern web interface.",
     link: "/docs/features/page-editor",
   },
   {
     title: "WYSIWYG Page Editor",
-    image: "/img/page-editor-wysiwyg.png",
+    capture: "page-editor-wysiwyg",
     alt: "FiestaBoard WYSIWYG page editor with visual board preview",
     description:
       "Design your board layouts visually - see exactly how content will appear before sending it to your display.",
@@ -260,7 +261,7 @@ const FeatureShowcaseList: ShowcaseItem[] = [
   },
   {
     title: "Visual Scheduling",
-    image: "/img/schedule-calendar.png",
+    capture: "schedule-calendar",
     alt: "FiestaBoard schedule calendar view with time-based page scheduling",
     description: "Schedule different pages for different times and days with an intuitive calendar interface.",
     link: "/docs/features/schedule",
@@ -314,13 +315,6 @@ const PluginList: PluginItem[] = FEATURED_PLUGINS.flatMap(({ id, description, de
     },
   ];
 });
-
-function deriveThemedPath(src: string, mode: "light" | "dark"): string {
-  const lastSlash = src.lastIndexOf("/");
-  const dir = src.substring(0, lastSlash);
-  const filename = src.substring(lastSlash + 1);
-  return `${dir}/${mode}/${filename}`;
-}
 
 /**
  * `glyph` is the board character this tile is showing mid-rotation; `null` means
@@ -379,13 +373,14 @@ function HighlightCard({ title, description, primary, secondary }: HighlightItem
   );
 }
 
-function ShowcaseRow({ title, image, alt, description, link, reverse }: ShowcaseItem & { reverse?: boolean }) {
-  const { colorMode } = useColorMode();
-  const src = deriveThemedPath(image, colorMode);
+function ShowcaseRow({ title, capture, alt, description, link, reverse }: ShowcaseItem & { reverse?: boolean }) {
   return (
     <Box className={reverse ? styles.showcaseRowReverse : styles.showcaseRow}>
       <Box className={styles.showcaseImage}>
-        <img src={src} alt={alt} loading="lazy" />
+        {/* The real app, serialised — not a screenshot of it. Follows the
+            visitor's theme, stays sharp at any zoom, and cannot go stale
+            without the app itself changing. */}
+        <AppShot name={capture} alt={alt} />
       </Box>
       <Box className={styles.showcaseContent}>
         <Heading level={3} className={styles.showcaseTitle}>

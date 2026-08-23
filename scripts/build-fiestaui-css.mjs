@@ -278,10 +278,36 @@ if (!css.includes('html.dark,html[data-theme="dark"]{')) {
 // keeps resolving. That is a token silently stuck on its fallback in dark mode,
 // which is indistinguishable from working until you measure it.
 //
-// Deliberately the SAME pattern the rewrite ran, so the two cannot drift: any
-// head the rewrite would have matched is by construction a head it did match.
-if (new RegExp(DARK_TOKEN_BLOCK).test(css)) {
-  console.error("[build-fiestaui-css] a dark token block escaped the rewrite — it will never win over `:root` here.");
+// This deliberately does NOT re-run DARK_TOKEN_BLOCK. Doing so reads as
+// belt-and-braces and is in fact a tautology: `replaceAll` leaves no match of
+// its own pattern behind, so the check could only ever pass, and a check that
+// cannot fail is the failure mode this file exists to prevent. The escapes
+// worth catching are by definition the heads that pattern does not describe —
+// the pair emitted in the other order (`[data-theme=dark],.dark{`), the
+// attribute half alone, a `.dark` that is not the first item in its list. Each
+// leaves the guard above green, because that one only asks whether SOME head
+// was rewritten, never whether every one was.
+//
+// So the scan is structural, over the emitted heads: a selector list item that
+// is a WHOLE dark compound on its own — no `html` in front of it, no descendant
+// part after it — is a block scoped to the document that will sit at 0,1,0.
+// Items with a descendant part (`.dark .sidebar-gradient-horizontal`, and the
+// `:is(.dark *, …)` the `dark:` utilities compile to) are not that: they scope a
+// component, not the token layer, and never race the `:root` blocks Docusaurus
+// appends.
+const BARE_DARK_COMPOUND = /^(?:\.dark|\[data-theme=("?)dark\1\])$/;
+const escapedDarkBlocks = [...css.matchAll(/(?:^|[{}])([^{}]*)\{/g)]
+  .map(([, head]) => head.trim())
+  .filter((head) => head.split(",").some((item) => BARE_DARK_COMPOUND.test(item.trim())));
+if (escapedDarkBlocks.length > 0) {
+  for (const head of escapedDarkBlocks) {
+    console.error(
+      `[build-fiestaui-css] a dark token block escaped the rewrite — it will never win over \`:root\` here:\n` +
+        `    ${head}\n` +
+        "  Teach DARK_TOKEN_BLOCK the head shape @fiestaboard/ui compiles to now, so the rewrite reaches it\n" +
+        '  and it lands as `html.dark,html[data-theme="dark"]`.',
+    );
+  }
   process.exit(1);
 }
 

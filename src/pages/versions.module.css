@@ -41,22 +41,3 @@
 }
 
 /* Flex layout (wrap/gap) comes from the `Flex` primitive. */
-
-.chip {
-  display: inline-flex;
-  align-items: center;
-  padding: 5px 10px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-family: var(--font-mono-stack);
-  font-size: 13px;
-  color: var(--foreground);
-  text-decoration: none;
-  transition: border-color 0.15s ease;
-}
-
-.chip:hover {
-  border-color: var(--ring);
-  color: var(--foreground);
-  text-decoration: none;
-}

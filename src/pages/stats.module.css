@@ -88,18 +88,6 @@
   box-sizing: border-box;
 }
 
-.spotlightIcon {
-  flex-shrink: 0;
-  width: 38px;
-  height: 38px;
-  border-radius: 9px;
-  background: var(--ifm-color-emphasis-200);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--ifm-color-primary);
-}
-
 .spotlightBody {
   flex: 1;
   min-width: 0;
@@ -130,32 +118,6 @@
   border-radius: 4px;
 }
 
-/* ── Summary strip ─────────────────────────────────────────────── */
-
-.statStrip {
-  display: flex;
-  gap: 2rem;
-  margin-bottom: 1.25rem;
-}
-
-.statStripItem {
-  display: flex;
-  align-items: baseline;
-  gap: 0.4rem;
-}
-
-.statStripValue {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--ifm-color-primary);
-  line-height: 1;
-}
-
-.statStripLabel {
-  font-size: 0.875rem;
-  color: var(--ifm-color-emphasis-600);
-}
-
 /* ── Sections ──────────────────────────────────────────────────── */
 
 .section {
@@ -166,54 +128,6 @@
   font-size: 0.875rem;
   color: var(--ifm-color-emphasis-600);
   margin: 0.25rem 0 1.25rem;
-}
-
-/* ── Bar chart ─────────────────────────────────────────────────── */
-
-.barChart {
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
-}
-
-.barRow {
-  display: grid;
-  grid-template-columns: 150px 1fr 46px;
-  align-items: center;
-  gap: 0.625rem;
-}
-
-.barName {
-  font-size: 0.875rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-decoration: none;
-}
-
-.barName:hover {
-  text-decoration: underline;
-}
-
-.barTrack {
-  height: 18px;
-  background: var(--ifm-color-emphasis-200);
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.barFill {
-  height: 100%;
-  background: var(--ifm-color-primary);
-  border-radius: 4px;
-  min-width: 2px;
-}
-
-.barValue {
-  font-size: 0.8125rem;
-  font-variant-numeric: tabular-nums;
-  color: var(--ifm-color-emphasis-700);
-  text-align: right;
 }
 
 /* ── Show more button ──────────────────────────────────────────── */
@@ -315,20 +229,6 @@
 }
 
 @media (max-width: 640px) {
-  .statStrip {
-    gap: 1.25rem;
-    flex-wrap: wrap;
-  }
-
-  .barRow {
-    grid-template-columns: 120px 1fr 40px;
-    gap: 0.5rem;
-  }
-
-  .barName {
-    font-size: 0.8125rem;
-  }
-
   .recentColumns {
     grid-template-columns: 1fr;
   }

@@ -71,6 +71,7 @@ function TopPluginSpotlight({
   const preview = pluginPreviews[plugin.id]?.previews[0];
   // Backwards compat: no previews entry yet -> legacy screenshot -> icon.
   const [imgOk, setImgOk] = useState(true);
+  const legacyImg = pluginBoardImagePath(entry, "dark");
 
   return (
     <Link to={`/plugins/detail?id=${plugin.id}`} className={styles.spotlight}>
@@ -90,10 +91,10 @@ function TopPluginSpotlight({
               previewLabel={`${plugin.name} on a split-flap board`}
             />
           </Box>
-        ) : imgOk ? (
+        ) : legacyImg && imgOk ? (
           <img
             className={styles.spotlightImage}
-            src={pluginBoardImagePath(entry, "dark")}
+            src={legacyImg}
             alt={`${plugin.name} on a split-flap board`}
             loading="lazy"
             onError={() => setImgOk(false)}

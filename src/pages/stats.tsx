@@ -1,6 +1,9 @@
 import Link from "@docusaurus/Link";
 import { StaticBoardDisplay } from "@fiestaboard/ui/components/board/static-board-display";
 import { Card } from "@fiestaboard/ui/components/containment/card";
+import { IconTile } from "@fiestaboard/ui/components/containment/icon-tile";
+import { BarList } from "@fiestaboard/ui/components/data/bar-list";
+import { StatStrip } from "@fiestaboard/ui/components/data/stat-strip";
 import { Badge } from "@fiestaboard/ui/components/feedback/badge";
 import { Spinner } from "@fiestaboard/ui/components/feedback/spinner";
 import { Button } from "@fiestaboard/ui/components/forms/button";
@@ -56,41 +59,6 @@ function PluginIcon({ name, size = 24 }: { name: string; size?: number }) {
   return <Icon size={size} />;
 }
 
-function StatStrip({ items }: { items: { value: string | number; label: string }[] }) {
-  return (
-    <Box className={styles.statStrip}>
-      {items.map((item, i) => (
-        <Box key={i} className={styles.statStripItem}>
-          <Text as="span" className={styles.statStripValue}>
-            {item.value}
-          </Text>
-          <Text as="span" className={styles.statStripLabel}>
-            {item.label}
-          </Text>
-        </Box>
-      ))}
-    </Box>
-  );
-}
-
-function BarRow({ plugin, max }: { plugin: PluginStat; max: number }) {
-  const uniques = plugin.clones_14d_uniques ?? 0;
-  const pct = max > 0 ? (uniques / max) * 100 : 0;
-  return (
-    <Box className={styles.barRow}>
-      <Link to={`/plugins/detail?id=${plugin.id}`} className={styles.barName}>
-        {plugin.name}
-      </Link>
-      <Box className={styles.barTrack}>
-        <Box className={styles.barFill} style={{ width: `${pct}%` }} />
-      </Box>
-      <Text as="span" className={styles.barValue}>
-        {uniques.toLocaleString()}
-      </Text>
-    </Box>
-  );
-}
-
 function TopPluginSpotlight({
   plugin,
   entry,
@@ -136,9 +104,11 @@ function TopPluginSpotlight({
           </Box>
         )}
         <Box className={styles.spotlightFooter}>
-          <Box className={styles.spotlightIcon}>
+          {/* IconTile is decorative by default (aria-hidden), which is right
+              here: the plugin name it repeats sits immediately beside it. */}
+          <IconTile size="md">
             <PluginIcon name={entry.icon} size={20} />
-          </Box>
+          </IconTile>
           <Box className={styles.spotlightBody}>
             <Box className={styles.spotlightName}>{plugin.name}</Box>
             <Box className={styles.spotlightStat}>
@@ -243,7 +213,12 @@ export default function StatsPage(): ReactNode {
             <>
               <Box className={styles.dashboard}>
                 <Box className={styles.dashboardLeft}>
+                  {/* mb-5 stands in for the deleted `.statStrip` rule's
+                      1.25rem bottom margin — `.dashboardLeft` is not a flex
+                      column, so the strip owns its own spacing. */}
                   <StatStrip
+                    className="mb-5"
+                    tone="brand"
                     items={[
                       { value: data.plugins.length, label: "plugins" },
                       {
@@ -268,11 +243,26 @@ export default function StatsPage(): ReactNode {
                     {hiddenFromRanking > 0 &&
                       ` - ${hiddenFromRanking} community-hosted ${hiddenFromRanking === 1 ? "plugin doesn't" : "plugins don't"} expose clone data and ${hiddenFromRanking === 1 ? "is" : "are"} not ranked`}
                   </Text>
-                  <Box className={styles.barChart}>
-                    {displayedPlugins.map((plugin) => (
-                      <BarRow key={plugin.id} plugin={plugin} max={maxUniques} />
-                    ))}
-                  </Box>
+                  {/* `max` is passed explicitly rather than left to BarList's
+                      "largest item wins" default: the preview slice and the
+                      full list must share one scale, so a bar keeps its width
+                      when "Show all" is toggled. `renderLabel` is the DS's
+                      router-agnostic link seam — the Docusaurus <Link> goes
+                      here so client-side routing survives, and the DS's own
+                      truncation/type classes land on the anchor itself. */}
+                  <BarList
+                    max={maxUniques}
+                    items={displayedPlugins.map((plugin) => ({
+                      key: plugin.id,
+                      label: plugin.name,
+                      value: plugin.clones_14d_uniques ?? 0,
+                      renderLabel: ({ className, children }) => (
+                        <Link to={`/plugins/detail?id=${plugin.id}`} className={className}>
+                          {children}
+                        </Link>
+                      ),
+                    }))}
+                  />
                   {ranked.length > RANKING_PREVIEW && (
                     <Button
                       variant="ghost"

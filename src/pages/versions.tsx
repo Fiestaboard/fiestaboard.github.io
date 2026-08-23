@@ -2,12 +2,12 @@ import Link from "@docusaurus/Link";
 import { type GlobalVersion, useLatestVersion, useVersions } from "@docusaurus/plugin-content-docs/client";
 import { Card } from "@fiestaboard/ui/components/containment/card";
 import { Table, TableBody, TableCell, TableRow } from "@fiestaboard/ui/components/containment/table";
+import { Chip } from "@fiestaboard/ui/components/feedback/chip";
 import { Button } from "@fiestaboard/ui/components/forms/button";
 import { Box } from "@fiestaboard/ui/components/layout/box";
 import { Flex } from "@fiestaboard/ui/components/layout/flex";
 import { Heading } from "@fiestaboard/ui/components/typography/heading";
 import { Text } from "@fiestaboard/ui/components/typography/text";
-import { TextLink } from "@fiestaboard/ui/components/typography/text-link";
 import allVersions from "@site/versions.json";
 import Layout from "@theme/Layout";
 import type { ReactNode } from "react";
@@ -121,9 +121,17 @@ export default function Versions(): ReactNode {
                 <Text className={styles.archivedMajor}>{major}.x</Text>
                 <Flex wrap gap="2">
                   {archivedByMajor.get(major)!.map((name) => (
-                    <TextLink key={name} className={styles.chip} href={`${VERSIONED_DOCS}/version-${name}`}>
-                      {name}
-                    </TextLink>
+                    // `asChild` around a real anchor, per Chip's documented
+                    // usage: these leave the site for GitHub, so they keep
+                    // native link semantics rather than becoming buttons. The
+                    // anchor is Docusaurus `Link` rather than a bare `<a>`
+                    // (which eslint forbids here) — the same primitive the
+                    // homepage's "View on GitHub" already uses for an external
+                    // URL, so these pick up its `target="_blank"
+                    // rel="noopener noreferrer"` too.
+                    <Chip key={name} mono asChild>
+                      <Link href={`${VERSIONED_DOCS}/version-${name}`}>{name}</Link>
+                    </Chip>
                   ))}
                 </Flex>
               </Box>

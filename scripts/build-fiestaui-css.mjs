@@ -39,37 +39,59 @@ const result = await postcss([tailwindcss({ optimize: true })]).process(src, { f
 // it. So the warning is noise, not a lossy minification bug. Do not "fix" it
 // by rewriting this token to a finite px value.
 
-// Make FiestaUI's class-based dark mode ALSO respond to Docusaurus's native
-// `data-theme="dark"` attribute, so the theme works with zero JavaScript — no
-// `.dark` class needs to be synced. Two compiled selector forms carry dark
-// mode: the token override block (`.dark{…}`) and per-utility variants
-// (`…:is(.dark *)`). We widen both to match `[data-theme="dark"]` too.
+// Make FiestaUI's dark mode land on this site, where nothing ever stamps a
+// `.dark` class — Docusaurus owns the theme signal and re-stamps
+// `data-theme="dark"` on <html> pre-paint.
 //
-// The token block is qualified with `html` so it outranks `:root` on
-// specificity (0,1,1 vs 0,1,0) rather than relying on source order. Docusaurus
-// runs its own PostCSS colour-fallback pass over this file afterwards, and that
-// pass appends `@supports (color:color(display-p3 …))` / `@media
-// (color-gamut:p3)` upgrade blocks containing only the tokens whose value falls
-// outside sRGB. A token can qualify in light mode but not dark (`--warning`,
-// `--success`, `--primary`, `--ring`, `--chart-*`, `--tag-*`), which emits a
-// wide-gamut `:root` declaration with no `.dark` counterpart after it — on a P3
-// display that silently reinstated the *light* value in dark mode. Winning on
-// specificity makes those trailing `:root` blocks harmless.
+// @fiestaboard/ui 5.9.0 does most of that reach itself: theme.css declares
+// every dark-scoped selector in BOTH spellings now, so the token block arrives
+// as `.dark,[data-theme=dark]{…}`, each `dark:` utility as
+// `…:is(.dark *,[data-theme=dark] *)`, and `.dark .sidebar-gradient-horizontal`
+// (which this rewrite never reached, and which was therefore dead here for two
+// majors) as a pair too.
 //
-// The token block is matched by regex rather than by a `}.dark{` literal
-// because it does not always arrive as one block. Tailwind hoists any token
-// whose value needs a feature guard into a separate `@supports (…){.dark{…}}`
-// fragment and leaves a plain-value fallback behind in the main block, so the
-// second fragment opens after a `{` instead of a `}`. @fiestaboard/ui 4.0.0
-// made that reachable: `--brand-hover` (and `--border`) are `color-mix()`
-// values, so dark mode now has three fragments where 3.4.0 had one. A missed
-// fragment is not a missing declaration — the fallback in the main block is
-// still there and still outranks `:root` — so the token just quietly stays on
-// its fallback, and for `--brand-hover` that fallback is `var(--brand)`, i.e.
-// a link whose hover state is its resting state.
+// What the DS deliberately does NOT do is qualify with `html` — that would
+// raise specificity to 0,1,1 and break scoped subtree theming for consumers who
+// dark-theme a card rather than a document. So the token block still has to be
+// rewritten here, now for SPECIFICITY rather than for reach. Docusaurus runs its
+// own PostCSS colour-fallback pass over this file afterwards, and that pass
+// appends `@supports (color:color(display-p3 …))` / `@media (color-gamut:p3)`
+// upgrade blocks containing only the tokens whose value falls outside sRGB. A
+// token can qualify in light mode but not dark (`--warning`, `--success`,
+// `--primary`, `--ring`, `--chart-*`, `--tag-*`), which emits a wide-gamut
+// `:root` declaration with no dark counterpart after it — on a P3 display that
+// silently reinstated the *light* value in dark mode. At 0,1,0 the dark block
+// only wins on source order, which those appended blocks lose; `html` wins
+// outright.
+//
+// Two things the head pattern has to tolerate, hence a regex rather than a
+// `}.dark,[data-theme=dark]{` literal:
+//
+//   - It does not arrive as ONE block. Tailwind hoists any token whose value
+//     needs a feature guard into a separate `@supports (…){…}` fragment and
+//     leaves a plain-value fallback behind in the main block, so the fragment
+//     opens after a `{` instead of a `}`. 4.0.0 made that reachable —
+//     `--brand-hover`, `--border` and `--input` are `color-mix()` values — and
+//     a missed fragment is not a missing declaration but a token quietly stuck
+//     on its fallback, which for `--brand-hover` is a link whose hover state is
+//     its resting state.
+//   - The attribute half is optional, because a bare `.dark{` head is what
+//     every version before 5.9.0 emitted. Pinning to the pair would turn a DS
+//     downgrade into a light-only site instead of into the same rewrite.
+//
+// Tailwind's optimizer drops the quotes from `[data-theme="dark"]`; the pattern
+// accepts either, since that is its choice to make and not this file's.
+const DARK_TOKEN_BLOCK = String.raw`([{}])\.dark(?:,\[data-theme=("?)dark\2\])?\{`;
+
+// The per-utility `dark:` variants get widened too, and that line is inert as of
+// 5.9.0 — kept because it is the ONLY thing standing between a DS that went back
+// to a class-only `@custom-variant dark` and a site where every `dark:` utility
+// in the bundle silently stops matching. That failure is invisible: the CSS is
+// valid, the selectors still apply to the right elements, and the token block
+// keeps working, so the page renders half-dark rather than visibly light.
 const css = result.css
   .replaceAll(":is(.dark *)", ':is(.dark *, [data-theme="dark"] *)')
-  .replaceAll(/([{}])\.dark\{/g, '$1html.dark,html[data-theme="dark"]{');
+  .replaceAll(new RegExp(DARK_TOKEN_BLOCK, "g"), '$1html.dark,html[data-theme="dark"]{');
 
 const banner = "/* AUTO-GENERATED by scripts/build-fiestaui-css.mjs from fiestaui.src.css. Do not edit. */\n";
 fs.writeFileSync(output, banner + css);
@@ -241,22 +263,25 @@ if (unboundedFocus.length > 0) {
   process.exit(1);
 }
 
-// Likewise if the dark-mode token block was not rewritten: a Tailwind change to
-// how the `dark` variant compiles would silently leave the site light-only.
+// Likewise if the dark-mode token block was not rewritten: a change to how the
+// `dark` selector compiles would leave the block at 0,1,0, i.e. losing to every
+// wide-gamut `:root` block Docusaurus appends after it.
 if (!css.includes('html.dark,html[data-theme="dark"]{')) {
-  console.error("[build-fiestaui-css] dark-mode token block not rewritten — the compiled `.dark{` selector changed.");
+  console.error("[build-fiestaui-css] dark-mode token block not rewritten — the compiled dark selector changed.");
   process.exit(1);
 }
 
 // And if ANY of them escaped. Tailwind splits the dark token block whenever a
-// token needs a `@supports` guard, and each fragment carries its own `.dark{`
-// selector — one the rewrite has to reach as well, because a fragment left
-// matching only `.dark` is dead on this site while the plain-value fallback
-// beside it still wins on specificity. That is a token silently stuck on its
-// fallback in dark mode, which is indistinguishable from working until you
-// measure it.
-if (/\.dark\{/.test(css)) {
-  console.error("[build-fiestaui-css] a `.dark{` token block escaped the rewrite — it will never match on this site.");
+// token needs a `@supports` guard, and each fragment carries its own copy of the
+// selector — one the rewrite has to reach as well, because an unqualified
+// fragment loses that specificity race while the plain-value fallback beside it
+// keeps resolving. That is a token silently stuck on its fallback in dark mode,
+// which is indistinguishable from working until you measure it.
+//
+// Deliberately the SAME pattern the rewrite ran, so the two cannot drift: any
+// head the rewrite would have matched is by construction a head it did match.
+if (new RegExp(DARK_TOKEN_BLOCK).test(css)) {
+  console.error("[build-fiestaui-css] a dark token block escaped the rewrite — it will never win over `:root` here.");
   process.exit(1);
 }
 

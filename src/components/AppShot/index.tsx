@@ -56,7 +56,9 @@ interface CaptureEntry {
   frame?: string;
   wrapperClass: string;
   vars: Record<string, Record<string, string>>;
+  /** Desktop viewport the markup was captured at — fitted to its content. */
   capturedAt: { width: number; height: number };
+  capturedAtMobile?: { width: number; height: number };
   viewportSpecific?: boolean;
 }
 
@@ -69,6 +71,12 @@ const VIEWPORTS = {
   desktop: { width: 1280, height: 800 },
   mobile: { width: 390, height: 844 },
 } as const;
+
+/** The viewport a capture was taken at, falling back for older manifests. */
+function captureViewport(entry: CaptureEntry | null, device: "desktop" | "mobile") {
+  const recorded = device === "mobile" ? entry?.capturedAtMobile : entry?.capturedAt;
+  return recorded ?? VIEWPORTS[device];
+}
 
 /** The manifest is fetched once per page, not once per shot. */
 let manifestPromise: Promise<Manifest | null> | null = null;
@@ -161,7 +169,11 @@ export default function AppShot({
     const win = iframe.contentWindow;
     if (!doc || !win) return;
 
-    const { width, height } = VIEWPORTS[device];
+    // Render at the viewport the capture was TAKEN at, not a fixed one. The
+    // generator fits the desktop height to each screen's content, so the
+    // Dashboard is 670px rather than 800. Rendering it in a taller frame would
+    // reintroduce the band of empty page background this exists to remove.
+    const { width, height } = captureViewport(entry, device);
 
     // The app renders mobile and desktop copies of its chrome, one of them
     // display:none — always anchor to the one that is actually laid out.
@@ -328,8 +340,8 @@ export default function AppShot({
             tabIndex={-1}
             aria-hidden="true"
             scrolling="no"
-            width={VIEWPORTS[device].width}
-            height={VIEWPORTS[device].height}
+            width={captureViewport(entry, device).width}
+            height={captureViewport(entry, device).height}
           />
           <Box className={styles.overlay} ref={overlayRef} />
         </Box>

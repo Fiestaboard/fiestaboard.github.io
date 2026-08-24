@@ -30,7 +30,7 @@
     "@docusaurus/plugin-client-redirects": "3.10.2",
     "@docusaurus/preset-classic": "3.10.2",
     "@easyops-cn/docusaurus-search-local": "^0.55.3",
-    "@fiestaboard/ui": "5.10.0",
+    "@fiestaboard/ui": "5.12.1",
     "@mdx-js/react": "^3.0.0",
     "@sablier/docusaurus-plugin-llms": "0.3.1",
     "clsx": "^2.0.0",

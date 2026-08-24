@@ -62,19 +62,21 @@ export const CATEGORIES = Object.keys(CATEGORY_LABELS);
  * format shift stays backwards compatible.
  * e.g. pluginBoardImagePath(plugin, "dark")
  *   → "https://raw.githubusercontent.com/Fiestaboard/fiestaboard-plugin--air-fog/main/docs/black/board-display.png"
+ *
+ * Returns null when the plugin's repository isn't a GitHub URL we can address.
+ * There is no site-local fallback: this site used to carry a copy of every
+ * plugin's board screenshot under static/img, and those went stale the moment
+ * a plugin changed what it drew. Plugins own their board art now — through
+ * `previews` in their manifest, or the screenshot in their own repo.
  */
-export function pluginBoardImagePath(plugin: PluginEntry, colorMode: "light" | "dark"): string {
+export function pluginBoardImagePath(plugin: PluginEntry, colorMode: "light" | "dark"): string | null {
+  if (!plugin.repository) return null;
+
   const boardDir = colorMode === "light" ? "white" : "black";
+  const cleaned = plugin.repository.replace(/\.git$/, "").replace(/\/$/, "");
+  const match = cleaned.match(/github\.com\/(.+)/);
+  if (!match) return null;
 
-  if (plugin.repository) {
-    const cleaned = plugin.repository.replace(/\.git$/, "").replace(/\/$/, "");
-    const match = cleaned.match(/github\.com\/(.+)/);
-    if (match) {
-      const branch = plugin.branch?.trim() || "main";
-      return `https://raw.githubusercontent.com/${match[1]}/${branch}/docs/${boardDir}/board-display.png`;
-    }
-  }
-
-  // Fallback for plugins without an external repository
-  return `/img/${boardDir}/${plugin.id.replace(/_/g, "-")}-display.png`;
+  const branch = plugin.branch?.trim() || "main";
+  return `https://raw.githubusercontent.com/${match[1]}/${branch}/docs/${boardDir}/board-display.png`;
 }

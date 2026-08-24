@@ -227,6 +227,7 @@ function DetailContent() {
 
   const categoryLabel = CATEGORY_LABELS[plugin.category] ?? plugin.category;
   const previews = pluginPreviews[plugin.id]?.previews ?? [];
+  const legacyHero = pluginBoardImagePath(plugin, boardColor === "white" ? "light" : "dark");
 
   return (
     <>
@@ -249,16 +250,19 @@ function DetailContent() {
       ) : (
         <>
           {/* Backwards compat: plugins with no previews entry yet keep their
-              legacy screenshot hero (hidden if the image doesn't exist either) */}
-          <Box className={styles.heroImage}>
-            <img
-              src={pluginBoardImagePath(plugin, boardColor === "white" ? "light" : "dark")}
-              alt={`${plugin.name} displayed on a split-flap board`}
-              onError={(e) => {
-                (e.target as HTMLImageElement).parentElement!.style.display = "none";
-              }}
-            />
-          </Box>
+              legacy screenshot hero, fetched from the plugin's own repo
+              (hidden if the image doesn't exist there either) */}
+          {legacyHero && (
+            <Box className={styles.heroImage}>
+              <img
+                src={legacyHero}
+                alt={`${plugin.name} displayed on a split-flap board`}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).parentElement!.style.display = "none";
+                }}
+              />
+            </Box>
+          )}
           {/* Same DS pill pattern as the directory's category filters: the
               module CSS used to hand-build a joined segment control with a
               literal #fff label on the active half. */}

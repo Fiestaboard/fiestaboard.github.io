@@ -34,7 +34,7 @@
     "@mdx-js/react": "^3.0.0",
     "@sablier/docusaurus-plugin-llms": "0.3.1",
     "clsx": "^2.0.0",
-    "lucide-react": "^1.31.0",
+    "lucide-react": "^1.34.0",
     "prism-react-renderer": "^2.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.2.8",

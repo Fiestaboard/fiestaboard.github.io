@@ -16,9 +16,14 @@
 # Tokens:
 #   - Checking out Fiestaboard/FiestaBoard at the tag needs no PAT — the repo
 #     is public, plain actions/checkout works.
-#   - Committing/pushing to THIS repo prefers RELEASE_PAT (so the push
-#     triggers build-deploy.yml) and falls back to the built-in GITHUB_TOKEN
-#     (push works, but triggers nothing) until that secret is provisioned.
+#   - Committing to THIS repo needs no PAT either: main is protected, so the
+#     snapshot goes onto a branch and through a PR, which GITHUB_TOKEN can do
+#     with `contents: write` + `pull-requests: write`. No RELEASE_PAT exists
+#     in this repo; the `secrets.RELEASE_PAT || github.token` fallbacks below
+#     resolve to GITHUB_TOKEN today and are kept only in case one is added.
+#   - A PR opened with GITHUB_TOKEN does not fire `pull_request` workflows, so
+#     the snapshot PR's required check sits pending until someone closes and
+#     reopens it (same trade as browserslist-update.yml).
 name: Release snapshot
 
 on:
@@ -49,6 +54,11 @@ concurrency:
 
 permissions:
   contents: write
+  # main is protected, so the snapshot lands as a PR (see "Commit snapshot").
+  # Without this the branch pushes fine and then `gh pr create` dies on
+  # "Resource not accessible by integration (createPullRequest)" — a red run
+  # that had already done all the expensive work.
+  pull-requests: write
 
 jobs:
   snapshot:
@@ -203,10 +213,25 @@ jobs:
 
           BRANCH="docs/snapshot-$DOCS_VERSION"
           git push --force origin "HEAD:$BRANCH"
-          if ! gh pr view "$BRANCH" --json number >/dev/null 2>&1; then
-            gh pr create --base main --head "$BRANCH" \
-              --title "docs: snapshot version $DOCS_VERSION" \
-              --body "Docs snapshot for FiestaBoard $DOCS_VERSION, cut by \`release-snapshot.yml\`. Merging publishes it as the latest version on the site."
+
+          # REST, not `gh pr view`. That goes through GraphQL and answers about
+          # ANY pull request on the branch, including a merged one — so a
+          # re-snapshot onto an already-merged branch would find a PR, skip the
+          # create, and silently strand the new commit. `state=open` is the
+          # question actually being asked. (FiestaBoard#1689 landed the same
+          # swap for the capture PR.)
+          EXISTING=$(gh api \
+            "repos/$GITHUB_REPOSITORY/pulls?head=${GITHUB_REPOSITORY%%/*}:$BRANCH&state=open" \
+            --jq '.[0].number // empty')
+          if [ -n "$EXISTING" ]; then
+            echo "refreshed the open snapshot PR #$EXISTING"
+          else
+            NUM=$(gh api -X POST "repos/$GITHUB_REPOSITORY/pulls" \
+              -f title="docs: snapshot version $DOCS_VERSION" \
+              -f head="$BRANCH" -f base=main \
+              -f body="Docs snapshot for FiestaBoard $DOCS_VERSION, cut by \`release-snapshot.yml\`. Merging publishes it as the latest version on the site." \
+              --jq .number)
+            echo "opened snapshot PR #$NUM"
           fi
           # A snapshot behind a PR is not on main yet, so the deploy trigger
           # below must not fire.

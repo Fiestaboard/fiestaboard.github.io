@@ -1,14 +1,21 @@
 # Daily plugin stats refresh: runs scripts/fetch_plugin_stats.py (reads
-# data/plugin-registry.json, writes data/plugin-stats.json) and commits the
-# output only when it changed.
+# data/plugin-registry.json, writes data/plugin-stats.json) and opens a PR with
+# the output only when it changed.
 #
 # Tokens:
-#   - GITHUB_TOKEN is enough to commit/push to this repo (contents: write).
+#   - GITHUB_TOKEN can no longer commit to main: the branch ruleset rejects a
+#     direct push with GH013 ("Changes must be made through a pull request"),
+#     which is what had been failing every daily run. It is still enough to
+#     push a branch and open the PR, given `pull-requests: write` below.
+#   - A PR opened with GITHUB_TOKEN does NOT fire `pull_request` workflows, so
+#     the required "Lint, typecheck & PR-mode build" check sits pending until
+#     someone closes and reopens it. This repo holds no RELEASE_PAT to open it
+#     with instead (same trade as browserslist-update.yml).
 #   - The traffic API (repos/*/traffic/clones) needs push access to the plugin
 #     repos, which the default GITHUB_TOKEN of THIS repo does not have — so the
 #     script prefers RELEASE_PAT (org PAT) for `gh api`, falling back to
-#     GITHUB_TOKEN until that secret is provisioned (traffic then records as
-#     null for every repo, by design; metadata and manifests still resolve).
+#     GITHUB_TOKEN. No such secret exists here today, so traffic records as
+#     null for every repo, by design; metadata and manifests still resolve.
 name: Plugin stats
 
 on:
@@ -22,6 +29,7 @@ concurrency:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   refresh:
@@ -40,8 +48,10 @@ jobs:
           GH_TOKEN: ${{ secrets.RELEASE_PAT || secrets.GITHUB_TOKEN }}
         run: python3 scripts/fetch_plugin_stats.py
 
-      - name: Commit if changed
+      - name: Open PR if changed
         id: commit
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           git add -- data/plugin-stats.json
@@ -53,16 +63,50 @@ jobs:
           git config user.name "FiestaBoard CI"
           git config user.email "ci@fiestaboard.app"
           git commit -m "data: refresh plugin stats"
-          # Rebase-and-retry guards against races with other daily commits.
-          git pull --rebase origin "${GITHUB_REF_NAME}"
-          git push origin "HEAD:${GITHUB_REF_NAME}"
-          echo "pushed=true" >> "$GITHUB_OUTPUT"
 
-      # The push above used GITHUB_TOKEN, which never fires other workflows'
-      # push triggers — so start the site build+deploy explicitly. Only when
-      # a commit actually landed and the target branch is main.
+          # Only main is protected; a workflow_dispatch rehearsal on a scratch
+          # ref still commits straight to it. Rebase-and-retry guards against
+          # races with other daily commits.
+          if [ "$GITHUB_REF_NAME" != "main" ]; then
+            git pull --rebase origin "$GITHUB_REF_NAME"
+            git push origin "HEAD:$GITHUB_REF_NAME"
+            echo "pushed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # One long-lived branch, force-pushed from today's main, so an
+          # unmerged refresh is replaced rather than turning into a PR a day.
+          # Same shape as release-snapshot.yml's snapshot PR.
+          BRANCH="data/plugin-stats"
+          git push --force origin "HEAD:$BRANCH"
+
+          # REST, not `gh pr view`: that answers about any PR on the branch,
+          # including yesterday's merged one, which on a reused branch would
+          # skip the create and strand the refresh. `state=open` is the
+          # question actually being asked.
+          EXISTING=$(gh api \
+            "repos/$GITHUB_REPOSITORY/pulls?head=${GITHUB_REPOSITORY%%/*}:$BRANCH&state=open" \
+            --jq '.[0].number // empty')
+          if [ -n "$EXISTING" ]; then
+            echo "refreshed the open stats PR #$EXISTING"
+          else
+            NUM=$(gh api -X POST "repos/$GITHUB_REPOSITORY/pulls" \
+              -f title="data: refresh plugin stats" \
+              -f head="$BRANCH" -f base=main \
+              -f body="Daily plugin-stats refresh cut by \`.github/workflows/plugin-stats.yml\`. The branch is force-pushed on every run, so this PR always carries the newest numbers; merging publishes them through \`build-deploy.yml\`." \
+              --jq .number)
+            echo "opened stats PR #$NUM"
+          fi
+          # The refresh is on a branch, not on main, so the deploy trigger
+          # below must not fire — merging the PR is a push to main, which
+          # starts build-deploy.yml by itself.
+          echo "pushed=false" >> "$GITHUB_OUTPUT"
+
+      # Reachable only on the non-main rehearsal path above: that push used
+      # GITHUB_TOKEN, which never fires other workflows' push triggers, so
+      # start the site build+deploy explicitly.
       - name: Trigger site build & deploy
-        if: steps.commit.outputs.pushed == 'true' && github.ref == 'refs/heads/main'
+        if: steps.commit.outputs.pushed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run build-deploy.yml --repo "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME"

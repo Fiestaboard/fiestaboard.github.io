@@ -33,6 +33,20 @@ jobs:
         # the rest of data/ is owned by automation in this repo. PRs must not
         # modify any of it — changes belong in the FiestaBoard repo or arrive
         # via the sync.
+        #
+        # Exempt the two branches the automation itself lands on. main is
+        # protected, so release-snapshot.yml and plugin-stats.yml can no longer
+        # push their output straight at it — they open PRs, and that output IS
+        # the guarded content. Without this, the guard rejects the only route
+        # those workflows have left (it did, on #57 and #59).
+        #
+        # Matched on branch name, not on actor: the actor for both is
+        # github-actions[bot], which would also exempt every Dependabot PR and
+        # anything else a bot opens. These two names belong to the two
+        # workflows and to nothing else.
+        if: >-
+          github.head_ref != 'data/plugin-stats' &&
+          !startsWith(github.head_ref, 'docs/snapshot-')
         run: |
           CHANGED=$(git diff --name-only HEAD^1 HEAD -- docs/ data/)
           if [ -n "$CHANGED" ]; then

@@ -16,6 +16,11 @@ updates:
         patterns:
           - "@docusaurus/*"
           - "*docusaurus*"
+    ignore:
+      # FiestaUI's own "Downstream Upgrade" workflow opens the @fiestaboard/ui
+      # bump PR here on every release, so Dependabot can only duplicate it —
+      # #50 (ci-bot) and #54 (Dependabot) were the same 5.12.1 -> 5.12.2 bump.
+      - dependency-name: "@fiestaboard/ui"
 
   - package-ecosystem: "github-actions"
     directory: "/"

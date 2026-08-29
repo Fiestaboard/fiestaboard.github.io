@@ -7,10 +7,14 @@
 #     direct push with GH013 ("Changes must be made through a pull request"),
 #     which is what had been failing every daily run. It is still enough to
 #     push a branch and open the PR, given `pull-requests: write` below.
-#   - A PR opened with GITHUB_TOKEN does NOT fire `pull_request` workflows, so
-#     the required "Lint, typecheck & PR-mode build" check sits pending until
-#     someone closes and reopens it. This repo holds no RELEASE_PAT to open it
-#     with instead (same trade as browserslist-update.yml).
+#   - A PR opened with GITHUB_TOKEN DOES start pr-build.yml, but the run lands
+#     in `action_required`: the approval policy is "first-time contributors"
+#     and github-actions[bot] never graduates into a contributor, so the
+#     required "Lint, typecheck & PR-mode build" check reports nothing until
+#     someone approves the run. PRs opened by the fiestaboard-ci-bot App run
+#     ungated (see #50); this repo holds no credential for that identity.
+#   - pr-build.yml's synced-paths guard skips this branch by name — its whole
+#     diff is data/, which that guard otherwise rejects.
 #   - The traffic API (repos/*/traffic/clones) needs push access to the plugin
 #     repos, which the default GITHUB_TOKEN of THIS repo does not have — so the
 #     script prefers RELEASE_PAT (org PAT) for `gh api`, falling back to

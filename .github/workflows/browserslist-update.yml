@@ -6,12 +6,12 @@
 # package-lock.json — a reviewed path — so it opens a PR instead.
 #
 # Tokens:
-#   - A PR opened with the default GITHUB_TOKEN does NOT fire `pull_request`
-#     workflows, so pr-build.yml would never run and the required
-#     "Lint, typecheck & PR-mode build" check would sit pending forever.
-#     RELEASE_PAT (org PAT) is used when provisioned so CI runs normally;
-#     until then the PR still opens but needs a manual close/reopen to
-#     trigger its checks.
+#   - A PR opened with the default GITHUB_TOKEN does start pr-build.yml, but
+#     the run lands in `action_required` — the approval policy is "first-time
+#     contributors" and github-actions[bot] never graduates into one — so the
+#     required "Lint, typecheck & PR-mode build" check reports nothing until
+#     someone approves the run. RELEASE_PAT (org PAT) is used when
+#     provisioned, which runs CI normally; no such secret exists here yet.
 name: Browserslist update
 
 on:

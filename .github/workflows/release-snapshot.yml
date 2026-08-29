@@ -21,9 +21,12 @@
 #     with `contents: write` + `pull-requests: write`. No RELEASE_PAT exists
 #     in this repo; the `secrets.RELEASE_PAT || github.token` fallbacks below
 #     resolve to GITHUB_TOKEN today and are kept only in case one is added.
-#   - A PR opened with GITHUB_TOKEN does not fire `pull_request` workflows, so
-#     the snapshot PR's required check sits pending until someone closes and
-#     reopens it (same trade as browserslist-update.yml).
+#   - A PR opened with GITHUB_TOKEN DOES start pr-build.yml here, but the run
+#     lands in `action_required`: the approval policy is "first-time
+#     contributors" and github-actions[bot] never graduates into a contributor.
+#     Someone has to approve the run before the required check reports. PRs
+#     opened by the fiestaboard-ci-bot App run ungated (see #50), so giving
+#     this repo that identity — or any PAT — would remove the click.
 name: Release snapshot
 
 on:
@@ -179,6 +182,32 @@ jobs:
           rm -f "versioned_docs/version-$DOCS_VERSION/README.md" \
                 "versioned_docs/version-$DOCS_VERSION/.source-sha"
 
+      # Cutting a version moves the site's whole URL surface: the new version
+      # takes over the unprefixed /docs/*, the previous latest gains its own
+      # number, and whatever drops past DEPLOY_VERSION_CAP becomes redirect
+      # stubs. build-deploy.yml's baseline compare is enforced and fails on any
+      # added or removed route, so a snapshot that does not carry the refreshed
+      # baseline merges green and then never deploys — the version ships to
+      # nobody. (8.32 landed that way: 63 routes added, 62 removed.)
+      #
+      # The compare runs first, report-only, so the log says what moved before
+      # the freeze is rewritten — a snapshot that drops a page should be
+      # visible in the PR, not absorbed silently.
+      #
+      # Not automated: tests/routes.fixture.json pins a few explicit version
+      # numbers, and an entry whose version falls past the cap starts
+      # expecting a page where a redirect now lives. That one still needs a
+      # human.
+      - name: Refresh the URL baseline for the new version
+        if: steps.version.outputs.created == 'true'
+        env:
+          NODE_OPTIONS: --max-old-space-size=8192
+        run: |
+          set -euo pipefail
+          npm run build
+          node scripts/docs-parity.mjs build --compare tests/baseline.json || true
+          node scripts/docs-parity.mjs build > tests/baseline.json
+
       - name: Commit snapshot
         id: commit
         if: steps.version.outputs.created == 'true'
@@ -189,7 +218,7 @@ jobs:
           set -euo pipefail
           git config user.name "FiestaBoard CI"
           git config user.email "ci@fiestaboard.app"
-          git add -A -- docs versioned_docs versioned_sidebars versions.json data
+          git add -A -- docs versioned_docs versioned_sidebars versions.json data tests/baseline.json
           if git diff --cached --quiet; then
             echo "Nothing to commit."
             echo "pushed=false" >> "$GITHUB_OUTPUT"

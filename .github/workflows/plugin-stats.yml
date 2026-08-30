@@ -7,12 +7,24 @@
 #     direct push with GH013 ("Changes must be made through a pull request"),
 #     which is what had been failing every daily run. It is still enough to
 #     push a branch and open the PR, given `pull-requests: write` below.
-#   - A PR opened with GITHUB_TOKEN DOES start pr-build.yml, but the run lands
-#     in `action_required`: the approval policy is "first-time contributors"
-#     and github-actions[bot] never graduates into a contributor, so the
+#   - Work opened or pushed by github-actions[bot] leaves pr-build.yml stuck in
+#     `action_required`: the bot never graduates into a contributor, so the
 #     required "Lint, typecheck & PR-mode build" check reports nothing until
-#     someone approves the run. PRs opened by the fiestaboard-ci-bot App run
-#     ungated (see #50); this repo holds no credential for that identity.
+#     someone approves the run by hand, every single day.
+#     Relaxing the fork-PR approval policy does NOT fix this — that setting
+#     governs PRs from forks, and this branch lives in the repo. (Verified
+#     2026-08-30: policy relaxed to first_time_contributors_new_to_github, a
+#     fresh run still came back action_required, policy reverted.) The fix is
+#     identity — work carrying the fiestaboard-ci-bot App's token runs ungated,
+#     as PR #50 shows.
+#   - The App token is minted first and handed to BOTH checkout and the PR
+#     step. Checkout matters as much as the PR call: the branch is long-lived
+#     and reused, so on most days the trigger is `synchronize` from the
+#     force-push rather than `opened` from the PR creation, and a run is
+#     attributed to whoever pushed.
+#   - continue-on-error plus the `||` fallbacks mean a missing or rotated App
+#     secret degrades to the old gated-but-working behavior rather than failing
+#     the daily refresh outright.
 #   - pr-build.yml's synced-paths guard skips this branch by name — its whole
 #     diff is data/, which that guard otherwise rejects.
 #   - The traffic API (repos/*/traffic/clones) needs push access to the plugin
@@ -45,7 +57,21 @@ jobs:
     # stays allowed on any ref for testing.
     if: github.event_name != 'schedule' || github.ref == 'refs/heads/main'
     steps:
+      - name: Mint CI App token
+        id: app-token
+        continue-on-error: true
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.CLAUDE_BOT_APP_ID }}
+          private-key: ${{ secrets.CLAUDE_BOT_APP_PRIVATE_KEY }}
+          owner: Fiestaboard
+          repositories: fiestaboard.github.io
+
       - uses: actions/checkout@v7
+        with:
+          # Persisted as the origin credential, so the force-push below is
+          # attributed to the App and its `synchronize` run is ungated.
+          token: ${{ steps.app-token.outputs.token || github.token }}
 
       - name: Fetch plugin stats
         env:
@@ -55,7 +81,7 @@ jobs:
       - name: Open PR if changed
         id: commit
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
         run: |
           set -euo pipefail
           git add -- data/plugin-stats.json

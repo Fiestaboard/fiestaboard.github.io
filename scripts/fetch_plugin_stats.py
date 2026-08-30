@@ -20,6 +20,9 @@ from pathlib import Path
 REGISTRY_PATH = Path(__file__).parent.parent / "data/plugin-registry.json"
 OUTPUT_PATH = Path(__file__).parent.parent / "data/plugin-stats.json"
 MAX_WORKERS = 10
+# Plugins hosted here are the ones the CI credential is expected to reach; see
+# the traffic check in main().
+ORG = "Fiestaboard"
 
 
 def gh_api(path: str):
@@ -30,16 +33,16 @@ def gh_api(path: str):
     return json.loads(result.stdout)
 
 
-def fetch_plugin(plugin: dict) -> dict:
+def fetch_plugin(plugin: dict) -> tuple[dict, str]:
     # Registry plugins are not all org-hosted (community plugins live under
     # their author's account), so derive owner/repo from the registry URL
     # instead of assuming the Fiestaboard org.
     owner, repo_name = plugin["repository"].rstrip("/").split("/")[-2:]
     print(f"  {owner}/{repo_name}", file=sys.stderr)
 
-    # The traffic API needs push access, which we only have for org repos.
-    # For community repos it 403s — keep None so the output distinguishes
-    # "no data" (null) from a genuine zero.
+    # The traffic API needs Administration:read, which we only have for org
+    # repos. For community repos it 403s — keep None so the output
+    # distinguishes "no data" (null) from a genuine zero.
     traffic = gh_api(f"repos/{owner}/{repo_name}/traffic/clones")
     meta = gh_api(f"repos/{owner}/{repo_name}") or {}
 
@@ -63,7 +66,7 @@ def fetch_plugin(plugin: dict) -> dict:
         "updated_at": meta.get("updated_at"),
         "clones_14d_count": traffic.get("count", 0) if traffic is not None else None,
         "clones_14d_uniques": traffic.get("uniques", 0) if traffic is not None else None,
-    }
+    }, owner
 
 
 def main() -> None:
@@ -71,7 +74,25 @@ def main() -> None:
         registry = json.load(f)
 
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        plugins_out = list(executor.map(fetch_plugin, registry["plugins"]))
+        fetched = list(executor.map(fetch_plugin, registry["plugins"]))
+
+    plugins_out = [record for record, _ in fetched]
+
+    # A credential without Administration:read still fetches metadata and
+    # manifests fine, so the run looks healthy while every traffic field comes
+    # back null — and the site drops null-traffic plugins from its ranking, so
+    # publishing that wipes the stats page. Community repos are null by design;
+    # every org repo being null means the token is broken, not the data. Bail
+    # without writing so the last good file keeps serving.
+    org_records = [record for record, owner in fetched if owner == ORG]
+    if org_records and not any(r["clones_14d_uniques"] is not None for r in org_records):
+        print(
+            f"error: no traffic data for any of the {len(org_records)} {ORG} repos — "
+            "GH_TOKEN is missing Administration:read on them. Refusing to overwrite "
+            f"{OUTPUT_PATH} with null stats.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
 
     output = {
         "generated_at": datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),

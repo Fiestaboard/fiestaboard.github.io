@@ -27,11 +27,18 @@
 #     the daily refresh outright.
 #   - pr-build.yml's synced-paths guard skips this branch by name — its whole
 #     diff is data/, which that guard otherwise rejects.
-#   - The traffic API (repos/*/traffic/clones) needs push access to the plugin
-#     repos, which the default GITHUB_TOKEN of THIS repo does not have — so the
-#     script prefers RELEASE_PAT (org PAT) for `gh api`, falling back to
-#     GITHUB_TOKEN. No such secret exists here today, so traffic records as
-#     null for every repo, by design; metadata and manifests still resolve.
+#   - The traffic API (repos/*/traffic/clones) needs Administration:read on
+#     each plugin repo. The CI App token above cannot carry it: it is scoped to
+#     `repositories: fiestaboard.github.io`. So the fetch step mints a SECOND
+#     token — every repo the App is installed on (all 52 org plugin repos),
+#     scoped down to Administration+Contents read and nothing else. It is a
+#     read-only credential that never touches this repo's contents.
+#     This requires `Administration: Read-only` on the fiestaboard-ci-bot App;
+#     without it the mint fails, the `||` chain falls back to RELEASE_PAT and
+#     then GITHUB_TOKEN, neither of which can read traffic, and the fetch
+#     script now exits nonzero rather than publishing null stats.
+#     The community-hosted plugin (breedloj/*) is outside the installation and
+#     stays null by design; the site excludes it from the ranking.
 name: Plugin stats
 
 on:
@@ -73,9 +80,25 @@ jobs:
           # attributed to the App and its `synchronize` run is ungated.
           token: ${{ steps.app-token.outputs.token || github.token }}
 
+      # Org-wide but read-only: omitting `repositories` covers every repo the
+      # App is installed on, and the permission-* inputs scope the token down
+      # to exactly what the fetch needs — traffic (Administration) and
+      # manifest.json (Contents).
+      - name: Mint traffic-read token
+        id: traffic-token
+        continue-on-error: true
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.CLAUDE_BOT_APP_ID }}
+          private-key: ${{ secrets.CLAUDE_BOT_APP_PRIVATE_KEY }}
+          owner: Fiestaboard
+          permission-administration: read
+          permission-contents: read
+          permission-metadata: read
+
       - name: Fetch plugin stats
         env:
-          GH_TOKEN: ${{ secrets.RELEASE_PAT || secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.traffic-token.outputs.token || secrets.RELEASE_PAT || secrets.GITHUB_TOKEN }}
         run: python3 scripts/fetch_plugin_stats.py
 
       - name: Open PR if changed
@@ -134,9 +157,14 @@ jobs:
 
       # Reachable only on the non-main rehearsal path above: that push used
       # GITHUB_TOKEN, which never fires other workflows' push triggers, so
-      # start the site build+deploy explicitly.
+      # start the site build+deploy explicitly. The App token, not
+      # github.token: dispatching needs `actions: write`, which the job's
+      # GITHUB_TOKEN is not granted (verified 2026-08-30 — a rehearsal run
+      # 403'd here on `.../actions/workflows/335166277/dispatches`). Borrowing
+      # the App's existing actions:write beats widening GITHUB_TOKEN for a
+      # step that never runs on main.
       - name: Trigger site build & deploy
         if: steps.commit.outputs.pushed == 'true'
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
         run: gh workflow run build-deploy.yml --repo "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME"

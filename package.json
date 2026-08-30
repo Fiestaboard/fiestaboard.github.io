@@ -57,7 +57,10 @@
     "nanoid@^3.0.0": "^3.3.17",
     "http-proxy-middleware@^2.0.0": "^2.0.10",
     "@babel/core": "^7.29.7",
-    "encoding-sniffer": "^1.0.2"
+    "encoding-sniffer": "^1.0.2",
+    "eslint-plugin-react": {
+      "eslint": "$eslint"
+    }
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.10.2",
@@ -65,7 +68,7 @@
     "@docusaurus/types": "3.10.2",
     "@eslint/js": "^10.0.1",
     "@tailwindcss/postcss": "^4.0.0",
-    "eslint": "^9.18.0",
+    "eslint": "^10.9.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^7.1.1",

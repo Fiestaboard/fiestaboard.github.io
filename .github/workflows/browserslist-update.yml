@@ -6,12 +6,30 @@
 # package-lock.json — a reviewed path — so it opens a PR instead.
 #
 # Tokens:
-#   - A PR opened with the default GITHUB_TOKEN does start pr-build.yml, but
-#     the run lands in `action_required` — the approval policy is "first-time
-#     contributors" and github-actions[bot] never graduates into one — so the
-#     required "Lint, typecheck & PR-mode build" check reports nothing until
-#     someone approves the run. RELEASE_PAT (org PAT) is used when
-#     provisioned, which runs CI normally; no such secret exists here yet.
+#   - A PR opened with the default GITHUB_TOKEN leaves pr-build.yml stuck: the
+#     required "Lint, typecheck & PR-mode build" check reports nothing at all,
+#     so a branch rule requiring it can never be satisfied and the PR sits
+#     open forever (#72 is exactly this). github-actions[bot] never graduates
+#     into a contributor, and relaxing the fork-PR approval policy does NOT
+#     help — that setting governs PRs from forks, and ci/browserslist-* is a
+#     branch in this repo. (Verified on plugin-stats.yml, 2026-08-30; see the
+#     header there.)
+#   - The fix is identity, the same one plugin-stats.yml took in #67: mint the
+#     fiestaboard-ci-bot App's token and open the PR as the App, which runs
+#     ungated (PR #50, and every stats PR since #67).
+#   - The token is handed to BOTH checkout and the PR step. Unlike the stats
+#     branch this one is version-named and fresh every month, so the trigger
+#     is always `opened` rather than `synchronize` — but checkout persists the
+#     credential used by `git push`, and giving the push a different identity
+#     than the PR is how you get a half-App PR. Both, or neither.
+#   - continue-on-error plus the `||` fallbacks mean a missing, expired, or
+#     rotated App secret degrades to today's stuck-but-harmless behavior
+#     rather than failing the monthly refresh outright. RELEASE_PAT (org PAT)
+#     stays in the chain for whenever it is provisioned; no such secret exists
+#     on this repo today.
+#   - pr-build.yml's synced-paths guard does not need an exemption here: this
+#     PR only ever touches package.json / package-lock.json, neither of which
+#     is a synced path.
 name: Browserslist update
 
 on:
@@ -35,8 +53,22 @@ jobs:
     # workflow_dispatch stays allowed on any ref for testing.
     if: github.event_name != 'schedule' || github.ref == 'refs/heads/main'
     steps:
+      - name: Mint CI App token
+        id: app-token
+        continue-on-error: true
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.CLAUDE_BOT_APP_ID }}
+          private-key: ${{ secrets.CLAUDE_BOT_APP_PRIVATE_KEY }}
+          owner: Fiestaboard
+          repositories: fiestaboard.github.io
+
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          # Persisted as the origin credential, so the branch push below is
+          # attributed to the App rather than to github-actions[bot].
+          token: ${{ steps.app-token.outputs.token || github.token }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
@@ -56,7 +88,7 @@ jobs:
       # but nothing else is, so an unrelated dirty file can never ride along.
       - name: Open PR if changed
         env:
-          GH_TOKEN: ${{ secrets.RELEASE_PAT || secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token || secrets.RELEASE_PAT || github.token }}
         run: |
           set -euo pipefail
           git add -- package.json package-lock.json

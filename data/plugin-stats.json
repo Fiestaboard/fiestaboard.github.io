@@ -1,7 +1,19 @@
 {
-  "generated_at": "2026-09-19T11:03:08Z",
+  "generated_at": "2026-09-20T11:27:56Z",
   "window_days": 14,
   "plugins": [
+    {
+      "id": "mlb",
+      "repo": "fiestaboard-plugin--mlb",
+      "name": "Major League Baseball (MLB)",
+      "category": "data",
+      "description": "Track MLB Game Scores",
+      "version": "1.5.0",
+      "created_at": "2026-06-02T21:37:34Z",
+      "updated_at": "2026-09-14T17:45:41Z",
+      "clones_14d_count": null,
+      "clones_14d_uniques": null
+    },
     {
       "id": "airport_board",
       "repo": "fiestaboard-plugin--airport-board",
@@ -22,9 +34,9 @@
       "description": "Display air quality (AQI), fog/visibility conditions, and pollen/allergen levels",
       "version": "1.3.0",
       "created_at": "2026-03-22T01:21:49Z",
-      "updated_at": "2026-08-14T01:37:18Z",
-      "clones_14d_count": 397,
-      "clones_14d_uniques": 333
+      "updated_at": "2026-09-19T19:52:00Z",
+      "clones_14d_count": 396,
+      "clones_14d_uniques": 327
     },
     {
       "id": "aurora_forecast",
@@ -46,9 +58,9 @@
       "description": "Display Lyft bike share availability with electric and classic bike counts. Works with Bay Wheels, CitiBike, Capital Bikeshare, Biketown, Divvy, and other Lyft-operated systems.",
       "version": "2.1.0",
       "created_at": "2026-03-22T01:21:56Z",
-      "updated_at": "2026-08-14T01:36:36Z",
-      "clones_14d_count": 392,
-      "clones_14d_uniques": 333
+      "updated_at": "2026-09-19T19:55:56Z",
+      "clones_14d_count": 395,
+      "clones_14d_uniques": 331
     },
     {
       "id": "calendar_sub",
@@ -59,8 +71,8 @@
       "version": "1.2.1",
       "created_at": "2026-04-04T02:12:05Z",
       "updated_at": "2026-09-13T23:57:21Z",
-      "clones_14d_count": 39,
-      "clones_14d_uniques": 34
+      "clones_14d_count": 40,
+      "clones_14d_uniques": 35
     },
     {
       "id": "currency",
@@ -83,8 +95,8 @@
       "version": "1.1.2",
       "created_at": "2026-03-22T01:22:02Z",
       "updated_at": "2026-08-14T01:37:14Z",
-      "clones_14d_count": 5980,
-      "clones_14d_uniques": 1744
+      "clones_14d_count": 5926,
+      "clones_14d_uniques": 1721
     },
     {
       "id": "disney_parks_times",
@@ -95,8 +107,8 @@
       "version": "1.3.0",
       "created_at": "2026-03-22T01:22:10Z",
       "updated_at": "2026-08-14T01:36:34Z",
-      "clones_14d_count": 32,
-      "clones_14d_uniques": 32
+      "clones_14d_count": 31,
+      "clones_14d_uniques": 31
     },
     {
       "id": "earthquake",
@@ -107,8 +119,8 @@
       "version": "0.1.3",
       "created_at": "2026-05-02T07:00:51Z",
       "updated_at": "2026-08-14T01:37:20Z",
-      "clones_14d_count": 26,
-      "clones_14d_uniques": 26
+      "clones_14d_count": 27,
+      "clones_14d_uniques": 27
     },
     {
       "id": "element_of_day",
@@ -131,8 +143,8 @@
       "version": "1.3.0",
       "created_at": "2026-03-22T01:22:18Z",
       "updated_at": "2026-08-30T16:46:56Z",
-      "clones_14d_count": 24,
-      "clones_14d_uniques": 24
+      "clones_14d_count": 25,
+      "clones_14d_uniques": 25
     },
     {
       "id": "generative_ai_art",
@@ -155,8 +167,8 @@
       "version": "1.26.3",
       "created_at": "2026-09-04T00:15:30Z",
       "updated_at": "2026-09-05T23:31:20Z",
-      "clones_14d_count": 200,
-      "clones_14d_uniques": 95
+      "clones_14d_count": 103,
+      "clones_14d_uniques": 64
     },
     {
       "id": "guest_wifi",
@@ -167,8 +179,8 @@
       "version": "1.1.3",
       "created_at": "2026-03-22T01:22:24Z",
       "updated_at": "2026-08-14T01:37:10Z",
-      "clones_14d_count": 356,
-      "clones_14d_uniques": 300
+      "clones_14d_count": 344,
+      "clones_14d_uniques": 291
     },
     {
       "id": "hacker_news",
@@ -203,8 +215,8 @@
       "version": "1.3.0",
       "created_at": "2026-03-22T01:22:37Z",
       "updated_at": "2026-08-14T01:36:36Z",
-      "clones_14d_count": 432,
-      "clones_14d_uniques": 347
+      "clones_14d_count": 422,
+      "clones_14d_uniques": 338
     },
     {
       "id": "iss_tracker",
@@ -215,8 +227,8 @@
       "version": "0.1.3",
       "created_at": "2026-05-02T07:01:02Z",
       "updated_at": "2026-08-14T01:37:16Z",
-      "clones_14d_count": 24,
-      "clones_14d_uniques": 24
+      "clones_14d_count": 23,
+      "clones_14d_uniques": 23
     },
     {
       "id": "last_fm",
@@ -239,8 +251,8 @@
       "version": "0.1.3",
       "created_at": "2026-05-02T07:01:05Z",
       "updated_at": "2026-08-14T01:37:07Z",
-      "clones_14d_count": 25,
-      "clones_14d_uniques": 25
+      "clones_14d_count": 26,
+      "clones_14d_uniques": 26
     },
     {
       "id": "moon_phase",
@@ -251,8 +263,8 @@
       "version": "0.1.5",
       "created_at": "2026-05-02T07:01:09Z",
       "updated_at": "2026-08-14T01:37:13Z",
-      "clones_14d_count": 28,
-      "clones_14d_uniques": 28
+      "clones_14d_count": 29,
+      "clones_14d_uniques": 29
     },
     {
       "id": "muni",
@@ -262,9 +274,9 @@
       "description": "Display San Francisco Muni transit arrival times with multi-line support",
       "version": "1.2.1",
       "created_at": "2026-03-22T01:22:49Z",
-      "updated_at": "2026-09-13T23:57:08Z",
-      "clones_14d_count": 498,
-      "clones_14d_uniques": 365
+      "updated_at": "2026-09-19T19:56:07Z",
+      "clones_14d_count": 496,
+      "clones_14d_uniques": 360
     },
     {
       "id": "national_day",
@@ -275,8 +287,8 @@
       "version": "0.1.4",
       "created_at": "2026-05-02T07:01:13Z",
       "updated_at": "2026-08-14T01:36:38Z",
-      "clones_14d_count": 28,
-      "clones_14d_uniques": 28
+      "clones_14d_count": 27,
+      "clones_14d_uniques": 27
     },
     {
       "id": "nearby_aircraft",
@@ -299,8 +311,8 @@
       "version": "0.2.0",
       "created_at": "2026-05-02T07:01:17Z",
       "updated_at": "2026-08-23T19:57:38Z",
-      "clones_14d_count": 25,
-      "clones_14d_uniques": 25
+      "clones_14d_count": 21,
+      "clones_14d_uniques": 21
     },
     {
       "id": "on_this_day",
@@ -311,8 +323,8 @@
       "version": "0.1.4",
       "created_at": "2026-05-02T07:01:20Z",
       "updated_at": "2026-08-14T01:37:03Z",
-      "clones_14d_count": 23,
-      "clones_14d_uniques": 23
+      "clones_14d_count": 22,
+      "clones_14d_uniques": 22
     },
     {
       "id": "pet_facts",
@@ -359,8 +371,8 @@
       "version": "0.1.3",
       "created_at": "2026-05-02T07:01:32Z",
       "updated_at": "2026-08-14T01:37:00Z",
-      "clones_14d_count": 26,
-      "clones_14d_uniques": 26
+      "clones_14d_count": 25,
+      "clones_14d_uniques": 25
     },
     {
       "id": "reddit_hot",
@@ -419,8 +431,8 @@
       "version": "1.1.3",
       "created_at": "2026-03-22T01:23:09Z",
       "updated_at": "2026-09-13T23:54:14Z",
-      "clones_14d_count": 34,
-      "clones_14d_uniques": 27
+      "clones_14d_count": 35,
+      "clones_14d_uniques": 28
     },
     {
       "id": "sports_scores",
@@ -442,9 +454,9 @@
       "description": "Display random Star Trek quotes from TNG, Voyager, and DS9",
       "version": "1.1.3",
       "created_at": "2026-03-22T01:23:22Z",
-      "updated_at": "2026-08-22T19:38:00Z",
-      "clones_14d_count": 2599,
-      "clones_14d_uniques": 1256
+      "updated_at": "2026-09-19T19:52:14Z",
+      "clones_14d_count": 2589,
+      "clones_14d_uniques": 1249
     },
     {
       "id": "stardate",
@@ -455,8 +467,8 @@
       "version": "1.1.3",
       "created_at": "2026-03-22T01:23:29Z",
       "updated_at": "2026-08-14T01:36:52Z",
-      "clones_14d_count": 17,
-      "clones_14d_uniques": 17
+      "clones_14d_count": 19,
+      "clones_14d_uniques": 19
     },
     {
       "id": "stocks",
@@ -466,9 +478,9 @@
       "description": "Display real-time stock prices and percentage changes from Yahoo Finance",
       "version": "1.1.2",
       "created_at": "2026-03-22T01:23:34Z",
-      "updated_at": "2026-08-14T01:37:01Z",
+      "updated_at": "2026-09-19T19:52:23Z",
       "clones_14d_count": 407,
-      "clones_14d_uniques": 322
+      "clones_14d_uniques": 319
     },
     {
       "id": "sun_art",
@@ -479,8 +491,8 @@
       "version": "1.1.3",
       "created_at": "2026-03-22T01:23:41Z",
       "updated_at": "2026-09-13T23:54:32Z",
-      "clones_14d_count": 42,
-      "clones_14d_uniques": 37
+      "clones_14d_count": 40,
+      "clones_14d_uniques": 35
     },
     {
       "id": "surf",
@@ -490,8 +502,8 @@
       "description": "Display surf conditions including wave height and swell period",
       "version": "1.1.2",
       "created_at": "2026-03-22T01:23:48Z",
-      "updated_at": "2026-08-14T01:36:49Z",
-      "clones_14d_count": 429,
+      "updated_at": "2026-09-19T19:52:07Z",
+      "clones_14d_count": 437,
       "clones_14d_uniques": 330
     },
     {
@@ -503,8 +515,8 @@
       "version": "0.1.3",
       "created_at": "2026-05-02T07:01:46Z",
       "updated_at": "2026-08-14T01:36:49Z",
-      "clones_14d_count": 24,
-      "clones_14d_uniques": 24
+      "clones_14d_count": 26,
+      "clones_14d_uniques": 26
     },
     {
       "id": "traffic",
@@ -515,8 +527,8 @@
       "version": "1.2.0",
       "created_at": "2026-03-22T01:23:54Z",
       "updated_at": "2026-08-30T05:05:58Z",
-      "clones_14d_count": 444,
-      "clones_14d_uniques": 352
+      "clones_14d_count": 431,
+      "clones_14d_uniques": 346
     },
     {
       "id": "uv_index",
@@ -539,8 +551,8 @@
       "version": "1.1.3",
       "created_at": "2026-03-22T01:24:01Z",
       "updated_at": "2026-08-14T01:36:46Z",
-      "clones_14d_count": 22,
-      "clones_14d_uniques": 22
+      "clones_14d_count": 21,
+      "clones_14d_uniques": 21
     },
     {
       "id": "volcano",
@@ -563,8 +575,8 @@
       "version": "1.4.0",
       "created_at": "2026-03-22T01:24:09Z",
       "updated_at": "2026-08-14T01:36:44Z",
-      "clones_14d_count": 568,
-      "clones_14d_uniques": 385
+      "clones_14d_count": 555,
+      "clones_14d_uniques": 374
     },
     {
       "id": "webhook",
@@ -611,8 +623,8 @@
       "version": "1.4.1",
       "created_at": "2026-08-12T06:24:08Z",
       "updated_at": "2026-08-14T20:09:51Z",
-      "clones_14d_count": 27,
-      "clones_14d_uniques": 27
+      "clones_14d_count": 28,
+      "clones_14d_uniques": 28
     },
     {
       "id": "word_of_day",
@@ -659,8 +671,8 @@
       "version": "1.0.0",
       "created_at": "2026-09-14T04:06:32Z",
       "updated_at": "2026-09-14T04:08:14Z",
-      "clones_14d_count": 18,
-      "clones_14d_uniques": 16
+      "clones_14d_count": 19,
+      "clones_14d_uniques": 17
     },
     {
       "id": "crypto",
@@ -671,8 +683,8 @@
       "version": "1.0.0",
       "created_at": "2026-09-14T04:08:15Z",
       "updated_at": "2026-09-14T04:09:04Z",
-      "clones_14d_count": 20,
-      "clones_14d_uniques": 16
+      "clones_14d_count": 21,
+      "clones_14d_uniques": 17
     },
     {
       "id": "trivia",
@@ -683,8 +695,8 @@
       "version": "1.0.0",
       "created_at": "2026-09-14T04:08:19Z",
       "updated_at": "2026-09-14T04:09:06Z",
-      "clones_14d_count": 22,
-      "clones_14d_uniques": 18
+      "clones_14d_count": 23,
+      "clones_14d_uniques": 19
     },
     {
       "id": "package_tracking",
@@ -695,8 +707,8 @@
       "version": "1.0.0",
       "created_at": "2026-09-14T04:08:23Z",
       "updated_at": "2026-09-14T04:09:07Z",
-      "clones_14d_count": 16,
-      "clones_14d_uniques": 14
+      "clones_14d_count": 17,
+      "clones_14d_uniques": 15
     },
     {
       "id": "trash_day",
@@ -707,8 +719,8 @@
       "version": "1.0.0",
       "created_at": "2026-09-14T04:08:29Z",
       "updated_at": "2026-09-14T04:09:09Z",
-      "clones_14d_count": 19,
-      "clones_14d_uniques": 17
+      "clones_14d_count": 21,
+      "clones_14d_uniques": 19
     },
     {
       "id": "reminders",
@@ -719,8 +731,8 @@
       "version": "1.0.0",
       "created_at": "2026-09-14T04:08:33Z",
       "updated_at": "2026-09-14T04:09:10Z",
-      "clones_14d_count": 28,
-      "clones_14d_uniques": 24
+      "clones_14d_count": 29,
+      "clones_14d_uniques": 25
     },
     {
       "id": "school_lunch",
@@ -731,8 +743,8 @@
       "version": "1.0.0",
       "created_at": "2026-09-14T04:08:37Z",
       "updated_at": "2026-09-14T04:09:12Z",
-      "clones_14d_count": 14,
-      "clones_14d_uniques": 12
+      "clones_14d_count": 15,
+      "clones_14d_uniques": 13
     },
     {
       "id": "horoscope",
@@ -743,8 +755,8 @@
       "version": "1.0.1",
       "created_at": "2026-09-14T04:08:40Z",
       "updated_at": "2026-09-14T05:08:44Z",
-      "clones_14d_count": 48,
-      "clones_14d_uniques": 36
+      "clones_14d_count": 50,
+      "clones_14d_uniques": 38
     },
     {
       "id": "game_of_life",
@@ -755,8 +767,8 @@
       "version": "1.0.0",
       "created_at": "2026-09-14T04:08:45Z",
       "updated_at": "2026-09-14T04:09:16Z",
-      "clones_14d_count": 18,
-      "clones_14d_uniques": 16
+      "clones_14d_count": 19,
+      "clones_14d_uniques": 17
     }
   ]
 }

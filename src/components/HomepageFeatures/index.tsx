@@ -10,6 +10,7 @@ import { Heading } from "@fiestaboard/ui/components/typography/heading";
 import { Text } from "@fiestaboard/ui/components/typography/text";
 import { TextLink } from "@fiestaboard/ui/components/typography/text-link";
 import { BOARD_CHARS } from "@fiestaboard/ui/lib/board-characters";
+import type { DeviceType } from "@fiestaboard/ui/lib/board-dimensions";
 import AppShot from "@site/src/components/AppShot";
 import type { LucideIcon } from "lucide-react";
 import { Calendar, Container, Heart, Palette, Pencil, Puzzle } from "lucide-react";
@@ -273,9 +274,11 @@ type PluginItem = {
   description: string;
   link: string;
   message: string;
-  deviceType: "flagship" | "note" | "note_array";
+  deviceType: DeviceType;
   notesWide: number;
   notesTall: number;
+  gridRows?: number;
+  gridCols?: number;
 };
 
 /**
@@ -312,6 +315,8 @@ const PluginList: PluginItem[] = FEATURED_PLUGINS.flatMap(({ id, description, de
       deviceType: board.device_type ?? "flagship",
       notesWide: board.notes_wide ?? 1,
       notesTall: board.notes_tall ?? 1,
+      gridRows: board.grid_rows,
+      gridCols: board.grid_cols,
     },
   ];
 });
@@ -393,7 +398,17 @@ function ShowcaseRow({ title, capture, alt, description, link, reverse }: Showca
   );
 }
 
-function PluginCard({ title, description, link, message, deviceType, notesWide, notesTall }: PluginItem) {
+function PluginCard({
+  title,
+  description,
+  link,
+  message,
+  deviceType,
+  notesWide,
+  notesTall,
+  gridRows,
+  gridCols,
+}: PluginItem) {
   return (
     <Link to={link} className={styles.pluginCard}>
       <Box className={styles.pluginCardBoard}>
@@ -405,6 +420,8 @@ function PluginCard({ title, description, link, message, deviceType, notesWide, 
               deviceType={deviceType}
               notesWide={notesWide}
               notesTall={notesTall}
+              gridRows={gridRows}
+              gridCols={gridCols}
             />
           )}
         </BrowserOnly>

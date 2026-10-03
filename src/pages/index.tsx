@@ -19,11 +19,12 @@ function Hero() {
           {/* The page's sole h1. FiestaUI's `Heading` covers h2-h4 only (h1 is
               reserved for the app's `PageHeader`), so the hero title keeps its
               own element and takes its type scale from `index.module.css`. */}
-          <h1 className={styles.heroTitle}>Turn your split-flap display into a living dashboard</h1>
+          <h1 className={styles.heroTitle}>Your data, out in the real world</h1>
           <Text className={styles.heroBody}>
-            Transform your Vestaboard into a real-time information hub - track your morning commute, monitor the
-            markets, check surf conditions, or display Star Trek wisdom. Compatible with Vestaboard Flagship and Note.
-            All beautifully formatted, endlessly customizable, and running in Docker with zero hassle.
+            FiestaBoard turns live data into something you can glance at from across the room — your morning commute,
+            the markets, the surf, a little Star Trek wisdom — on the displays around you: split-flap boards like
+            Vestaboard, or any TV with a browser. Pick from 60+ plugins, design pages in a visual editor, schedule what
+            shows when, and build your own plugins. Free, open source, and self-hosted in Docker.
           </Text>
           <Text className={styles.heroSubline}>
             Weather, stocks, sports &amp; more - flash a Raspberry Pi or run with Docker
@@ -48,8 +49,8 @@ function Hero() {
 export default function Home(): ReactNode {
   return (
     <Layout
-      title="Transform Your Split-Flap Display"
-      description="FiestaBoard is free, open-source software for Vestaboard and split-flap displays. 26 plugins for weather, stocks, sports, transit, and more. Compatible with Vestaboard Flagship and Note."
+      title="Your Data, Out in the Real World"
+      description="FiestaBoard puts your data out in the real world: free, open-source, self-hosted software for Vestaboard split-flap displays (Flagship, Note, and Note arrays) and any TV with a browser. 60+ plugins for weather, stocks, sports, transit, and more."
     >
       <Hero />
       <Box as="main">

@@ -88,6 +88,8 @@ function TopPluginSpotlight({
               deviceType={preview.device_type ?? "flagship"}
               notesWide={preview.notes_wide ?? 1}
               notesTall={preview.notes_tall ?? 1}
+              gridRows={preview.grid_rows}
+              gridCols={preview.grid_cols}
               previewLabel={`${plugin.name} on a split-flap board`}
             />
           </Box>

@@ -1,0 +1,1655 @@
+/**
+ * Calendar styles for the "schedule-calendar" AppShot capture.
+ *
+ * AppShot renders captures with the site's own stylesheets only, and the
+ * app's Schedule calendar is react-big-calendar plus FiestaBoard's overrides.
+ * Without these rules the homepage capture renders as a bare list of labels.
+ * Every selector is scoped (.rbc-*, .schedule-*, .sun-slot-*), so nothing
+ * here touches the docs pages.
+ *
+ * Vendored copies; refresh when the app's calendar changes:
+ *   1. react-big-calendar@1.20.0 lib/css/react-big-calendar.css (MIT)
+ *   2. react-big-calendar@1.20.0 lib/addons/dragAndDrop/styles.css (MIT)
+ *   3. Fiestaboard/FiestaBoard web/src/styles/calendar.css
+ * The react-big-calendar version matches web/package-lock.json in FiestaBoard.
+ */
+
+/* ---- 1. react-big-calendar ---- */
+.rbc-btn {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+
+button.rbc-btn {
+  overflow: visible;
+  text-transform: none;
+  -webkit-appearance: button;
+     -moz-appearance: button;
+          appearance: button;
+  cursor: pointer;
+}
+
+button[disabled].rbc-btn {
+  cursor: not-allowed;
+}
+
+button.rbc-input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+.rbc-toolbar {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+.rbc-toolbar .rbc-toolbar-label {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  padding: 0 10px;
+  text-align: center;
+}
+.rbc-toolbar button {
+  color: #373a3c;
+  display: inline-block;
+  margin: 0;
+  text-align: center;
+  vertical-align: middle;
+  background: none;
+  background-image: none;
+  border: 1px solid #ccc;
+  padding: 0.375rem 1rem;
+  border-radius: 4px;
+  line-height: normal;
+  white-space: nowrap;
+}
+.rbc-toolbar button:active, .rbc-toolbar button.rbc-active {
+  background-image: none;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+          box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  background-color: rgb(229.5, 229.5, 229.5);
+  border-color: rgb(173.4, 173.4, 173.4);
+}
+.rbc-toolbar button:active:hover, .rbc-toolbar button:active:focus, .rbc-toolbar button.rbc-active:hover, .rbc-toolbar button.rbc-active:focus {
+  color: #373a3c;
+  background-color: rgb(211.65, 211.65, 211.65);
+  border-color: rgb(140.25, 140.25, 140.25);
+}
+.rbc-toolbar button:focus {
+  color: #373a3c;
+  background-color: rgb(229.5, 229.5, 229.5);
+  border-color: rgb(173.4, 173.4, 173.4);
+}
+.rbc-toolbar button:hover {
+  color: #373a3c;
+  cursor: pointer;
+  background-color: rgb(229.5, 229.5, 229.5);
+  border-color: rgb(173.4, 173.4, 173.4);
+}
+
+.rbc-btn-group {
+  display: inline-block;
+  white-space: nowrap;
+}
+.rbc-btn-group > button:first-child:not(:last-child) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.rbc-btn-group > button:last-child:not(:first-child) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.rbc-rtl .rbc-btn-group > button:first-child:not(:last-child) {
+  border-radius: 4px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.rbc-rtl .rbc-btn-group > button:last-child:not(:first-child) {
+  border-radius: 4px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.rbc-btn-group > button:not(:first-child):not(:last-child) {
+  border-radius: 0;
+}
+.rbc-btn-group button + button {
+  margin-left: -1px;
+}
+.rbc-rtl .rbc-btn-group button + button {
+  margin-left: 0;
+  margin-right: -1px;
+}
+.rbc-btn-group + .rbc-btn-group, .rbc-btn-group + button {
+  margin-left: 10px;
+}
+
+@media (max-width: 767px) {
+  .rbc-toolbar {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+}
+.rbc-event {
+  border: none;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  margin: 0;
+  padding: 2px 5px;
+  background-color: #3174ad;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+.rbc-slot-selecting .rbc-event {
+  cursor: inherit;
+  pointer-events: none;
+}
+.rbc-event.rbc-selected {
+  background-color: rgb(37.7432432432, 89.3513513514, 133.2567567568);
+}
+.rbc-event:focus {
+  outline: 5px auto #3b99fc;
+}
+
+.rbc-event-label {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 80%;
+}
+
+.rbc-event-overlaps {
+  -webkit-box-shadow: -1px 1px 5px 0px rgba(51, 51, 51, 0.5);
+          box-shadow: -1px 1px 5px 0px rgba(51, 51, 51, 0.5);
+}
+
+.rbc-event-continues-prior {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.rbc-event-continues-after {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.rbc-event-continues-earlier {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.rbc-event-continues-later {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.rbc-row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.rbc-row-segment {
+  padding: 0 1px 1px 1px;
+}
+.rbc-row-segment .rbc-event-content {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rbc-selected-cell {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.rbc-show-more {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background-color: rgba(255, 255, 255, 0.3);
+  z-index: 4;
+  font-weight: bold;
+  font-size: 85%;
+  height: auto;
+  line-height: normal;
+  color: #3174ad;
+}
+.rbc-show-more:hover, .rbc-show-more:focus {
+  color: rgb(37.7432432432, 89.3513513514, 133.2567567568);
+}
+
+.rbc-month-view {
+  position: relative;
+  border: 1px solid #ddd;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0 0px;
+          flex: 1 0 0;
+  width: 100%;
+  -moz-user-select: none;
+   -ms-user-select: none;
+       user-select: none;
+  -webkit-user-select: none;
+  height: 100%;
+}
+
+.rbc-month-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.rbc-month-row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0 0px;
+          flex: 1 0 0;
+  -ms-flex-preferred-size: 0px;
+      flex-basis: 0px;
+  overflow: hidden;
+  height: 100%;
+}
+.rbc-month-row + .rbc-month-row {
+  border-top: 1px solid #ddd;
+}
+
+.rbc-date-cell {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 0px;
+          flex: 1 1 0;
+  min-width: 0;
+  padding-right: 5px;
+  text-align: right;
+}
+.rbc-date-cell.rbc-now {
+  font-weight: bold;
+}
+.rbc-date-cell > a, .rbc-date-cell > a:active, .rbc-date-cell > a:visited {
+  color: inherit;
+  text-decoration: none;
+}
+
+.rbc-row-bg {
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0 0px;
+          flex: 1 0 0;
+  overflow: hidden;
+  right: 1px;
+}
+
+.rbc-day-bg {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0 0%;
+          flex: 1 0 0%;
+}
+.rbc-day-bg + .rbc-day-bg {
+  border-left: 1px solid #ddd;
+}
+.rbc-rtl .rbc-day-bg + .rbc-day-bg {
+  border-left-width: 0;
+  border-right: 1px solid #ddd;
+}
+
+.rbc-overlay {
+  position: absolute;
+  z-index: 5;
+  border: 1px solid #e5e5e5;
+  background-color: #fff;
+  -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+  padding: 10px;
+}
+.rbc-overlay > * + * {
+  margin-top: 1px;
+}
+
+.rbc-overlay-header {
+  border-bottom: 1px solid #e5e5e5;
+  margin: -10px -10px 5px -10px;
+  padding: 2px 10px;
+}
+
+.rbc-agenda-view {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0 0px;
+          flex: 1 0 0;
+  overflow: auto;
+}
+.rbc-agenda-view table.rbc-agenda-table {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+.rbc-agenda-view table.rbc-agenda-table tbody > tr > td {
+  padding: 5px 10px;
+  vertical-align: top;
+}
+.rbc-agenda-view table.rbc-agenda-table .rbc-agenda-time-cell {
+  padding-left: 15px;
+  padding-right: 15px;
+  text-transform: lowercase;
+}
+.rbc-agenda-view table.rbc-agenda-table tbody > tr > td + td {
+  border-left: 1px solid #ddd;
+}
+.rbc-rtl .rbc-agenda-view table.rbc-agenda-table tbody > tr > td + td {
+  border-left-width: 0;
+  border-right: 1px solid #ddd;
+}
+.rbc-agenda-view table.rbc-agenda-table tbody > tr + tr {
+  border-top: 1px solid #ddd;
+}
+.rbc-agenda-view table.rbc-agenda-table thead > tr > th {
+  padding: 3px 5px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+.rbc-rtl .rbc-agenda-view table.rbc-agenda-table thead > tr > th {
+  text-align: right;
+}
+
+.rbc-agenda-time-cell {
+  text-transform: lowercase;
+}
+.rbc-agenda-time-cell .rbc-continues-after:after {
+  content: " »";
+}
+.rbc-agenda-time-cell .rbc-continues-prior:before {
+  content: "« ";
+}
+
+.rbc-agenda-date-cell,
+.rbc-agenda-time-cell {
+  white-space: nowrap;
+}
+
+.rbc-agenda-event-cell {
+  width: 100%;
+}
+
+.rbc-time-column {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  min-height: 100%;
+}
+.rbc-time-column .rbc-timeslot-group {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.rbc-timeslot-group {
+  border-bottom: 1px solid #ddd;
+  min-height: 40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column nowrap;
+          flex-flow: column nowrap;
+}
+
+.rbc-time-gutter,
+.rbc-header-gutter {
+  -webkit-box-flex: 0;
+      -ms-flex: none;
+          flex: none;
+}
+
+.rbc-label {
+  padding: 0 5px;
+}
+
+.rbc-day-slot {
+  position: relative;
+}
+.rbc-day-slot .rbc-events-container {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  margin-right: 10px;
+  top: 0;
+}
+.rbc-day-slot .rbc-events-container.rbc-rtl {
+  left: 10px;
+  right: 0;
+}
+.rbc-day-slot .rbc-event, .rbc-day-slot .rbc-background-event {
+  border: 1px solid rgb(37.7432432432, 89.3513513514, 133.2567567568);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  max-height: 100%;
+  min-height: 20px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column wrap;
+          flex-flow: column wrap;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  overflow: hidden;
+  position: absolute;
+}
+.rbc-day-slot .rbc-background-event {
+  opacity: 0.75;
+}
+.rbc-day-slot .rbc-event-label {
+  -webkit-box-flex: 0;
+      -ms-flex: none;
+          flex: none;
+  padding-right: 5px;
+  width: auto;
+}
+.rbc-day-slot .rbc-event-content {
+  width: 100%;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 0px;
+          flex: 1 1 0;
+  word-wrap: break-word;
+  line-height: 1;
+  height: 100%;
+  min-height: 1em;
+}
+.rbc-day-slot .rbc-time-slot {
+  border-top: 1px solid rgb(246.5, 246.5, 246.5);
+}
+
+.rbc-time-view-resources .rbc-time-gutter,
+.rbc-time-view-resources .rbc-time-header-gutter {
+  position: sticky;
+  left: 0;
+  background-color: white;
+  border-right: 1px solid #ddd;
+  z-index: 10;
+  margin-right: -1px;
+}
+.rbc-time-view-resources .rbc-time-header {
+  overflow: hidden;
+}
+.rbc-time-view-resources .rbc-time-header-content {
+  min-width: auto;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0 0px;
+          flex: 1 0 0;
+  -ms-flex-preferred-size: 0px;
+      flex-basis: 0px;
+}
+.rbc-time-view-resources .rbc-time-header-cell-single-day {
+  display: none;
+}
+.rbc-time-view-resources .rbc-day-slot {
+  min-width: 140px;
+}
+.rbc-time-view-resources .rbc-header,
+.rbc-time-view-resources .rbc-day-bg {
+  width: 140px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 0px;
+          flex: 1 1 0;
+  -ms-flex-preferred-size: 0px;
+      flex-basis: 0px;
+}
+
+.rbc-time-header-content + .rbc-time-header-content {
+  margin-left: -1px;
+}
+
+.rbc-time-slot {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0 0px;
+          flex: 1 0 0;
+}
+.rbc-time-slot.rbc-now {
+  font-weight: bold;
+}
+
+.rbc-day-header {
+  text-align: center;
+}
+
+.rbc-slot-selection {
+  z-index: 10;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-size: 75%;
+  width: 100%;
+  padding: 3px;
+}
+
+.rbc-slot-selecting {
+  cursor: move;
+}
+
+.rbc-time-view {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  width: 100%;
+  border: 1px solid #ddd;
+  min-height: 0;
+}
+.rbc-time-view .rbc-time-gutter {
+  white-space: nowrap;
+  text-align: right;
+}
+.rbc-time-view .rbc-allday-cell {
+  -webkit-box-sizing: content-box;
+          box-sizing: content-box;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.rbc-time-view .rbc-allday-cell + .rbc-allday-cell {
+  border-left: 1px solid #ddd;
+}
+.rbc-time-view .rbc-allday-events {
+  position: relative;
+  z-index: 4;
+}
+.rbc-time-view .rbc-row {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  min-height: 20px;
+}
+
+.rbc-time-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 auto;
+          flex: 0 0 auto;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+.rbc-time-header.rbc-overflowing {
+  border-right: 1px solid #ddd;
+}
+.rbc-rtl .rbc-time-header.rbc-overflowing {
+  border-right-width: 0;
+  border-left: 1px solid #ddd;
+}
+.rbc-time-header > .rbc-row:first-child {
+  border-bottom: 1px solid #ddd;
+}
+.rbc-time-header > .rbc-row.rbc-row-resource {
+  border-bottom: 1px solid #ddd;
+}
+
+.rbc-time-header-cell-single-day {
+  display: none;
+}
+
+.rbc-time-header-content {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  min-width: 0;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  border-left: 1px solid #ddd;
+}
+.rbc-rtl .rbc-time-header-content {
+  border-left-width: 0;
+  border-right: 1px solid #ddd;
+}
+.rbc-time-header-content > .rbc-row.rbc-row-resource {
+  border-bottom: 1px solid #ddd;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+}
+
+.rbc-time-content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0 0%;
+          flex: 1 0 0%;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  width: 100%;
+  border-top: 2px solid #ddd;
+  overflow-y: auto;
+  position: relative;
+}
+.rbc-time-content > .rbc-time-gutter {
+  -webkit-box-flex: 0;
+      -ms-flex: none;
+          flex: none;
+}
+.rbc-time-content > * + * > * {
+  border-left: 1px solid #ddd;
+}
+.rbc-rtl .rbc-time-content > * + * > * {
+  border-left-width: 0;
+  border-right: 1px solid #ddd;
+}
+.rbc-time-content > .rbc-day-slot {
+  width: 100%;
+  -moz-user-select: none;
+   -ms-user-select: none;
+       user-select: none;
+  -webkit-user-select: none;
+}
+
+.rbc-current-time-indicator {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: #74ad31;
+  pointer-events: none;
+}
+
+.rbc-resource-grouping.rbc-time-header-content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+.rbc-resource-grouping .rbc-row .rbc-header {
+  width: 141px;
+}
+
+.rbc-calendar {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+}
+
+.rbc-m-b-negative-3 {
+  margin-bottom: -3px;
+}
+
+.rbc-h-full {
+  height: 100%;
+}
+
+.rbc-calendar *,
+.rbc-calendar *:before,
+.rbc-calendar *:after {
+  -webkit-box-sizing: inherit;
+          box-sizing: inherit;
+}
+
+.rbc-abs-full {
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.rbc-ellipsis {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rbc-rtl {
+  direction: rtl;
+}
+
+.rbc-off-range {
+  color: #999999;
+}
+
+.rbc-off-range-bg {
+  background: rgb(229.5, 229.5, 229.5);
+}
+
+.rbc-header {
+  overflow: hidden;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0 0%;
+          flex: 1 0 0%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 3px;
+  text-align: center;
+  vertical-align: middle;
+  font-weight: bold;
+  font-size: 90%;
+  min-height: 0;
+  border-bottom: 1px solid #ddd;
+}
+.rbc-header + .rbc-header {
+  border-left: 1px solid #ddd;
+}
+.rbc-rtl .rbc-header + .rbc-header {
+  border-left-width: 0;
+  border-right: 1px solid #ddd;
+}
+.rbc-header > a, .rbc-header > a:active, .rbc-header > a:visited {
+  color: inherit;
+  text-decoration: none;
+}
+
+.rbc-button-link {
+  color: inherit;
+  background: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  -webkit-user-select: text;
+     -moz-user-select: text;
+      -ms-user-select: text;
+          user-select: text;
+}
+
+.rbc-row-content {
+  position: relative;
+  -moz-user-select: none;
+   -ms-user-select: none;
+       user-select: none;
+  -webkit-user-select: none;
+  z-index: 4;
+}
+
+.rbc-row-content-scrollable {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: 100%;
+}
+.rbc-row-content-scrollable .rbc-row-content-scroll-container {
+  height: 100%;
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  /* Hide scrollbar for Chrome, Safari and Opera */
+}
+.rbc-row-content-scrollable .rbc-row-content-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.rbc-today {
+  background-color: #eaf6ff;
+}
+
+/*# sourceMappingURL=react-big-calendar.css.map */
+
+/* ---- 2. react-big-calendar drag-and-drop ---- */
+.rbc-addons-dnd .rbc-addons-dnd-row-body {
+  position: relative;
+}
+.rbc-addons-dnd .rbc-addons-dnd-drag-row {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.rbc-addons-dnd .rbc-addons-dnd-over {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+.rbc-addons-dnd .rbc-event {
+  transition: opacity 150ms;
+}
+.rbc-addons-dnd .rbc-event:hover .rbc-addons-dnd-resize-ns-icon,
+.rbc-addons-dnd .rbc-event:hover .rbc-addons-dnd-resize-ew-icon {
+  display: block;
+}
+.rbc-addons-dnd .rbc-addons-dnd-dragged-event {
+  opacity: 0;
+}
+.rbc-addons-dnd.rbc-addons-dnd-is-dragging .rbc-event:not(.rbc-addons-dnd-dragged-event):not(.rbc-addons-dnd-drag-preview) {
+  opacity: 0.5;
+}
+.rbc-addons-dnd .rbc-addons-dnd-resizable {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.rbc-addons-dnd .rbc-addons-dnd-resize-ns-anchor {
+  width: 100%;
+  text-align: center;
+  position: absolute;
+}
+.rbc-addons-dnd .rbc-addons-dnd-resize-ns-anchor:first-child {
+  top: 0;
+}
+.rbc-addons-dnd .rbc-addons-dnd-resize-ns-anchor:last-child {
+  bottom: 0;
+}
+.rbc-addons-dnd .rbc-addons-dnd-resize-ns-anchor .rbc-addons-dnd-resize-ns-icon {
+  display: none;
+  border-top: 3px double;
+  margin: 0 auto;
+  width: 10px;
+  cursor: ns-resize;
+}
+.rbc-addons-dnd .rbc-addons-dnd-resize-ew-anchor {
+  position: absolute;
+  top: 4px;
+  bottom: 0;
+}
+.rbc-addons-dnd .rbc-addons-dnd-resize-ew-anchor:first-child {
+  left: 0;
+}
+.rbc-addons-dnd .rbc-addons-dnd-resize-ew-anchor:last-child {
+  right: 0;
+}
+.rbc-addons-dnd .rbc-addons-dnd-resize-ew-anchor .rbc-addons-dnd-resize-ew-icon {
+  display: none;
+  border-left: 3px double;
+  margin-top: auto;
+  margin-bottom: auto;
+  height: 10px;
+  cursor: ew-resize;
+}
+
+/*# sourceMappingURL=styles.css.map */
+
+/* ---- 3. FiestaBoard calendar overrides ---- */
+/**
+ * react-big-calendar overrides for shadcn/ui theme compatibility
+ * Uses CSS variables from shadcn's design system for seamless light/dark mode support
+ */
+
+/* ===== Wrapper ===== */
+.schedule-calendar-wrapper {
+  width: 100%;
+  /* height is supplied by the parent flex chain when inside the pinned layout */
+}
+
+/* ===== Container & General ===== */
+/* Single source of truth for time slot heights - ensures gutter numbers align with grid ticks */
+
+/* Thread flex layout through react-big-calendar internals so rbc-time-content
+   fills the parent height instead of overflowing it. */
+.schedule-calendar-container,
+.schedule-calendar-container .rbc-calendar,
+.schedule-calendar-container .rbc-time-view {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.schedule-calendar-container .rbc-calendar,
+.schedule-calendar-container .rbc-time-view {
+  flex: 1;
+}
+
+.schedule-calendar-container {
+  --rbc-border-color: var(--border);
+  --rbc-grid-line: color-mix(in oklch, currentColor 15%, transparent);
+  --rbc-grid-line-hour: color-mix(in oklch, currentColor 30%, transparent);
+  --rbc-bg-color: var(--background);
+  --rbc-text-color: var(--foreground);
+  --rbc-muted-color: var(--muted-foreground);
+  --rbc-primary-color: var(--primary);
+  --rbc-hour-height: 28px;
+  --rbc-slot-height: 7px; /* Must equal --rbc-hour-height / 4 (timeslots) */
+
+  /* Schedule event colors derived from board palette - Light mode */
+  --schedule-color-0: color-mix(in oklch, var(--color-board-blue), black 35%);
+  --schedule-bg-0: color-mix(in oklch, var(--color-board-blue) 12%, transparent);
+  --schedule-color-1: color-mix(in oklch, var(--color-board-green), black 35%);
+  --schedule-bg-1: color-mix(in oklch, var(--color-board-green) 12%, transparent);
+  --schedule-color-2: color-mix(in oklch, var(--color-board-orange), black 35%);
+  --schedule-bg-2: color-mix(in oklch, var(--color-board-orange) 12%, transparent);
+  --schedule-color-3: color-mix(in oklch, var(--color-board-red), black 35%);
+  --schedule-bg-3: color-mix(in oklch, var(--color-board-red) 10%, transparent);
+  --schedule-color-4: color-mix(in oklch, var(--color-board-violet), black 35%);
+  --schedule-bg-4: color-mix(in oklch, var(--color-board-violet) 12%, transparent);
+  --schedule-color-5: color-mix(in oklch, var(--color-board-yellow), black 45%);
+  --schedule-bg-5: color-mix(in oklch, var(--color-board-yellow) 14%, transparent);
+
+  width: 100%;
+}
+
+/* Schedule event colors derived from board palette - Dark mode */
+.dark .schedule-calendar-container {
+  --schedule-color-0: color-mix(in oklch, var(--color-board-blue), white 40%);
+  --schedule-bg-0: color-mix(in oklch, var(--color-board-blue) 18%, transparent);
+  --schedule-color-1: color-mix(in oklch, var(--color-board-green), white 40%);
+  --schedule-bg-1: color-mix(in oklch, var(--color-board-green) 16%, transparent);
+  --schedule-color-2: color-mix(in oklch, var(--color-board-orange), white 40%);
+  --schedule-bg-2: color-mix(in oklch, var(--color-board-orange) 16%, transparent);
+  --schedule-color-3: color-mix(in oklch, var(--color-board-red), white 40%);
+  --schedule-bg-3: color-mix(in oklch, var(--color-board-red) 16%, transparent);
+  --schedule-color-4: color-mix(in oklch, var(--color-board-violet), white 40%);
+  --schedule-bg-4: color-mix(in oklch, var(--color-board-violet) 18%, transparent);
+  --schedule-color-5: color-mix(in oklch, var(--color-board-yellow), white 20%);
+  --schedule-bg-5: color-mix(in oklch, var(--color-board-yellow) 14%, transparent);
+}
+
+.schedule-calendar-container .rbc-calendar {
+  font-family: inherit;
+  color: var(--rbc-text-color);
+  background: var(--rbc-bg-color);
+}
+
+/* ===== Hide All-Day Section ===== */
+.schedule-calendar-container .rbc-allday-cell {
+  display: none !important;
+}
+
+.schedule-calendar-container .rbc-time-header-content > .rbc-row.rbc-row-resource {
+  display: none !important;
+}
+
+.schedule-calendar-container .rbc-time-view .rbc-time-header .rbc-row:last-child {
+  display: none;
+}
+
+/* ===== Time Column / Gutter ===== */
+.schedule-calendar-container .rbc-time-gutter {
+  background: var(--rbc-bg-color);
+}
+
+.schedule-calendar-container .rbc-time-gutter .rbc-timeslot-group {
+  border-bottom: 1px solid var(--rbc-grid-line-hour);
+}
+
+/* Align time labels to top of slot so numbers match tick marks */
+.schedule-calendar-container .rbc-time-gutter .rbc-timeslot-group {
+  align-items: flex-start;
+}
+
+.schedule-calendar-container .rbc-time-gutter .rbc-time-slot {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.schedule-calendar-container .rbc-label {
+  color: var(--rbc-muted-color);
+  font-size: 0.6rem;
+  font-weight: 500;
+  padding: 0 4px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* ===== Header Row (Day Names) ===== */
+.schedule-calendar-container .rbc-header {
+  background: transparent;
+  border-bottom: 1px solid var(--rbc-grid-line-hour);
+  border-left: 1px solid var(--rbc-grid-line) !important;
+  padding: 0.4rem 0.25rem;
+  font-weight: 600;
+  font-size: 0.7rem;
+  color: var(--rbc-muted-color);
+}
+
+.schedule-calendar-container .rbc-header:first-child {
+  border-left: none !important;
+}
+
+/* ===== Main Calendar Border ===== */
+.schedule-calendar-container .rbc-time-view {
+  border: 1px solid var(--rbc-border-color);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+/* ===== Time Content Area ===== */
+.schedule-calendar-container .rbc-time-content {
+  border-top: 1px solid var(--rbc-grid-line-hour);
+  /* flex-1 + min-h-0 lets this fill whatever height the parent flex chain
+     allocates. overflow-y-auto provides scrolling when zoomed in. */
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  max-height: none !important;
+}
+
+/* ===== Day Columns - Vertical Lines ===== */
+.schedule-calendar-container .rbc-day-slot {
+  border-left: 1px solid var(--rbc-grid-line);
+}
+
+.schedule-calendar-container .rbc-day-slot:first-child {
+  border-left: none;
+}
+
+/* ===== Time Slots - Compact for 24 hours ===== */
+/* Reset all default borders first */
+.schedule-calendar-container .rbc-timeslot-group,
+.schedule-calendar-container .rbc-time-slot {
+  border: none !important;
+  border-top: none !important;
+  border-bottom: none !important;
+  border-left: none !important;
+  border-right: none !important;
+}
+
+/* Use explicit heights from CSS vars so gutter and day slots stay in sync (critical for mobile) */
+.schedule-calendar-container .rbc-timeslot-group {
+  border-bottom: 1px solid var(--rbc-grid-line-hour) !important;
+  min-height: var(--rbc-hour-height);
+  height: var(--rbc-hour-height);
+  flex: 0 0 var(--rbc-hour-height);
+}
+
+.schedule-calendar-container .rbc-time-slot {
+  min-height: var(--rbc-slot-height);
+  height: var(--rbc-slot-height);
+  flex: 0 0 var(--rbc-slot-height);
+  box-sizing: border-box;
+}
+
+/* 15-minute tick marks within day columns */
+.schedule-calendar-container .rbc-day-slot .rbc-time-slot {
+  border-bottom: 1px solid var(--rbc-grid-line) !important;
+}
+
+/* Last slot in each group doesn't need bottom border (hour border handles it) */
+.schedule-calendar-container .rbc-day-slot .rbc-time-slot:last-child {
+  border-bottom: none !important;
+}
+
+/* ===== Click-to-Create Hover Effect ===== */
+.schedule-calendar-container .rbc-day-slot .rbc-time-slot {
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.schedule-calendar-container .rbc-day-slot .rbc-time-slot:hover {
+  background-color: color-mix(in oklch, var(--primary) 5%, transparent);
+}
+
+/* Selection box when dragging to create */
+.schedule-calendar-container .rbc-slot-selection {
+  background-color: color-mix(in oklch, var(--primary) 15%, transparent);
+  border: 2px dashed color-mix(in oklch, var(--primary) 50%, transparent);
+  border-radius: 0.375rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.schedule-calendar-container .rbc-slot-selection::after {
+  content: "+ New Schedule";
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: var(--primary);
+  opacity: 0.8;
+}
+
+.schedule-calendar-container .rbc-slot-selecting {
+  cursor: crosshair;
+}
+
+/* ===== Today Indicator (subtle since this is a template) ===== */
+.schedule-calendar-container .rbc-today {
+  background-color: color-mix(in oklch, var(--primary) 2%, transparent);
+}
+
+.schedule-calendar-container .rbc-header.rbc-today {
+  color: var(--rbc-primary-color);
+}
+
+/* ===== Current Time Indicator ===== */
+.schedule-calendar-container .rbc-current-time-indicator {
+  background-color: var(--destructive);
+  height: 2px;
+  z-index: 3;
+}
+
+.schedule-calendar-container .rbc-current-time-indicator::before {
+  content: "";
+  position: absolute;
+  left: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  background-color: var(--destructive);
+  border-radius: 50%;
+}
+
+/* ===== Events ===== */
+.schedule-calendar-container .rbc-event {
+  background-color: transparent;
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0;
+  cursor: pointer;
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
+}
+
+.schedule-calendar-container .rbc-event:hover {
+  transform: scale(1.01);
+  box-shadow: 0 2px 8px color-mix(in oklch, var(--foreground) 8%, transparent);
+}
+
+.schedule-calendar-container .rbc-event:focus {
+  outline: 2px solid var(--rbc-primary-color);
+  outline-offset: 2px;
+}
+
+.schedule-calendar-container .rbc-event-label {
+  display: none;
+}
+
+.schedule-calendar-container .rbc-event-content {
+  height: 100%;
+}
+
+/* ===== Custom Event Styles ===== */
+.schedule-event-content {
+  font-size: 0.65rem;
+  line-height: 1.1;
+}
+
+.schedule-event-conflict .schedule-event-content {
+  border: 2px solid var(--destructive) !important;
+  background-color: color-mix(in oklch, var(--destructive) 10%, transparent) !important;
+}
+
+.schedule-event-disabled .schedule-event-content {
+  opacity: 0.6;
+}
+
+/* Silence schedule overlay — read-only, visually distinct from real schedules.
+   Diagonal stripe pattern signals "do not disturb / blocked time" without
+   competing with the colored brand events. */
+.schedule-event-silence .schedule-event-content {
+  background-color: color-mix(in oklch, var(--muted-foreground) 8%, transparent);
+  background-image: repeating-linear-gradient(
+    45deg,
+    color-mix(in oklch, var(--muted-foreground) 22%, transparent) 0,
+    color-mix(in oklch, var(--muted-foreground) 22%, transparent) 4px,
+    transparent 4px,
+    transparent 9px
+  );
+  border-left: 2px solid color-mix(in oklch, var(--muted-foreground) 55%, transparent);
+  color: var(--muted-foreground);
+}
+
+.schedule-event-silence .schedule-event-content:hover {
+  background-color: color-mix(in oklch, var(--muted-foreground) 12%, transparent);
+}
+
+/* Silence sits above regular schedule events so the stripe pattern reads
+   clearly when the windows overlap. */
+.schedule-calendar-container .rbc-event.schedule-event-silence {
+  z-index: 2;
+}
+
+/* ===== Events Container ===== */
+.schedule-calendar-container .rbc-day-slot .rbc-events-container {
+  margin-right: 2px;
+}
+
+/* ===== Hide Default Toolbar ===== */
+.schedule-calendar-container .rbc-toolbar {
+  display: none;
+}
+
+/* ===== Overlapping Events ===== */
+.schedule-calendar-container .rbc-event-overlaps {
+  box-shadow: -1px 1px 5px color-mix(in oklch, var(--foreground) 5%, transparent);
+}
+
+/* ===== Drag and Drop Styles ===== */
+.schedule-calendar-container .rbc-addons-dnd .rbc-event {
+  transition: opacity 0.15s ease;
+}
+
+.schedule-calendar-container .rbc-addons-dnd-dragging {
+  opacity: 0.7;
+}
+
+.schedule-calendar-container .rbc-addons-dnd-drag-preview {
+  opacity: 0.5;
+  border: 2px dashed var(--rbc-primary-color);
+  border-radius: 0.375rem;
+}
+
+/* Resize handles */
+.schedule-calendar-container .rbc-addons-dnd .rbc-addons-dnd-resize-ns-anchor {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 10px;
+  cursor: ns-resize;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.schedule-calendar-container .rbc-addons-dnd .rbc-addons-dnd-resize-ns-anchor:first-child {
+  top: 0;
+}
+
+.schedule-calendar-container .rbc-addons-dnd .rbc-addons-dnd-resize-ns-anchor:last-child {
+  bottom: 0;
+}
+
+.schedule-calendar-container .rbc-addons-dnd .rbc-addons-dnd-resize-ns-anchor::after {
+  content: "";
+  width: 24px;
+  height: 3px;
+  background: color-mix(in oklch, var(--foreground) 25%, transparent);
+  border-radius: 2px;
+  opacity: 0;
+  transition:
+    opacity 0.15s ease,
+    background 0.15s ease;
+}
+
+.schedule-calendar-container .rbc-event:hover .rbc-addons-dnd-resize-ns-anchor::after {
+  opacity: 1;
+}
+
+.schedule-calendar-container .rbc-addons-dnd .rbc-addons-dnd-resize-ns-anchor:hover::after {
+  background: var(--primary);
+  opacity: 1;
+}
+
+.schedule-calendar-container .rbc-addons-dnd .rbc-addons-dnd-resize-ns-icon {
+  display: none;
+}
+
+.schedule-calendar-container .rbc-addons-dnd .rbc-event {
+  cursor: grab;
+}
+
+.schedule-calendar-container .rbc-addons-dnd .rbc-event:active {
+  cursor: grabbing;
+}
+
+.schedule-calendar-container .rbc-addons-dnd-resizing .rbc-addons-dnd-resize-ns-anchor::after {
+  background: var(--primary);
+  opacity: 1;
+}
+
+/* ===== Clean up header area ===== */
+.schedule-calendar-container .rbc-time-header {
+  border-bottom: none;
+}
+
+.schedule-calendar-container .rbc-time-header-gutter {
+  border-bottom: 1px solid var(--rbc-grid-line-hour);
+}
+
+.schedule-calendar-container .rbc-time-header-content {
+  border-left: none;
+}
+
+/* ===== Mobile: 3-Day View ===== */
+@media (max-width: 767px) {
+  /* Hide all day columns by default on mobile */
+  .schedule-calendar-container.schedule-calendar-mobile .rbc-time-header-content .rbc-row .rbc-header,
+  .schedule-calendar-container.schedule-calendar-mobile .rbc-time-content > .rbc-day-slot {
+    display: none;
+  }
+
+  /* 
+   * Day slot nth-child is offset by 1 because rbc-time-gutter is the first child
+   * Header nth-child starts at 1 (no gutter in header row)
+   * Sun=header(1)/slot(2), Mon=header(2)/slot(3), etc.
+   */
+
+  /* Start Day 0 (Sun-Tue): headers 1-3, slots 2-4 */
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="0"]
+    .rbc-time-header-content
+    .rbc-row
+    .rbc-header:nth-child(1),
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="0"]
+    .rbc-time-header-content
+    .rbc-row
+    .rbc-header:nth-child(2),
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="0"]
+    .rbc-time-header-content
+    .rbc-row
+    .rbc-header:nth-child(3) {
+    display: flex;
+    flex: 1;
+  }
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="0"]
+    .rbc-time-content
+    > .rbc-day-slot:nth-child(2),
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="0"]
+    .rbc-time-content
+    > .rbc-day-slot:nth-child(3),
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="0"]
+    .rbc-time-content
+    > .rbc-day-slot:nth-child(4) {
+    display: flex;
+    flex: 1;
+  }
+
+  /* Start Day 1 (Mon-Wed): headers 2-4, slots 3-5 */
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="1"]
+    .rbc-time-header-content
+    .rbc-row
+    .rbc-header:nth-child(2),
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="1"]
+    .rbc-time-header-content
+    .rbc-row
+    .rbc-header:nth-child(3),
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="1"]
+    .rbc-time-header-content
+    .rbc-row
+    .rbc-header:nth-child(4) {
+    display: flex;
+    flex: 1;
+  }
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="1"]
+    .rbc-time-content
+    > .rbc-day-slot:nth-child(3),
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="1"]
+    .rbc-time-content
+    > .rbc-day-slot:nth-child(4),
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="1"]
+    .rbc-time-content
+    > .rbc-day-slot:nth-child(5) {
+    display: flex;
+    flex: 1;
+  }
+
+  /* Start Day 2 (Tue-Thu): headers 3-5, slots 4-6 */
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="2"]
+    .rbc-time-header-content
+    .rbc-row
+    .rbc-header:nth-child(3),
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="2"]
+    .rbc-time-header-content
+    .rbc-row
+    .rbc-header:nth-child(4),
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="2"]
+    .rbc-time-header-content
+    .rbc-row
+    .rbc-header:nth-child(5) {
+    display: flex;
+    flex: 1;
+  }
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="2"]
+    .rbc-time-content
+    > .rbc-day-slot:nth-child(4),
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="2"]
+    .rbc-time-content
+    > .rbc-day-slot:nth-child(5),
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="2"]
+    .rbc-time-content
+    > .rbc-day-slot:nth-child(6) {
+    display: flex;
+    flex: 1;
+  }
+
+  /* Start Day 3 (Wed-Fri): headers 4-6, slots 5-7 */
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="3"]
+    .rbc-time-header-content
+    .rbc-row
+    .rbc-header:nth-child(4),
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="3"]
+    .rbc-time-header-content
+    .rbc-row
+    .rbc-header:nth-child(5),
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="3"]
+    .rbc-time-header-content
+    .rbc-row
+    .rbc-header:nth-child(6) {
+    display: flex;
+    flex: 1;
+  }
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="3"]
+    .rbc-time-content
+    > .rbc-day-slot:nth-child(5),
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="3"]
+    .rbc-time-content
+    > .rbc-day-slot:nth-child(6),
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="3"]
+    .rbc-time-content
+    > .rbc-day-slot:nth-child(7) {
+    display: flex;
+    flex: 1;
+  }
+
+  /* Start Day 4 (Thu-Sat): headers 5-7, slots 6-8 */
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="4"]
+    .rbc-time-header-content
+    .rbc-row
+    .rbc-header:nth-child(5),
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="4"]
+    .rbc-time-header-content
+    .rbc-row
+    .rbc-header:nth-child(6),
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="4"]
+    .rbc-time-header-content
+    .rbc-row
+    .rbc-header:nth-child(7) {
+    display: flex;
+    flex: 1;
+  }
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="4"]
+    .rbc-time-content
+    > .rbc-day-slot:nth-child(6),
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="4"]
+    .rbc-time-content
+    > .rbc-day-slot:nth-child(7),
+  .schedule-calendar-container.schedule-calendar-mobile[data-start-day="4"]
+    .rbc-time-content
+    > .rbc-day-slot:nth-child(8) {
+    display: flex;
+    flex: 1;
+  }
+
+  /* Mobile styling adjustments */
+  .schedule-calendar-container .rbc-header {
+    padding: 0.35rem 0.15rem;
+    font-size: 0.65rem;
+  }
+
+  .schedule-calendar-container .rbc-label {
+    font-size: 0.5rem;
+    padding: 0 2px;
+  }
+
+  /* Use same hour/slot heights on mobile - critical for gutter/slot alignment */
+  .schedule-calendar-container {
+    --rbc-hour-height: 24px;
+    --rbc-slot-height: 6px;
+  }
+
+  /* On mobile the page itself scrolls instead of the grid — let the
+     calendar grow to its natural 24-hour height so swiping down on the
+     page reveals later hours, instead of users having to discover that
+     they need to swipe inside the grid. */
+  .schedule-calendar-container,
+  .schedule-calendar-container .rbc-calendar,
+  .schedule-calendar-container .rbc-time-view {
+    flex: 1 0 auto;
+  }
+  .schedule-calendar-container .rbc-time-content {
+    flex: 1 0 auto;
+    overflow-y: visible !important;
+    min-height: calc(var(--rbc-hour-height) * 24);
+  }
+
+  /* Explicit heights prevent flex rounding drift on mobile */
+  .schedule-calendar-container .rbc-timeslot-group {
+    min-height: var(--rbc-hour-height);
+    height: var(--rbc-hour-height);
+    flex: 0 0 var(--rbc-hour-height);
+  }
+
+  .schedule-calendar-container .rbc-time-slot {
+    min-height: var(--rbc-slot-height);
+    height: var(--rbc-slot-height);
+    flex: 0 0 var(--rbc-slot-height);
+  }
+
+  .schedule-event-content {
+    font-size: 0.55rem;
+    padding: 1px 3px !important;
+  }
+
+  .schedule-event-content .text-\[10px\] {
+    font-size: 0.5rem !important;
+  }
+
+  .schedule-event-content .text-\[9px\] {
+    display: none;
+  }
+
+  /* Larger touch targets for mobile */
+  .schedule-calendar-container .rbc-addons-dnd .rbc-addons-dnd-resize-ns-anchor {
+    height: 14px;
+  }
+
+  .schedule-calendar-container .rbc-addons-dnd .rbc-addons-dnd-resize-ns-anchor::after {
+    opacity: 0.5;
+  }
+
+  .schedule-calendar-container .rbc-slot-selection::after {
+    content: "+";
+    font-size: 0.9rem;
+  }
+
+  .schedule-calendar-container .rbc-day-slot .rbc-events-container {
+    margin-right: 1px;
+  }
+}
+
+/* ===== Touch Device Optimizations ===== */
+@media (hover: none) and (pointer: coarse) {
+  /* Always show resize handles on touch devices */
+  .schedule-calendar-container .rbc-addons-dnd .rbc-addons-dnd-resize-ns-anchor::after {
+    opacity: 0.5;
+  }
+
+  /*
+   * Do NOT change time-slot height here - it would desync gutter from day slots.
+   * Gutter and day columns must use identical slot heights for alignment.
+   */
+
+  /* Remove hover effects that don't work on touch */
+  .schedule-calendar-container .rbc-day-slot .rbc-time-slot:hover {
+    background-color: transparent;
+  }
+
+  /* Make selection more visible on touch */
+  .schedule-calendar-container .rbc-slot-selection {
+    background-color: color-mix(in oklch, var(--primary) 20%, transparent);
+  }
+}
+
+/* ===== Sun Time Markers ===== */
+/* Sunrise and sunset slot markers via slotPropGetter */
+.sun-slot-sunrise {
+  border-top: 2px solid #f59e0b !important;
+  background-color: color-mix(in oklch, #f59e0b 10%, transparent) !important;
+}
+
+.sun-slot-sunset {
+  border-top: 2px solid #8b5cf6 !important;
+  background-color: color-mix(in oklch, #8b5cf6 10%, transparent) !important;
+}

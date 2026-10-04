@@ -368,7 +368,7 @@ const config: Config = {
           // fiestaui.generated.css (precompiled DS tokens + Tailwind utilities,
           // built by `npm run build:css`) loads first so custom.css can bridge
           // Infima variables onto the DS tokens.
-          customCss: ["./src/css/fiestaui.generated.css", "./src/css/custom.css"],
+          customCss: ["./src/css/fiestaui.generated.css", "./src/css/app-calendar.css", "./src/css/custom.css"],
         },
         gtag: {
           trackingID: "G-5D2S6D6PNC",

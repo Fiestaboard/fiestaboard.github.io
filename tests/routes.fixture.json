@@ -2,7 +2,7 @@
   { "path": "/docs/intro", "expect": "page" },
   { "path": "/docs/setup/quick-start", "expect": "page" },
   { "path": "/docs/features/page-editor", "expect": "page" },
-  { "path": "/docs/plugins/overview", "expect": "page" },
+  { "path": "/docs/features/schedule", "expect": "page" },
   { "path": "/docs/development/contributing", "expect": "page" },
   { "path": "/docs/deployment/production", "expect": "page" },
   { "path": "/docs/reference/api-endpoints", "expect": "page" },
@@ -15,7 +15,7 @@
 
   { "path": "/docs/8.26/intro", "expect": "redirect", "target": "/docs/intro" },
   { "path": "/docs/8.14/intro", "expect": "redirect", "target": "/docs/intro" },
-  { "path": "/docs/8.12/plugins/overview", "expect": "redirect", "target": "/docs/plugins/overview" },
+  { "path": "/docs/8.12/features/page-editor", "expect": "redirect", "target": "/docs/features/page-editor" },
   { "path": "/docs/2.5/setup/quick-start", "expect": "redirect", "target": "/docs/setup/quick-start" },
 
   { "path": "/docs", "expect": "redirect", "target": "/docs/intro" },
@@ -25,7 +25,7 @@
   { "path": "/docs/next/setup/quick-start", "expect": "redirect", "target": "/docs/setup/quick-start" },
 
   { "path": "/docs/category/setup", "expect": "redirect", "target": "/docs/setup/quick-start" },
-  { "path": "/docs/category/plugins", "expect": "redirect", "target": "/docs/plugins/overview" },
+  { "path": "/docs/category/plugins", "expect": "redirect", "target": "/plugins" },
   { "path": "/docs/category/features", "expect": "redirect", "target": "/docs/features/page-editor" },
   { "path": "/docs/category/development", "expect": "redirect", "target": "/docs/development/contributing" },
   { "path": "/docs/category/deployment", "expect": "redirect", "target": "/docs/deployment/production" },

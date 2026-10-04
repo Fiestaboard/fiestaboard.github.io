@@ -99,4 +99,4 @@ A Flagship layout, center-aligned:
 
 - [Shopify plugin setup guide](https://github.com/Fiestaboard/fiestaboard-plugin--shopify/blob/main/docs/SETUP.md) -- Settings reference and troubleshooting
 - [Page Editor](/docs/features/page-editor) -- Create your store dashboard layout
-- [Plugins Overview](/docs/plugins/overview) -- See all available plugins
+- [Plugins Overview](overview.md) -- See all available plugins

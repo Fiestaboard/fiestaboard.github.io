@@ -43,5 +43,5 @@ No API key is needed -- Bay Wheels uses a public data feed.
 
 ## Next Steps
 
-- [SF Muni Plugin](/docs/plugins/muni) -- Pair with transit arrival times
-- [Plugins Overview](/docs/plugins/overview) -- See all available plugins
+- [SF Muni Plugin](muni.md) -- Pair with transit arrival times
+- [Plugins Overview](overview.md) -- See all available plugins

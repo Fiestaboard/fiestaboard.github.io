@@ -8,12 +8,12 @@ keywords: [FiestaBoard entertainment, Disney wait times, Last.fm, Star Trek quot
 
 FiestaBoard includes several entertainment plugins. Each now has its own dedicated page:
 
-- **[Disney Parks Queue Times](/docs/plugins/disney-parks)** -- Live ride wait times from Disney parks worldwide
-- **[Last.fm Now Playing](/docs/plugins/last-fm)** -- Display currently playing music via scrobbling
-- **[Star Trek Quotes](/docs/plugins/star-trek-quotes)** -- Random quotes from TNG, Voyager, and DS9
-- **[Stardate](/docs/plugins/stardate)** -- Display the current TNG-era stardate
-- **[Sun Art](/docs/plugins/sun-art)** -- Full-screen color patterns based on sun position
-- **[Visual Clock](/docs/plugins/visual-clock)** -- Full-screen pixel-art clock display
-- **[Nearby Aircraft](/docs/plugins/nearby-aircraft)** -- Real-time aircraft tracking near your location
-- **[Guest WiFi](/docs/plugins/guest-wifi)** -- Display WiFi credentials for guests
-- **[Surf Conditions](/docs/plugins/surf)** -- Wave height, swell period, and quality ratings
+- **[Disney Parks Queue Times](disney-parks.md)** -- Live ride wait times from Disney parks worldwide
+- **[Last.fm Now Playing](last-fm.md)** -- Display currently playing music via scrobbling
+- **[Star Trek Quotes](star-trek-quotes.md)** -- Random quotes from TNG, Voyager, and DS9
+- **[Stardate](stardate.md)** -- Display the current TNG-era stardate
+- **[Sun Art](sun-art.md)** -- Full-screen color patterns based on sun position
+- **[Visual Clock](visual-clock.md)** -- Full-screen pixel-art clock display
+- **[Nearby Aircraft](nearby-aircraft.md)** -- Real-time aircraft tracking near your location
+- **[Guest WiFi](guest-wifi.md)** -- Display WiFi credentials for guests
+- **[Surf Conditions](surf.md)** -- Wave height, swell period, and quality ratings

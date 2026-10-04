@@ -114,5 +114,5 @@ If you see rate limit errors:
 
 ## Next Steps
 
-- [Plugins Overview](/docs/plugins/overview) - See all available plugins
+- [Plugins Overview](overview.md) - See all available plugins
 - [API Keys](/docs/setup/api-keys) - Getting all required API keys

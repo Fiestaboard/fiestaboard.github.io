@@ -90,4 +90,4 @@ When several people are streaming, the plugin features whichever stream is playi
 
 - [Plex plugin setup guide](https://github.com/Fiestaboard/fiestaboard-plugin--plex/blob/main/docs/SETUP.md) -- Settings reference and troubleshooting
 - [Page Editor](/docs/features/page-editor) -- Create your now-playing layout
-- [Plugins Overview](/docs/plugins/overview) -- See all available plugins
+- [Plugins Overview](overview.md) -- See all available plugins

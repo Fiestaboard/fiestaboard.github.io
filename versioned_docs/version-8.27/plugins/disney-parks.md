@@ -49,5 +49,5 @@ The plugin also provides array variables for iterating over parks and rides in a
 
 ## Next Steps
 
-- [Plugins Overview](/docs/plugins/overview) -- See all available plugins
+- [Plugins Overview](overview.md) -- See all available plugins
 - [Page Editor](/docs/features/page-editor) -- Create layouts with plugin data

@@ -46,6 +46,6 @@ The SF Muni plugin provides:
 
 ## Next Steps
 
-- [Bay Wheels Plugin](/docs/plugins/baywheels) -- Add bike share data
-- [Traffic Plugin](/docs/plugins/traffic) -- Add commute times
-- [Plugins Overview](/docs/plugins/overview) -- See all available plugins
+- [Bay Wheels Plugin](baywheels.md) -- Add bike share data
+- [Traffic Plugin](traffic.md) -- Add commute times
+- [Plugins Overview](overview.md) -- See all available plugins

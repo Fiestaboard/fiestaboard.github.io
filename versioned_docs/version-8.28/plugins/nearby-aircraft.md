@@ -43,5 +43,5 @@ No API key is required for basic usage. An optional OpenSky Network account incr
 
 ## Next Steps
 
-- [Plugins Overview](/docs/plugins/overview) -- See all available plugins
+- [Plugins Overview](overview.md) -- See all available plugins
 - [Page Editor](/docs/features/page-editor) -- Design your aircraft display

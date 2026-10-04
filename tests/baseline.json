@@ -6740,7 +6740,7 @@
     "/docs/category/deployment": "/docs/deployment/production",
     "/docs/category/development": "/docs/development/contributing",
     "/docs/category/features": "/docs/features/page-editor",
-    "/docs/category/plugins": "/docs/plugins/overview",
+    "/docs/category/plugins": "/plugins",
     "/docs/category/reference": "/docs/reference/api-endpoints",
     "/docs/category/setup": "/docs/setup/quick-start",
     "/docs/latest": "/docs/intro",

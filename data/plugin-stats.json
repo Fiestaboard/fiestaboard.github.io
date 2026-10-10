@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-03T11:42:27Z",
+  "generated_at": "2026-10-10T12:35:46Z",
   "window_days": 14,
   "plugins": [
     {
@@ -23,8 +23,8 @@
       "version": "0.1.3",
       "created_at": "2026-05-02T07:00:40Z",
       "updated_at": "2026-08-14T01:37:18Z",
-      "clones_14d_count": 27,
-      "clones_14d_uniques": 26
+      "clones_14d_count": 29,
+      "clones_14d_uniques": 27
     },
     {
       "id": "air_fog",
@@ -35,8 +35,8 @@
       "version": "1.3.0",
       "created_at": "2026-03-22T01:21:49Z",
       "updated_at": "2026-09-19T19:52:00Z",
-      "clones_14d_count": 157,
-      "clones_14d_uniques": 141
+      "clones_14d_count": 188,
+      "clones_14d_uniques": 147
     },
     {
       "id": "aurora_forecast",
@@ -47,8 +47,8 @@
       "version": "0.1.3",
       "created_at": "2026-05-02T07:00:44Z",
       "updated_at": "2026-08-14T01:37:17Z",
-      "clones_14d_count": 26,
-      "clones_14d_uniques": 25
+      "clones_14d_count": 25,
+      "clones_14d_uniques": 23
     },
     {
       "id": "lyft_bike_share",
@@ -59,8 +59,8 @@
       "version": "2.1.1",
       "created_at": "2026-03-22T01:21:56Z",
       "updated_at": "2026-09-26T19:54:52Z",
-      "clones_14d_count": 183,
-      "clones_14d_uniques": 153
+      "clones_14d_count": 201,
+      "clones_14d_uniques": 150
     },
     {
       "id": "calendar_sub",
@@ -71,8 +71,8 @@
       "version": "1.2.2",
       "created_at": "2026-04-04T02:12:05Z",
       "updated_at": "2026-09-26T19:55:45Z",
-      "clones_14d_count": 43,
-      "clones_14d_uniques": 34
+      "clones_14d_count": 45,
+      "clones_14d_uniques": 36
     },
     {
       "id": "currency",
@@ -95,8 +95,8 @@
       "version": "1.1.3",
       "created_at": "2026-03-22T01:22:02Z",
       "updated_at": "2026-09-26T20:03:07Z",
-      "clones_14d_count": 2144,
-      "clones_14d_uniques": 1064
+      "clones_14d_count": 2827,
+      "clones_14d_uniques": 1243
     },
     {
       "id": "disney_parks_times",
@@ -104,11 +104,11 @@
       "name": "Disney Parks Queue Times",
       "category": "entertainment",
       "description": "Display wait times for Disney parks (Disneyland, California Adventure, Disney World, etc.) from Queue-Times.com",
-      "version": "1.3.1",
+      "version": "1.3.2",
       "created_at": "2026-03-22T01:22:10Z",
-      "updated_at": "2026-09-27T04:28:25Z",
-      "clones_14d_count": 57,
-      "clones_14d_uniques": 41
+      "updated_at": "2026-10-07T04:12:22Z",
+      "clones_14d_count": 91,
+      "clones_14d_uniques": 61
     },
     {
       "id": "earthquake",
@@ -119,8 +119,8 @@
       "version": "0.1.3",
       "created_at": "2026-05-02T07:00:51Z",
       "updated_at": "2026-08-14T01:37:20Z",
-      "clones_14d_count": 28,
-      "clones_14d_uniques": 27
+      "clones_14d_count": 26,
+      "clones_14d_uniques": 24
     },
     {
       "id": "element_of_day",
@@ -132,7 +132,7 @@
       "created_at": "2026-05-02T07:00:55Z",
       "updated_at": "2026-08-14T01:37:12Z",
       "clones_14d_count": 25,
-      "clones_14d_uniques": 24
+      "clones_14d_uniques": 23
     },
     {
       "id": "generic_data",
@@ -143,8 +143,8 @@
       "version": "1.3.1",
       "created_at": "2026-03-22T01:22:18Z",
       "updated_at": "2026-09-26T19:54:35Z",
-      "clones_14d_count": 42,
-      "clones_14d_uniques": 35
+      "clones_14d_count": 50,
+      "clones_14d_uniques": 39
     },
     {
       "id": "generative_ai_art",
@@ -152,11 +152,11 @@
       "name": "Generative AI Art",
       "category": "art",
       "description": "Generate full-screen abstract art for your split-flap display using an LLM. Each piece is a unique, thought-out composition using the board's 8-color palette.",
-      "version": "1.4.3",
+      "version": "1.6.0",
       "created_at": "2026-05-02T18:33:00Z",
-      "updated_at": "2026-09-26T19:56:35Z",
-      "clones_14d_count": 62,
-      "clones_14d_uniques": 46
+      "updated_at": "2026-10-07T08:05:51Z",
+      "clones_14d_count": 141,
+      "clones_14d_uniques": 75
     },
     {
       "id": "generative_dashboard",
@@ -164,11 +164,11 @@
       "name": "Generative Dashboard",
       "category": "data",
       "description": "AI-curated dashboard composed from your other plugins' variables \u2014 live values, range-driven status lights, grid or prose",
-      "version": "1.26.4",
+      "version": "1.29.0",
       "created_at": "2026-09-04T00:15:30Z",
-      "updated_at": "2026-09-27T04:59:21Z",
-      "clones_14d_count": 51,
-      "clones_14d_uniques": 37
+      "updated_at": "2026-10-07T04:29:33Z",
+      "clones_14d_count": 160,
+      "clones_14d_uniques": 89
     },
     {
       "id": "guest_wifi",
@@ -179,8 +179,8 @@
       "version": "1.1.4",
       "created_at": "2026-03-22T01:22:24Z",
       "updated_at": "2026-09-26T19:55:38Z",
-      "clones_14d_count": 169,
-      "clones_14d_uniques": 143
+      "clones_14d_count": 214,
+      "clones_14d_uniques": 168
     },
     {
       "id": "hacker_news",
@@ -191,8 +191,8 @@
       "version": "0.1.3",
       "created_at": "2026-05-02T07:00:58Z",
       "updated_at": "2026-08-14T01:37:17Z",
-      "clones_14d_count": 24,
-      "clones_14d_uniques": 23
+      "clones_14d_count": 22,
+      "clones_14d_uniques": 20
     },
     {
       "id": "health",
@@ -203,8 +203,8 @@
       "version": "1.1.3",
       "created_at": "2026-03-22T01:22:31Z",
       "updated_at": "2026-09-26T19:57:23Z",
-      "clones_14d_count": 43,
-      "clones_14d_uniques": 32
+      "clones_14d_count": 49,
+      "clones_14d_uniques": 37
     },
     {
       "id": "home_assistant",
@@ -212,11 +212,11 @@
       "name": "Home Assistant",
       "category": "home",
       "description": "Display entity states from Home Assistant via REST API or MQTT Statestream",
-      "version": "1.4.0",
+      "version": "1.5.0",
       "created_at": "2026-03-22T01:22:37Z",
-      "updated_at": "2026-10-03T00:18:39Z",
-      "clones_14d_count": 134,
-      "clones_14d_uniques": 124
+      "updated_at": "2026-10-04T00:44:50Z",
+      "clones_14d_count": 238,
+      "clones_14d_uniques": 171
     },
     {
       "id": "iss_tracker",
@@ -227,8 +227,8 @@
       "version": "0.1.3",
       "created_at": "2026-05-02T07:01:02Z",
       "updated_at": "2026-08-14T01:37:16Z",
-      "clones_14d_count": 22,
-      "clones_14d_uniques": 21
+      "clones_14d_count": 24,
+      "clones_14d_uniques": 22
     },
     {
       "id": "last_fm",
@@ -239,7 +239,7 @@
       "version": "1.1.4",
       "created_at": "2026-03-22T01:22:43Z",
       "updated_at": "2026-09-26T19:57:15Z",
-      "clones_14d_count": 46,
+      "clones_14d_count": 47,
       "clones_14d_uniques": 35
     },
     {
@@ -252,7 +252,7 @@
       "created_at": "2026-05-02T07:01:05Z",
       "updated_at": "2026-08-14T01:37:07Z",
       "clones_14d_count": 23,
-      "clones_14d_uniques": 22
+      "clones_14d_uniques": 21
     },
     {
       "id": "moon_phase",
@@ -263,8 +263,8 @@
       "version": "0.1.5",
       "created_at": "2026-05-02T07:01:09Z",
       "updated_at": "2026-08-14T01:37:13Z",
-      "clones_14d_count": 33,
-      "clones_14d_uniques": 30
+      "clones_14d_count": 30,
+      "clones_14d_uniques": 28
     },
     {
       "id": "muni",
@@ -275,8 +275,8 @@
       "version": "1.2.1",
       "created_at": "2026-03-22T01:22:49Z",
       "updated_at": "2026-09-19T19:56:07Z",
-      "clones_14d_count": 154,
-      "clones_14d_uniques": 132
+      "clones_14d_count": 175,
+      "clones_14d_uniques": 139
     },
     {
       "id": "national_day",
@@ -288,7 +288,7 @@
       "created_at": "2026-05-02T07:01:13Z",
       "updated_at": "2026-08-14T01:36:38Z",
       "clones_14d_count": 22,
-      "clones_14d_uniques": 21
+      "clones_14d_uniques": 20
     },
     {
       "id": "nearby_aircraft",
@@ -299,8 +299,8 @@
       "version": "1.1.4",
       "created_at": "2026-03-22T01:22:57Z",
       "updated_at": "2026-09-27T04:31:12Z",
-      "clones_14d_count": 46,
-      "clones_14d_uniques": 35
+      "clones_14d_count": 49,
+      "clones_14d_uniques": 36
     },
     {
       "id": "network_speed",
@@ -311,7 +311,7 @@
       "version": "0.2.0",
       "created_at": "2026-05-02T07:01:17Z",
       "updated_at": "2026-08-23T19:57:38Z",
-      "clones_14d_count": 23,
+      "clones_14d_count": 24,
       "clones_14d_uniques": 22
     },
     {
@@ -323,7 +323,7 @@
       "version": "0.1.4",
       "created_at": "2026-05-02T07:01:20Z",
       "updated_at": "2026-08-14T01:37:03Z",
-      "clones_14d_count": 28,
+      "clones_14d_count": 30,
       "clones_14d_uniques": 25
     },
     {
@@ -335,8 +335,8 @@
       "version": "0.1.3",
       "created_at": "2026-05-02T07:01:24Z",
       "updated_at": "2026-08-14T01:37:02Z",
-      "clones_14d_count": 23,
-      "clones_14d_uniques": 22
+      "clones_14d_count": 27,
+      "clones_14d_uniques": 25
     },
     {
       "id": "pihole",
@@ -348,7 +348,7 @@
       "created_at": "2026-05-02T07:01:28Z",
       "updated_at": "2026-08-14T01:37:01Z",
       "clones_14d_count": 23,
-      "clones_14d_uniques": 22
+      "clones_14d_uniques": 21
     },
     {
       "id": "price_list",
@@ -359,8 +359,8 @@
       "version": "1.0.1",
       "created_at": "2026-08-13T03:32:56Z",
       "updated_at": "2026-09-26T19:54:43Z",
-      "clones_14d_count": 56,
-      "clones_14d_uniques": 40
+      "clones_14d_count": 59,
+      "clones_14d_uniques": 42
     },
     {
       "id": "quote_of_day",
@@ -371,7 +371,7 @@
       "version": "0.1.3",
       "created_at": "2026-05-02T07:01:32Z",
       "updated_at": "2026-08-14T01:37:00Z",
-      "clones_14d_count": 25,
+      "clones_14d_count": 27,
       "clones_14d_uniques": 22
     },
     {
@@ -383,8 +383,8 @@
       "version": "0.2.2",
       "created_at": "2026-05-02T07:01:36Z",
       "updated_at": "2026-08-14T01:36:59Z",
-      "clones_14d_count": 20,
-      "clones_14d_uniques": 19
+      "clones_14d_count": 22,
+      "clones_14d_uniques": 20
     },
     {
       "id": "river_flow",
@@ -395,8 +395,8 @@
       "version": "1.0.0",
       "created_at": "2026-05-02T07:01:39Z",
       "updated_at": "2026-08-14T01:36:58Z",
-      "clones_14d_count": 25,
-      "clones_14d_uniques": 21
+      "clones_14d_count": 28,
+      "clones_14d_uniques": 23
     },
     {
       "id": "santa_tracker",
@@ -407,8 +407,8 @@
       "version": "1.1.4",
       "created_at": "2026-03-22T01:23:03Z",
       "updated_at": "2026-09-26T19:55:31Z",
-      "clones_14d_count": 47,
-      "clones_14d_uniques": 34
+      "clones_14d_count": 55,
+      "clones_14d_uniques": 40
     },
     {
       "id": "solar_activity",
@@ -419,8 +419,8 @@
       "version": "0.1.3",
       "created_at": "2026-05-02T07:01:43Z",
       "updated_at": "2026-08-14T01:36:56Z",
-      "clones_14d_count": 23,
-      "clones_14d_uniques": 21
+      "clones_14d_count": 21,
+      "clones_14d_uniques": 19
     },
     {
       "id": "spacecraft_launches",
@@ -428,11 +428,11 @@
       "name": "Spacecraft Launches",
       "category": "data",
       "description": "Track upcoming spacecraft launch countdowns and statuses",
-      "version": "1.1.4",
+      "version": "1.1.5",
       "created_at": "2026-03-22T01:23:09Z",
-      "updated_at": "2026-09-26T19:56:18Z",
-      "clones_14d_count": 46,
-      "clones_14d_uniques": 36
+      "updated_at": "2026-10-07T04:12:27Z",
+      "clones_14d_count": 56,
+      "clones_14d_uniques": 39
     },
     {
       "id": "sports_scores",
@@ -443,8 +443,8 @@
       "version": "1.2.2",
       "created_at": "2026-03-22T01:23:17Z",
       "updated_at": "2026-09-26T20:02:45Z",
-      "clones_14d_count": 51,
-      "clones_14d_uniques": 39
+      "clones_14d_count": 52,
+      "clones_14d_uniques": 36
     },
     {
       "id": "star_trek_quotes",
@@ -455,8 +455,8 @@
       "version": "1.1.4",
       "created_at": "2026-03-22T01:23:22Z",
       "updated_at": "2026-09-26T19:55:54Z",
-      "clones_14d_count": 964,
-      "clones_14d_uniques": 686
+      "clones_14d_count": 1264,
+      "clones_14d_uniques": 798
     },
     {
       "id": "stardate",
@@ -467,8 +467,8 @@
       "version": "1.1.4",
       "created_at": "2026-03-22T01:23:29Z",
       "updated_at": "2026-09-26T19:53:49Z",
-      "clones_14d_count": 59,
-      "clones_14d_uniques": 44
+      "clones_14d_count": 61,
+      "clones_14d_uniques": 45
     },
     {
       "id": "stocks",
@@ -479,8 +479,8 @@
       "version": "1.1.3",
       "created_at": "2026-03-22T01:23:34Z",
       "updated_at": "2026-09-26T20:03:32Z",
-      "clones_14d_count": 197,
-      "clones_14d_uniques": 162
+      "clones_14d_count": 235,
+      "clones_14d_uniques": 181
     },
     {
       "id": "sun_art",
@@ -491,8 +491,8 @@
       "version": "1.1.4",
       "created_at": "2026-03-22T01:23:41Z",
       "updated_at": "2026-09-26T19:56:09Z",
-      "clones_14d_count": 57,
-      "clones_14d_uniques": 43
+      "clones_14d_count": 52,
+      "clones_14d_uniques": 41
     },
     {
       "id": "surf",
@@ -503,8 +503,8 @@
       "version": "1.1.3",
       "created_at": "2026-03-22T01:23:48Z",
       "updated_at": "2026-09-26T19:55:17Z",
-      "clones_14d_count": 188,
-      "clones_14d_uniques": 153
+      "clones_14d_count": 212,
+      "clones_14d_uniques": 163
     },
     {
       "id": "tide_times",
@@ -515,8 +515,8 @@
       "version": "0.1.3",
       "created_at": "2026-05-02T07:01:46Z",
       "updated_at": "2026-08-14T01:36:49Z",
-      "clones_14d_count": 23,
-      "clones_14d_uniques": 22
+      "clones_14d_count": 22,
+      "clones_14d_uniques": 20
     },
     {
       "id": "traffic",
@@ -527,8 +527,8 @@
       "version": "1.2.1",
       "created_at": "2026-03-22T01:23:54Z",
       "updated_at": "2026-09-26T19:58:39Z",
-      "clones_14d_count": 151,
-      "clones_14d_uniques": 130
+      "clones_14d_count": 192,
+      "clones_14d_uniques": 148
     },
     {
       "id": "uv_index",
@@ -539,8 +539,8 @@
       "version": "0.1.3",
       "created_at": "2026-05-02T07:01:49Z",
       "updated_at": "2026-08-14T01:36:47Z",
-      "clones_14d_count": 21,
-      "clones_14d_uniques": 20
+      "clones_14d_count": 24,
+      "clones_14d_uniques": 22
     },
     {
       "id": "visual_clock",
@@ -552,7 +552,7 @@
       "created_at": "2026-03-22T01:24:01Z",
       "updated_at": "2026-09-26T19:56:02Z",
       "clones_14d_count": 63,
-      "clones_14d_uniques": 46
+      "clones_14d_uniques": 45
     },
     {
       "id": "volcano",
@@ -563,8 +563,8 @@
       "version": "0.2.0",
       "created_at": "2026-05-02T07:01:53Z",
       "updated_at": "2026-08-23T19:57:49Z",
-      "clones_14d_count": 28,
-      "clones_14d_uniques": 21
+      "clones_14d_count": 31,
+      "clones_14d_uniques": 23
     },
     {
       "id": "weather",
@@ -575,8 +575,8 @@
       "version": "1.4.1",
       "created_at": "2026-03-22T01:24:09Z",
       "updated_at": "2026-09-26T19:55:01Z",
-      "clones_14d_count": 167,
-      "clones_14d_uniques": 141
+      "clones_14d_count": 13736,
+      "clones_14d_uniques": 355
     },
     {
       "id": "webhook",
@@ -587,7 +587,7 @@
       "version": "0.1.4",
       "created_at": "2026-05-02T07:01:57Z",
       "updated_at": "2026-08-14T01:36:44Z",
-      "clones_14d_count": 23,
+      "clones_14d_count": 24,
       "clones_14d_uniques": 22
     },
     {
@@ -600,7 +600,7 @@
       "created_at": "2026-03-22T01:24:14Z",
       "updated_at": "2026-09-26T19:55:09Z",
       "clones_14d_count": 57,
-      "clones_14d_uniques": 43
+      "clones_14d_uniques": 42
     },
     {
       "id": "wildfire",
@@ -611,8 +611,8 @@
       "version": "0.1.2",
       "created_at": "2026-05-02T07:02:01Z",
       "updated_at": "2026-08-14T01:36:52Z",
-      "clones_14d_count": 20,
-      "clones_14d_uniques": 19
+      "clones_14d_count": 26,
+      "clones_14d_uniques": 24
     },
     {
       "id": "word_clock",
@@ -623,8 +623,8 @@
       "version": "1.4.2",
       "created_at": "2026-08-12T06:24:08Z",
       "updated_at": "2026-09-26T20:19:25Z",
-      "clones_14d_count": 54,
-      "clones_14d_uniques": 40
+      "clones_14d_count": 59,
+      "clones_14d_uniques": 44
     },
     {
       "id": "word_of_day",
@@ -635,8 +635,8 @@
       "version": "0.3.0",
       "created_at": "2026-05-02T07:02:05Z",
       "updated_at": "2026-09-16T19:38:10Z",
-      "clones_14d_count": 29,
-      "clones_14d_uniques": 25
+      "clones_14d_count": 33,
+      "clones_14d_uniques": 27
     },
     {
       "id": "airport_departures",
@@ -656,11 +656,11 @@
       "name": "WSDOT",
       "category": "transit",
       "description": "Washington State Ferries: schedules, vessel names, car spots, and alerts",
-      "version": "1.2.1",
+      "version": "1.2.2",
       "created_at": "2026-03-22T01:24:21Z",
-      "updated_at": "2026-09-26T19:56:26Z",
-      "clones_14d_count": 44,
-      "clones_14d_uniques": 33
+      "updated_at": "2026-10-07T04:12:36Z",
+      "clones_14d_count": 66,
+      "clones_14d_uniques": 43
     },
     {
       "id": "rss_reader",
@@ -671,8 +671,8 @@
       "version": "1.0.1",
       "created_at": "2026-09-14T04:06:32Z",
       "updated_at": "2026-09-26T20:13:05Z",
-      "clones_14d_count": 49,
-      "clones_14d_uniques": 39
+      "clones_14d_count": 48,
+      "clones_14d_uniques": 38
     },
     {
       "id": "crypto",
@@ -683,8 +683,8 @@
       "version": "1.0.1",
       "created_at": "2026-09-14T04:08:15Z",
       "updated_at": "2026-09-26T20:05:16Z",
-      "clones_14d_count": 59,
-      "clones_14d_uniques": 47
+      "clones_14d_count": 52,
+      "clones_14d_uniques": 40
     },
     {
       "id": "trivia",
@@ -692,11 +692,11 @@
       "name": "Trivia",
       "category": "entertainment",
       "description": "Multiple-choice trivia from the Open Trivia Database: a question one refresh, the answer the next",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "created_at": "2026-09-14T04:08:19Z",
-      "updated_at": "2026-09-27T04:45:29Z",
-      "clones_14d_count": 62,
-      "clones_14d_uniques": 47
+      "updated_at": "2026-10-07T04:12:32Z",
+      "clones_14d_count": 69,
+      "clones_14d_uniques": 46
     },
     {
       "id": "package_tracking",
@@ -707,8 +707,8 @@
       "version": "1.0.1",
       "created_at": "2026-09-14T04:08:23Z",
       "updated_at": "2026-09-26T20:13:29Z",
-      "clones_14d_count": 50,
-      "clones_14d_uniques": 40
+      "clones_14d_count": 45,
+      "clones_14d_uniques": 35
     },
     {
       "id": "trash_day",
@@ -719,8 +719,8 @@
       "version": "1.0.1",
       "created_at": "2026-09-14T04:08:29Z",
       "updated_at": "2026-09-26T20:17:51Z",
-      "clones_14d_count": 65,
-      "clones_14d_uniques": 50
+      "clones_14d_count": 61,
+      "clones_14d_uniques": 46
     },
     {
       "id": "reminders",
@@ -731,8 +731,8 @@
       "version": "1.0.1",
       "created_at": "2026-09-14T04:08:33Z",
       "updated_at": "2026-09-26T20:17:42Z",
-      "clones_14d_count": 46,
-      "clones_14d_uniques": 37
+      "clones_14d_count": 43,
+      "clones_14d_uniques": 34
     },
     {
       "id": "school_lunch",
@@ -743,8 +743,8 @@
       "version": "1.0.1",
       "created_at": "2026-09-14T04:08:37Z",
       "updated_at": "2026-09-26T20:22:21Z",
-      "clones_14d_count": 84,
-      "clones_14d_uniques": 59
+      "clones_14d_count": 81,
+      "clones_14d_uniques": 56
     },
     {
       "id": "horoscope",
@@ -755,8 +755,8 @@
       "version": "1.0.2",
       "created_at": "2026-09-14T04:08:40Z",
       "updated_at": "2026-09-26T20:19:44Z",
-      "clones_14d_count": 54,
-      "clones_14d_uniques": 44
+      "clones_14d_count": 50,
+      "clones_14d_uniques": 40
     },
     {
       "id": "game_of_life",
@@ -767,8 +767,8 @@
       "version": "1.0.1",
       "created_at": "2026-09-14T04:08:45Z",
       "updated_at": "2026-09-26T20:13:20Z",
-      "clones_14d_count": 53,
-      "clones_14d_uniques": 41
+      "clones_14d_count": 47,
+      "clones_14d_uniques": 35
     },
     {
       "id": "plex",
@@ -776,11 +776,11 @@
       "name": "Plex Now Playing",
       "category": "entertainment",
       "description": "Show what's playing on your Plex Media Server: movies, TV episodes and music, laid out to fit any board",
-      "version": "1.0.1",
+      "version": "1.3.0",
       "created_at": "2026-09-24T04:11:10Z",
-      "updated_at": "2026-09-26T19:58:30Z",
-      "clones_14d_count": 77,
-      "clones_14d_uniques": 54
+      "updated_at": "2026-10-09T07:26:29Z",
+      "clones_14d_count": 132,
+      "clones_14d_uniques": 78
     },
     {
       "id": "shopify",
@@ -791,8 +791,8 @@
       "version": "1.0.0",
       "created_at": "2026-10-01T05:51:34Z",
       "updated_at": "2026-10-02T06:41:49Z",
-      "clones_14d_count": 91,
-      "clones_14d_uniques": 50
+      "clones_14d_count": 109,
+      "clones_14d_uniques": 68
     },
     {
       "id": "spotify",
@@ -803,8 +803,164 @@
       "version": "1.2.0",
       "created_at": "2026-10-03T00:59:18Z",
       "updated_at": "2026-10-03T04:35:24Z",
-      "clones_14d_count": 0,
-      "clones_14d_uniques": 0
+      "clones_14d_count": 73,
+      "clones_14d_uniques": 46
+    },
+    {
+      "id": "github",
+      "repo": "fiestaboard-plugin--github",
+      "name": "GitHub",
+      "category": "data",
+      "description": "Pull requests waiting for your review, your own open pull requests, and the CI status and stars of a repository. Signs in to GitHub with a code, no password or token to paste.",
+      "version": "1.0.0",
+      "created_at": "2026-10-04T00:28:06Z",
+      "updated_at": "2026-10-04T00:33:32Z",
+      "clones_14d_count": 52,
+      "clones_14d_uniques": 38
+    },
+    {
+      "id": "youtube_stats",
+      "repo": "fiestaboard-plugin--youtube-stats",
+      "name": "YouTube Stats",
+      "category": "entertainment",
+      "description": "Show a YouTube channel's subscribers, total views and video count. Uses your own free YouTube Data API key; no sign-in needed.",
+      "version": "1.0.0",
+      "created_at": "2026-10-04T00:28:10Z",
+      "updated_at": "2026-10-04T00:28:18Z",
+      "clones_14d_count": 33,
+      "clones_14d_uniques": 28
+    },
+    {
+      "id": "bluesky_stats",
+      "repo": "fiestaboard-plugin--bluesky-stats",
+      "name": "Bluesky Stats",
+      "category": "data",
+      "description": "Show any Bluesky account's followers, following and post counts, with today's change. No sign-in or API key needed.",
+      "version": "1.0.0",
+      "created_at": "2026-10-04T00:28:14Z",
+      "updated_at": "2026-10-04T00:28:22Z",
+      "clones_14d_count": 45,
+      "clones_14d_uniques": 29
+    },
+    {
+      "id": "mastodon_stats",
+      "repo": "fiestaboard-plugin--mastodon-stats",
+      "name": "Mastodon Stats",
+      "category": "data",
+      "description": "Show follower, following and post counts for any Mastodon account, with an optional change since the start of the day. No sign-in needed.",
+      "version": "1.0.0",
+      "created_at": "2026-10-04T00:28:19Z",
+      "updated_at": "2026-10-04T00:28:34Z",
+      "clones_14d_count": 35,
+      "clones_14d_uniques": 28
+    },
+    {
+      "id": "todoist",
+      "repo": "fiestaboard-plugin--todoist",
+      "name": "Todoist",
+      "category": "utility",
+      "description": "Show what's on your Todoist plate: how many tasks are due today, how many are overdue, and the next task to do. Sign in with Todoist, or paste a personal API token.",
+      "version": "1.0.0",
+      "created_at": "2026-10-04T00:28:23Z",
+      "updated_at": "2026-10-04T00:28:30Z",
+      "clones_14d_count": 39,
+      "clones_14d_uniques": 32
+    },
+    {
+      "id": "twitch",
+      "repo": "fiestaboard-plugin--twitch",
+      "name": "Twitch",
+      "category": "entertainment",
+      "description": "See which channels you follow are live on Twitch, with game, viewers and uptime, plus a channel's follower count. Signs in to your Twitch account with a short code.",
+      "version": "1.0.0",
+      "created_at": "2026-10-04T00:28:27Z",
+      "updated_at": "2026-10-04T00:28:34Z",
+      "clones_14d_count": 32,
+      "clones_14d_uniques": 24
+    },
+    {
+      "id": "strava",
+      "repo": "fiestaboard-plugin--strava",
+      "name": "Strava",
+      "category": "data",
+      "description": "Show your latest Strava activity (distance, time, pace) and your recent and year-to-date totals. Signs in to your Strava account through your own free Strava API app.",
+      "version": "1.0.0",
+      "created_at": "2026-10-04T00:28:31Z",
+      "updated_at": "2026-10-04T09:07:57Z",
+      "clones_14d_count": 30,
+      "clones_14d_uniques": 22
+    },
+    {
+      "id": "oura",
+      "repo": "fiestaboard-plugin--oura",
+      "name": "Oura",
+      "category": "data",
+      "description": "Show your Oura Ring's daily Sleep, Readiness and Activity scores, last night's sleep and resting heart rate, and today's steps. Signs in to your Oura account through your own free Oura API application.",
+      "version": "1.0.0",
+      "created_at": "2026-10-04T00:28:35Z",
+      "updated_at": "2026-10-04T00:28:42Z",
+      "clones_14d_count": 35,
+      "clones_14d_uniques": 29
+    },
+    {
+      "id": "google_calendar",
+      "repo": "fiestaboard-plugin--google-calendar",
+      "name": "Google Calendar & Tasks",
+      "category": "utility",
+      "description": "Show today's agenda, what's next and what's happening now from Google Calendar, plus your Google Tasks due today. Signs in to your Google account through your own Google Cloud app.",
+      "version": "1.0.0",
+      "created_at": "2026-10-04T00:28:38Z",
+      "updated_at": "2026-10-04T00:28:46Z",
+      "clones_14d_count": 34,
+      "clones_14d_uniques": 26
+    },
+    {
+      "id": "facebook_page",
+      "repo": "fiestaboard-plugin--facebook-page",
+      "name": "Facebook Page",
+      "category": "data",
+      "description": "Show a Facebook Page's followers and likes, with today's change. Paste a Page access token, or sign in with Facebook through your own free Meta app.",
+      "version": "1.1.0",
+      "created_at": "2026-10-04T00:28:42Z",
+      "updated_at": "2026-10-04T00:28:49Z",
+      "clones_14d_count": 28,
+      "clones_14d_uniques": 21
+    },
+    {
+      "id": "instagram",
+      "repo": "fiestaboard-plugin--instagram",
+      "name": "Instagram",
+      "category": "data",
+      "description": "Show an Instagram professional account's followers, following and posts, with today's change. Paste a long-lived access token or sign in through your own Meta app; the plugin renews the token for you.",
+      "version": "1.0.0",
+      "created_at": "2026-10-04T00:28:46Z",
+      "updated_at": "2026-10-04T00:28:54Z",
+      "clones_14d_count": 29,
+      "clones_14d_uniques": 22
+    },
+    {
+      "id": "threads",
+      "repo": "fiestaboard-plugin--threads",
+      "name": "Threads",
+      "category": "data",
+      "description": "Show your Threads followers, plus profile views and likes from the last two days. Signs in through your own free Meta app, or uses a long-lived access token you paste.",
+      "version": "1.0.0",
+      "created_at": "2026-10-04T00:28:51Z",
+      "updated_at": "2026-10-04T00:28:58Z",
+      "clones_14d_count": 27,
+      "clones_14d_uniques": 20
+    },
+    {
+      "id": "tiktok",
+      "repo": "fiestaboard-plugin--tiktok",
+      "name": "TikTok",
+      "category": "data",
+      "description": "Show your TikTok follower, following, like and video counts. Signs in to your TikTok account through your own free TikTok developer app.",
+      "version": "1.0.0",
+      "created_at": "2026-10-04T00:28:55Z",
+      "updated_at": "2026-10-04T00:29:03Z",
+      "clones_14d_count": 35,
+      "clones_14d_uniques": 27
     }
   ]
 }

@@ -6,17 +6,18 @@
 # parity script normalizes sitemap entries: URL pathname, trailing slash
 # stripped, "" → "/").
 #
-# On any failure the run files an issue on this repo (labeled
-# production-watch) with the captured output, and the run itself fails.
+# On any failure the run reports on this repo and the run itself fails. If an
+# issue labeled production-watch is already open, the run comments on it
+# instead of filing a duplicate (#118-#179 were one stale fixture entry
+# re-filed every 6 hours); otherwise it opens a new one.
 #
-# NOTE: downgrade the cron to weekly after 2026-08-29 (14 days
-# post-cutover) — every 6 hours is only warranted while the fiestaboard.app
-# cutover settles.
+# Runs weekly: the 6-hourly cadence was only for the fiestaboard.app cutover,
+# which settled after 2026-08-29. Use workflow_dispatch for an ad-hoc check.
 name: Production watch
 
 on:
   schedule:
-    - cron: "41 */6 * * *" # every 6 hours, off the top of the hour
+    - cron: "41 14 * * 1" # weekly, Monday 14:41 UTC, off the top of the hour
   workflow_dispatch: {}
 
 permissions:
@@ -130,6 +131,17 @@ jobs:
             --repo "$GITHUB_REPOSITORY" \
             --description "Filed automatically by the production watch workflow" \
             --color D93F0B 2>/dev/null || true
+
+          # De-duplicate: report on the oldest open production-watch issue
+          # if there is one, rather than filing a new issue every run.
+          EXISTING="$(gh issue list --repo "$GITHUB_REPOSITORY" \
+            --label production-watch --state open --limit 100 \
+            --json number --jq 'map(.number) | min // empty' 2>/dev/null || true)"
+          if [ -n "$EXISTING" ]; then
+            echo "Open production-watch issue #$EXISTING exists; commenting instead of filing a new one."
+            gh issue comment "$EXISTING" --repo "$GITHUB_REPOSITORY" --body-file "$BODY"
+            exit 0
+          fi
 
           if ! gh issue create --repo "$GITHUB_REPOSITORY" \
             --title "$TITLE" --label production-watch --body-file "$BODY"; then

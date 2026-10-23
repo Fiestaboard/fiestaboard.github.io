@@ -113,7 +113,14 @@
 /* Pinned to the bottom so the links line up across cards of uneven copy. */
 .link {
   margin-top: auto;
-  padding-top: 16px;
+  align-self: flex-start;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Space above the link without fighting margin-top: auto. */
+.devices {
+  margin-bottom: 16px;
 }
 
 .byod {

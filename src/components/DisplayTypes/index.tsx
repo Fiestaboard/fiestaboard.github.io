@@ -7,7 +7,6 @@ import { Button } from "@fiestaboard/ui/components/forms/button";
 import { Box } from "@fiestaboard/ui/components/layout/box";
 import { Heading } from "@fiestaboard/ui/components/typography/heading";
 import { Text } from "@fiestaboard/ui/components/typography/text";
-import { TextLink } from "@fiestaboard/ui/components/typography/text-link";
 import type { DeviceModelRef } from "@fiestaboard/ui/lib/devices";
 import { FIESTAPANEL_SPLIT_FLAP_MODEL } from "@site/src/lib/display-models";
 import type { ReactNode } from "react";
@@ -127,9 +126,11 @@ function Card({ title, badge, description, devices, preview, previewLabel, link 
       </Box>
       <Text className={styles.body}>{description}</Text>
       <Text className={styles.devices}>{devices}</Text>
-      <TextLink href={link.to} className={styles.link}>
-        {link.label} →
-      </TextLink>
+      {/* A router Link, so the build's broken-link check covers it; the
+          Button `link` variant is TextLink's pigment and underline. */}
+      <Button variant="link" asChild className={styles.link}>
+        <Link to={link.to}>{link.label} →</Link>
+      </Button>
     </Box>
   );
 }

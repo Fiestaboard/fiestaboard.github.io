@@ -12,12 +12,19 @@
      ≈ 50vw), so scale the reserve down too instead of holding ~200px of blank
      space on phones. Kept in sync with .heroBoardFallback in
      src/pages/index.module.css, which reserves this height before hydration. */
-  min-height: min(409px, 57vw + 49px);
+  min-height: min(470px, 100vw + 60px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 18px;
+}
+
+/* The display area keeps one height whatever is on it - a wide Flagship, a
+   square Pixoo, a TV on its stand - so the caption and tabs never move. */
+.frame {
+  min-height: min(350px, 78vw);
+  align-items: center;
 }
 
 /* Cross-fade (with a hair of scale) between boards. The split-flap reveal of
@@ -59,6 +66,8 @@
 
 /* Two lines: what the board is showing, over what it is running on. */
 .caption {
+  display: flex;
+  flex-direction: column;
   font-family: var(--font-mono-stack);
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -94,4 +103,37 @@
    pause control in the caption row. */
 .frame button {
   display: none;
+}
+
+/* The display-type tabs sit above the stage, centered over the board. */
+.tabs {
+  margin: 0 auto;
+}
+
+/* No preflight here (see .pauseButton): an inactive tab would otherwise keep
+   the browser's grey button face and border. The active tab's own surface
+   comes from FiestaUI and is left alone. */
+.tabs button {
+  border: 0;
+  font: inherit;
+}
+
+.tabs button:not([data-active]) {
+  background: transparent;
+}
+
+/* A Pixoo is square: cap it so it does not tower over the wide boards, and
+   keep it the same height on every scene so the stage never shifts. */
+.ledSquare {
+  width: min(330px, 78vw);
+}
+
+.tv {
+  width: min(540px, 100%);
+}
+
+/* Fill the wrapper: the renderers size themselves to their container. */
+.ledSquare > *,
+.tv > * {
+  width: 100%;
 }

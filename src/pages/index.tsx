@@ -4,6 +4,7 @@ import { Button } from "@fiestaboard/ui/components/forms/button";
 import { Box } from "@fiestaboard/ui/components/layout/box";
 import { Flex } from "@fiestaboard/ui/components/layout/flex";
 import { Text } from "@fiestaboard/ui/components/typography/text";
+import DisplayTypes from "@site/src/components/DisplayTypes";
 import HeroBoard from "@site/src/components/HeroBoard";
 import HomepageFeatures from "@site/src/components/HomepageFeatures";
 import Layout from "@theme/Layout";
@@ -19,15 +20,13 @@ function Hero() {
           {/* The page's sole h1. FiestaUI's `Heading` covers h2-h4 only (h1 is
               reserved for the app's `PageHeader`), so the hero title keeps its
               own element and takes its type scale from `index.module.css`. */}
-          <h1 className={styles.heroTitle}>Turn your split-flap display into a living dashboard</h1>
+          <h1 className={styles.heroTitle}>Your data, on every display in the room</h1>
           <Text className={styles.heroBody}>
-            Transform your Vestaboard into a real-time information hub - track your morning commute, monitor the
-            markets, check surf conditions, or display Star Trek wisdom. Compatible with Vestaboard Flagship and Note.
-            All beautifully formatted, endlessly customizable, and running in Docker with zero hassle.
+            FiestaBoard puts your morning commute, the markets, the surf report, or a little Star Trek wisdom on the
+            displays around you: split-flap boards like Vestaboard, LED matrices like the Divoom Pixoo 64, and any TV
+            with a web browser. Design a page once and every display shows it its own way.
           </Text>
-          <Text className={styles.heroSubline}>
-            Weather, stocks, sports &amp; more - flash a Raspberry Pi or run with Docker
-          </Text>
+          <Text className={styles.heroSubline}>Free, open source, and self-hosted</Text>
           <Flex gap="3" wrap className={styles.heroButtons}>
             <Button size="lg" asChild>
               <Link to="/docs/intro">Get Started</Link>
@@ -48,11 +47,12 @@ function Hero() {
 export default function Home(): ReactNode {
   return (
     <Layout
-      title="Transform Your Split-Flap Display"
-      description="FiestaBoard is free, open-source software for Vestaboard and split-flap displays. 26 plugins for weather, stocks, sports, transit, and more. Compatible with Vestaboard Flagship and Note."
+      title="Your Data, on Every Display in the Room"
+      description="FiestaBoard is free, open-source software that puts live data on split-flap boards like Vestaboard, LED matrices like the Divoom Pixoo 64, and any TV with a web browser. 60+ plugins for weather, stocks, sports, transit, and more."
     >
       <Hero />
       <Box as="main">
+        <DisplayTypes />
         <HomepageFeatures />
       </Box>
     </Layout>

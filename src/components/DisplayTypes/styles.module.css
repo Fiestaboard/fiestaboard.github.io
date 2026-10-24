@@ -1,0 +1,161 @@
+/**
+ * "Every kind of display" and "Bring your own display" sections. Scaffolding
+ * (section, inner, titles) matches HomepageFeatures so the page keeps one
+ * rhythm; colors, fonts and radii come from FiestaUI tokens.
+ */
+.section {
+  border-bottom: 1px solid var(--border);
+}
+
+.sectionMuted {
+  border-bottom: 1px solid var(--border);
+  background: var(--muted);
+}
+
+.inner {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: clamp(48px, 8vw, 80px) 24px;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 34px;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.sectionSubtitle {
+  margin: 10px 0 clamp(28px, 5vw, 36px);
+  font-size: 17px;
+  color: var(--muted-foreground);
+  max-width: 640px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+}
+
+/* Every preview gets the same box, so the three titles line up whatever
+   shape the display is. */
+.preview {
+  height: 190px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: var(--muted);
+  padding: 16px;
+  overflow: hidden;
+}
+
+.previewFallback {
+  width: 100%;
+  height: 100%;
+}
+
+.wide {
+  width: 100%;
+}
+
+.square {
+  width: 158px;
+}
+
+.wide > *,
+.square > * {
+  width: 100%;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--foreground);
+}
+
+.body {
+  margin: 10px 0 0;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+
+.devices {
+  margin: 12px 0 0;
+  font-family: var(--font-mono-stack);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+/* Pinned to the bottom so the links line up across cards of uneven copy. */
+.link {
+  margin-top: auto;
+  align-self: flex-start;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Space above the link without fighting margin-top: auto. */
+.devices {
+  margin-bottom: 16px;
+}
+
+.byod {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: clamp(40px, 6vw, 56px) 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.byodCopy {
+  flex: 1 1 480px;
+}
+
+.byodTitle {
+  margin: 0;
+  font-size: 26px;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.byodBody {
+  margin: 10px 0 0;
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+  max-width: 640px;
+}
+
+.byodActions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}

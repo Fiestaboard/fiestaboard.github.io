@@ -58,14 +58,14 @@ const FeatureList: FeatureItem[] = [
     Icon: Puzzle,
     color: "red",
     description:
-      "26 built-in plugins for weather, stocks, transit, sports scores, Disney park wait times, ferry schedules, and more. Create your own plugins with our developer guide.",
+      "Plugins for weather, stocks, transit, sports scores, Disney park wait times, ferry schedules, and more. Data sources and displays are both plugins, so you can build your own of either.",
   },
   {
     title: "WYSIWYG Editor",
     Icon: Pencil,
     color: "orange",
     description:
-      "Create pages with a visual editor that shows exactly how content will appear on your board - template variables, colors, and alignment in real time.",
+      "Create pages with a visual editor that shows exactly how content will appear on each display - template variables, colors, and alignment in real time.",
   },
   {
     title: "Schedule Mode",
@@ -257,7 +257,7 @@ const FeatureShowcaseList: ShowcaseItem[] = [
     capture: "page-editor-wysiwyg",
     alt: "FiestaBoard WYSIWYG page editor with visual board preview",
     description:
-      "Design your board layouts visually - see exactly how content will appear before sending it to your display.",
+      "Design layouts visually and see exactly how a page will look on each of your displays before you send it.",
     link: "/docs/features/page-editor",
   },
   {
@@ -544,7 +544,7 @@ export default function HomepageFeatures(): ReactNode {
           <Heading level={2} className={styles.sectionTitle}>
             See It in Action
           </Heading>
-          <Text className={styles.sectionSubtitle}>A powerful web interface to manage your split-flap display</Text>
+          <Text className={styles.sectionSubtitle}>One web app to manage every display you own</Text>
           <Box className={styles.showcaseStack}>
             {FeatureShowcaseList.map((props, idx) => (
               <ShowcaseRow key={props.title} {...props} reverse={idx % 2 === 1} />

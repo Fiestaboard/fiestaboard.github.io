@@ -18,6 +18,13 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: "category",
+      label: "Displays",
+      collapsed: false,
+      link: { type: "doc", id: "displays/index" },
+      items: ["displays/split-flap", "setup/note-arrays", "displays/led-matrix", "displays/tv", "features/fiestapanel"],
+    },
+    {
+      type: "category",
       label: "Using FiestaBoard",
       collapsed: false,
       items: [
@@ -61,6 +68,8 @@ const sidebars: SidebarsConfig = {
       items: [
         "development/contributing",
         "development/plugin-guide",
+        "development/output-plugins",
+        "development/output-stream-api",
         "development/testing",
         "setup/local-development",
         "setup/local-home-assistant",

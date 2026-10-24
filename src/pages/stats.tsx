@@ -208,7 +208,7 @@ export default function StatsPage(): ReactNode {
 
           {!data && !error && (
             <Box className={styles.loading}>
-              <Spinner size="lg" label="Loading plugin stats" />
+              <Spinner size="lg" className="size-16" label="Loading plugin stats" />
             </Box>
           )}
 

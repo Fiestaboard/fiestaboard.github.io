@@ -60,6 +60,6 @@ Sun Art fills the entire board -- use it as a standalone full-screen display or 
 
 ## Next Steps
 
-- [Visual Clock Plugin](/docs/plugins/visual-clock) -- Another full-screen display
+- [Visual Clock Plugin](visual-clock.md) -- Another full-screen display
 - [Schedule](/docs/features/schedule) -- Rotate Sun Art with other pages
-- [Plugins Overview](/docs/plugins/overview) -- See all available plugins
+- [Plugins Overview](overview.md) -- See all available plugins

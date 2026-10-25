@@ -84,4 +84,4 @@ The time and progress bar are as of the last check, every 15 seconds by default.
 
 - [Spotify plugin setup guide](https://github.com/Fiestaboard/fiestaboard-plugin--spotify/blob/main/docs/SETUP.md) -- Settings reference and troubleshooting
 - [Connecting Accounts](/docs/features/connecting-accounts) -- How plugin sign-in works
-- [Plugins Overview](/docs/plugins/overview) -- See all available plugins
+- [Plugins Overview](overview.md) -- See all available plugins

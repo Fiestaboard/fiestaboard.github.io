@@ -314,4 +314,4 @@ This provides a Swagger UI where you can try out any endpoint directly in your b
 ## Next Steps
 
 - [Docker Setup](/docs/setup/docker-setup) - Understanding the API architecture
-- [Plugin Configuration](/docs/plugins/configuration) - Configuring plugins via API
+- [Plugin Configuration](../plugins/configuration.md) - Configuring plugins via API

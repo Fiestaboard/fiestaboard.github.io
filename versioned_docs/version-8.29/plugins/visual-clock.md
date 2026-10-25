@@ -52,6 +52,6 @@ The Visual Clock plugin creates a large, colorful clock display:
 
 ## Next Steps
 
-- [Sun Art Plugin](/docs/plugins/sun-art) -- Another full-screen display
+- [Sun Art Plugin](sun-art.md) -- Another full-screen display
 - [Schedule](/docs/features/schedule) -- Rotate between clock and other content
-- [Plugins Overview](/docs/plugins/overview) -- See all available plugins
+- [Plugins Overview](overview.md) -- See all available plugins

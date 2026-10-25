@@ -54,4 +54,4 @@ The Last.fm plugin shows:
 ## Next Steps
 
 - [Page Editor](/docs/features/page-editor) -- Create your music display layout
-- [Plugins Overview](/docs/plugins/overview) -- See all available plugins
+- [Plugins Overview](overview.md) -- See all available plugins

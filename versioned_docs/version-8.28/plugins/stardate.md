@@ -30,5 +30,5 @@ The Stardate plugin calculates and displays the current stardate using the TNG-e
 
 ## Next Steps
 
-- [Star Trek Quotes Plugin](/docs/plugins/star-trek-quotes) -- Add quotes from the shows
-- [Plugins Overview](/docs/plugins/overview) -- See all available plugins
+- [Star Trek Quotes Plugin](star-trek-quotes.md) -- Add quotes from the shows
+- [Plugins Overview](overview.md) -- See all available plugins

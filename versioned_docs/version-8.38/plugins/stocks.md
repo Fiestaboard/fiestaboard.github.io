@@ -67,5 +67,5 @@ Stock prices are automatically color-coded:
 
 ## Next Steps
 
-- [Plugins Overview](/docs/plugins/overview) -- See all available plugins
+- [Plugins Overview](overview.md) -- See all available plugins
 - [Color Guide](/docs/reference/color-guide) -- Learn about color formatting

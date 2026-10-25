@@ -8,7 +8,7 @@ keywords: [FiestaBoard transit, Muni, WSDOT ferries, Bay Wheels, split-flap tran
 
 FiestaBoard includes several transit plugins. Each now has its own dedicated page:
 
-- **[SF Muni](/docs/plugins/muni)** -- Real-time San Francisco Muni arrival predictions
-- **[WSDOT Ferries](/docs/plugins/wsdot)** -- Washington State Ferry schedules and vessel info
-- **[Bay Wheels](/docs/plugins/baywheels)** -- Bay Area bike share station availability
-- **[Traffic](/docs/plugins/traffic)** -- Commute times via Google Routes API
+- **[SF Muni](muni.md)** -- Real-time San Francisco Muni arrival predictions
+- **[WSDOT Ferries](wsdot.md)** -- Washington State Ferry schedules and vessel info
+- **[Bay Wheels](baywheels.md)** -- Bay Area bike share station availability
+- **[Traffic](traffic.md)** -- Commute times via Google Routes API

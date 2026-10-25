@@ -129,6 +129,6 @@ curl -X DELETE http://localhost:4420/api/plugins/{plugin_id}/uninstall
 
 ## Next Steps
 
-- **[Plugins Overview](/docs/plugins/overview)** - See all available plugins and what they need
+- **[Plugins Overview](overview.md)** - See all available plugins and what they need
 - **[Page Editor](/docs/features/page-editor)** - Use plugin data in your pages
 - **[Plugin Development Guide](/docs/development/plugin-guide)** - Create custom plugins

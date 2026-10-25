@@ -49,4 +49,4 @@ The Guest WiFi plugin provides a simple way to share WiFi credentials:
 ## Next Steps
 
 - [Page Editor](/docs/features/page-editor) -- Design your WiFi display layout
-- [Plugins Overview](/docs/plugins/overview) -- See all available plugins
+- [Plugins Overview](overview.md) -- See all available plugins

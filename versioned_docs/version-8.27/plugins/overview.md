@@ -92,7 +92,7 @@ Once a plugin is enabled, its data becomes available as **template variables** i
 
 Variables look like `{{weather.temperature}}` or `{{date_time.datetime}}` and are automatically replaced with live data when the page is displayed.
 
-For more details, see [Plugin Configuration](/docs/plugins/configuration).
+For more details, see [Plugin Configuration](configuration.md).
 
 ## Creating Your Own Plugins
 

@@ -41,5 +41,5 @@ The Surf Conditions plugin provides:
 
 ## Next Steps
 
-- [Weather Plugin](/docs/plugins/weather) -- Add weather conditions
-- [Plugins Overview](/docs/plugins/overview) -- See all available plugins
+- [Weather Plugin](weather.md) -- Add weather conditions
+- [Plugins Overview](overview.md) -- See all available plugins

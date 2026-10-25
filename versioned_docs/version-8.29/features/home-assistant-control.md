@@ -478,5 +478,5 @@ No. MQTT integration is **disabled by default** and completely opt-in. If you do
 
 ## Related
 
-- [Home Assistant Plugin](/docs/plugins/home-assistant) — Display HA entity states *on* your board (the reverse direction)
-- [Plugins Overview](/docs/plugins/overview) — See all available plugins
+- [Home Assistant Plugin](../plugins/home-assistant.md) — Display HA entity states *on* your board (the reverse direction)
+- [Plugins Overview](../plugins/overview.md) — See all available plugins

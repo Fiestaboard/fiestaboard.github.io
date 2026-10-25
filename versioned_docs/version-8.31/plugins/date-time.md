@@ -53,5 +53,5 @@ Date & Time is enabled by default and requires no API key.
 
 ## Next Steps
 
-- [Visual Clock Plugin](/docs/plugins/visual-clock) -- Full-screen pixel-art clock
-- [Plugins Overview](/docs/plugins/overview) -- See all available plugins
+- [Visual Clock Plugin](visual-clock.md) -- Full-screen pixel-art clock
+- [Plugins Overview](overview.md) -- See all available plugins

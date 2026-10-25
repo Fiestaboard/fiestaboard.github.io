@@ -12,17 +12,23 @@ const sidebars: SidebarsConfig = {
         "setup/quick-start",
         "setup/beginners-guide",
         "setup/first-10-minutes",
+        "setup/home-assistant-addon",
         "setup/api-keys",
         "setup/home-assistant-mqtt",
       ],
     },
     {
       type: "category",
+      label: "Displays",
+      collapsed: false,
+      link: { type: "doc", id: "displays/index" },
+      items: ["displays/split-flap", "setup/note-arrays", "displays/led-matrix", "displays/tv", "features/fiestapanel"],
+    },
+    {
+      type: "category",
       label: "Using FiestaBoard",
       collapsed: false,
       items: [
-        "plugins/overview",
-        "plugins/configuration",
         "features/page-editor",
         "features/transitions",
         "setup/ai-providers",
@@ -30,42 +36,6 @@ const sidebars: SidebarsConfig = {
         "features/silence-schedule",
         "features/home-assistant-control",
         "features/updating",
-      ],
-    },
-    {
-      type: "category",
-      label: "Plugins",
-      collapsed: true,
-      items: [
-        // Weather
-        "plugins/weather",
-        "plugins/air-fog",
-        "plugins/surf",
-        // Transit
-        "plugins/muni",
-        "plugins/traffic",
-        "plugins/baywheels",
-        "plugins/wsdot",
-        // Data
-        "plugins/stocks",
-        "plugins/sports-scores",
-        "plugins/nearby-aircraft",
-        // Entertainment
-        "plugins/disney-parks",
-        "plugins/last-fm",
-        "plugins/star-trek-quotes",
-        "plugins/stardate",
-        // Art
-        "plugins/sun-art",
-        "plugins/visual-clock",
-        // Utility
-        "plugins/date-time",
-        "plugins/guest-wifi",
-        // Home
-        "plugins/home-assistant",
-        // Index pages (hidden from main list but still accessible)
-        "plugins/entertainment",
-        "plugins/transit",
       ],
     },
     {
@@ -99,6 +69,8 @@ const sidebars: SidebarsConfig = {
       items: [
         "development/contributing",
         "development/plugin-guide",
+        "development/output-plugins",
+        "development/output-stream-api",
         "development/testing",
         "setup/local-development",
         "setup/local-home-assistant",

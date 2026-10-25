@@ -60,5 +60,5 @@ The Sports Scores plugin works **without an API key** using free data from TheSp
 
 ## Next Steps
 
-- [Plugins Overview](/docs/plugins/overview) - See all available plugins
-- [Plugin Configuration](/docs/plugins/configuration) - General plugin management
+- [Plugins Overview](overview.md) - See all available plugins
+- [Plugin Configuration](configuration.md) - General plugin management

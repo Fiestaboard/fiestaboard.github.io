@@ -21,7 +21,7 @@ Here's a quick look at what your board can show once FiestaBoard is running:
 | **Home** | Smart home status via Home Assistant, guest WiFi credentials |
 | **Fun & Visual** | Disney park wait times, sun art, visual clock, stardate |
 
-There are **26 built-in plugins**, and many of them work without any API key at all. You can also install community plugins from the [plugin registry](/docs/plugins/overview#installing-external-plugins) or from any public git repository.
+There are **26 built-in plugins**, and many of them work without any API key at all. You can also install community plugins from the [plugin registry](plugins/overview.md#installing-external-plugins) or from any public git repository.
 
 ## How It Works
 
@@ -104,8 +104,8 @@ If you've already got FiestaBoard installed and running, check out **[Your First
 | **[Home Assistant Add-on](/docs/setup/home-assistant-addon)** | Install from the HA Add-on Store (beta) — Ingress, MQTT auto-discovery, HA backups |
 | **[Beginner's Guide](/docs/setup/beginners-guide)** | Step-by-step for non-technical users |
 | **[Your First 10 Minutes](/docs/setup/first-10-minutes)** | What to do right after setup |
-| **[Plugins Overview](/docs/plugins/overview)** | All 26 plugins and what they do |
-| **[Plugin Configuration](/docs/plugins/configuration)** | Enabling and configuring plugins |
+| **[Plugins Overview](plugins/overview.md)** | All 26 plugins and what they do |
+| **[Plugin Configuration](plugins/configuration.md)** | Enabling and configuring plugins |
 | **[Page Editor](/docs/features/page-editor)** | Creating and editing board content |
 | **[AI Page Drafts](/docs/setup/ai-providers)** | Optional: bring your own LLM to draft pages from a prompt |
 | **[Schedule Mode](/docs/features/schedule)** | Automating when pages display |

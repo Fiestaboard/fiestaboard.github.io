@@ -30,6 +30,39 @@ const onlyIncludeVersions =
 // - the "Next" (unversioned) docs were served at /docs/next/ until v2.11
 // - "latest" is an evergreen alias: /docs/latest/<page> always forwards to
 //   the current docs at /docs/<page>
+// Pages of the retired docs/plugins section (removed 2026-10), redirected to
+// the Plugin Directory at /plugins.
+const LEGACY_PLUGIN_DOCS = [
+  "overview",
+  "configuration",
+  "air-fog",
+  "baywheels",
+  "countdown",
+  "date-time",
+  "disney-parks",
+  "entertainment",
+  "guest-wifi",
+  "home-assistant",
+  "last-fm",
+  "muni",
+  "nearby-aircraft",
+  "plex",
+  "random",
+  "shopify",
+  "sports-scores",
+  "spotify",
+  "star-trek-quotes",
+  "stardate",
+  "stocks",
+  "sun-art",
+  "surf",
+  "traffic",
+  "transit",
+  "visual-clock",
+  "weather",
+  "wsdot",
+];
+
 const redirectedDocsPrefixes = [...versions.slice(DEPLOY_VERSION_CAP), "next", "latest"];
 
 // Latest version gets a "(latest)" dropdown label; every other built version
@@ -44,7 +77,7 @@ const config: Config = {
   clientModules: ["./src/clientModules/versionSession.ts"],
 
   title: "FiestaBoard",
-  tagline: "Turn your split-flap display into a living dashboard",
+  tagline: "Your data, on every display in the room",
   favicon: "img/favicon.ico",
 
   // Brand lockups are canonical in the product repo
@@ -98,7 +131,7 @@ const config: Config = {
       attributes: {
         name: "keywords",
         content:
-          "split-flap display, split-flap display software, dashboard, Vestaboard, Vestaboard software, Vestaboard app, Vestaboard dashboard, Vestaboard Home Assistant, Vestaboard plugins, best software for Vestaboard, weather display, stocks display, sports scores, Docker, Raspberry Pi, home automation, smart display, open source, self-hosted, WYSIWYG editor, display scheduler, IoT display, transit times, surf report, Home Assistant display, split-flap display app, display plugins, FiestaBoard",
+          "split-flap display, split-flap display software, dashboard, Vestaboard, Vestaboard software, Vestaboard app, Vestaboard dashboard, Vestaboard Home Assistant, Vestaboard plugins, best software for Vestaboard, LED matrix display, Divoom Pixoo 64, Pixoo dashboard, TV dashboard, TV information display, Apple TV dashboard, Android TV dashboard, weather display, stocks display, sports scores, Docker, Raspberry Pi, home automation, smart display, open source, self-hosted, WYSIWYG editor, display scheduler, IoT display, transit times, surf report, Home Assistant display, split-flap display app, display plugins, FiestaBoard",
       },
     },
     {
@@ -124,9 +157,13 @@ const config: Config = {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
         name: "FiestaBoard",
-        alternateName: ["FiestaBoard Split-Flap Display Software", "FiestaBoard Dashboard"],
+        alternateName: [
+          "FiestaBoard Split-Flap Display Software",
+          "FiestaBoard LED and TV Dashboard",
+          "FiestaBoard Dashboard",
+        ],
         description:
-          "Open-source software for split-flap displays. Adds plugins, scheduling, and a visual page editor to your board. Compatible with Vestaboard Flagship and Note.",
+          "Open-source software that puts live data on split-flap boards (Vestaboard Flagship, Note and Note arrays), LED matrices (Divoom Pixoo 64) and any TV with a web browser. Plugins, scheduling, and a visual page editor.",
         url: "https://fiestaboard.app",
         applicationCategory: "UtilitiesApplication",
         operatingSystem: "Linux, macOS, Windows",
@@ -138,7 +175,7 @@ const config: Config = {
           priceCurrency: "USD",
         },
         featureList:
-          "WYSIWYG page editor, Schedule mode, 26 plugins, Docker deployment, Raspberry Pi support, Weather display, Stock ticker, Sports scores, Transit times, Home Assistant integration",
+          "Split-flap, LED matrix and TV displays, Output plugins for new displays, WYSIWYG page editor, Schedule mode, 60+ plugins, Docker deployment, Raspberry Pi support, Weather display, Stock ticker, Sports scores, Transit times, Home Assistant integration",
         screenshot: "https://fiestaboard.app/img/web-ui-home.png",
         softwareRequirements: "Docker and Docker Compose",
         codeRepository: "https://github.com/Fiestaboard/FiestaBoard",
@@ -163,7 +200,7 @@ const config: Config = {
             name: "What is FiestaBoard?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "FiestaBoard is free, open-source software for split-flap displays. It adds 23 data plugins, a visual page editor, and scheduling to your board. Compatible with Vestaboard Flagship and Note.",
+              text: "FiestaBoard is free, open-source software that puts live data on the displays around you: split-flap boards like Vestaboard, LED matrices like the Divoom Pixoo 64, and any TV with a web browser. It adds 60+ data plugins, a visual page editor, and scheduling.",
             },
           },
           {
@@ -179,15 +216,23 @@ const config: Config = {
             name: "How do I install FiestaBoard?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "FiestaBoard runs in Docker. Pull the image from Docker Hub and start it with docker-compose - you can be up and running in under 5 minutes. It works on Mac, Windows, Linux, and Raspberry Pi.",
+              text: "Install FiestaBoard with FiestaPi on a dedicated Raspberry Pi, the beta add-on for Home Assistant OS or Supervised, or Docker Compose on a compatible computer, NAS or home server. The installation page helps you choose a setup and links to its guide.",
             },
           },
           {
             "@type": "Question",
-            name: "What can FiestaBoard display on my board?",
+            name: "What can FiestaBoard show on my display?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "FiestaBoard has 26 built-in plugins for weather, stocks, sports scores, transit times, Disney park wait times, aircraft tracking, surf conditions, Home Assistant integration, and more. Many plugins require no API key.",
+              text: "FiestaBoard has 60+ plugins for weather, stocks, sports scores, transit times, Disney park wait times, aircraft tracking, surf conditions, Home Assistant integration, and more. Many plugins require no API key.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "Which displays does FiestaBoard support?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "FiestaBoard drives split-flap boards (Vestaboard Flagship, Note and Note arrays), LED matrices (Divoom Pixoo 64), and any TV or screen with a web browser through FiestaPanel. Native Apple TV and Android TV apps are coming soon. Every display is an output plugin, so new hardware can be added without changing FiestaBoard itself.",
             },
           },
           {
@@ -195,7 +240,7 @@ const config: Config = {
             name: "Does FiestaBoard work with Vestaboard?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Yes. FiestaBoard is compatible with Vestaboard Flagship (22x6) and Vestaboard Note (15x3). It connects via the Vestaboard Local API (recommended, supports animations) or the Vestaboard Cloud API (works remotely). FiestaBoard runs alongside the official Vestaboard app.",
+              text: "Yes. FiestaBoard is compatible with Vestaboard Flagship (22x6), Vestaboard Note (15x3) and Note arrays. It connects via the Vestaboard Local API (recommended, supports animations) or the Vestaboard Cloud API (works remotely). FiestaBoard runs alongside the official Vestaboard app.",
             },
           },
         ],
@@ -217,16 +262,13 @@ const config: Config = {
         },
         title: "FiestaBoard",
         description:
-          "Open-source software for split-flap displays (Vestaboard Flagship and Note). Plugins, scheduling, and a visual page editor for your board.",
+          "Open-source software for split-flap boards (Vestaboard), LED matrices (Divoom Pixoo 64) and TVs. Plugins, scheduling, and a visual page editor for every display.",
         version: versions[0],
         generateLLMsTxt: true,
         generateLLMsFullTxt: true,
         includeOrder: [
           "**/intro.md",
           "**/setup/**",
-          "**/plugins/overview.md",
-          "**/plugins/configuration.md",
-          "**/plugins/**",
           "**/features/**",
           "**/deployment/**",
           "**/reference/**",
@@ -243,6 +285,12 @@ const config: Config = {
           {
             from: ["/docs/setup/split-flap-display-software", "/docs/next/setup/split-flap-display-software"],
             to: "/docs/intro",
+          },
+          // The retired secret-encryption helper guide has no same-path
+          // successor. Preserve it as older snapshots leave the build cap.
+          {
+            from: redirectedDocsPrefixes.map((prefix) => `/docs/${prefix}/setup/secret-encryption`),
+            to: "/docs/setup/api-keys",
           },
           // Bare section roots have no route of their own: /docs itself and
           // the bare form of every redirected prefix (/docs/latest,
@@ -261,15 +309,23 @@ const config: Config = {
           // was autogenerated (2026-02-15 → #295 on 2026-02-22); each one
           // forwards to its section's entry page.
           { from: "/docs/category/setup", to: "/docs/setup/quick-start" },
-          { from: "/docs/category/plugins", to: "/docs/plugins/overview" },
+          { from: "/docs/category/plugins", to: "/plugins" },
           { from: "/docs/category/features", to: "/docs/features/page-editor" },
           { from: "/docs/category/development", to: "/docs/development/contributing" },
           { from: "/docs/category/deployment", to: "/docs/deployment/production" },
           { from: "/docs/category/reference", to: "/docs/reference/api-endpoints" },
+          // The hand-written docs/plugins section was removed in favor of the
+          // generated Plugin Directory. Its pages stay live while an older
+          // snapshot is still the latest version (the plugin skips redirects
+          // whose `from` is an existing route), then forward here.
+          {
+            from: LEGACY_PLUGIN_DOCS.map((page) => `/docs/plugins/${page}`),
+            to: "/plugins",
+          },
         ],
-        // Every page in a retired version snapshot has a same-path page in
-        // the current docs (verified against git history), so map each
-        // current docs route to its retired-prefix ancestors.
+        // Map current docs routes to their retired-prefix ancestors.
+        // Retired pages without a same-path successor need an explicit
+        // redirect above so leaving the build cap does not drop their URLs.
         createRedirects(existingPath: string) {
           const match = existingPath.match(/^\/docs\/(.+)$/);
           if (!match) return undefined;
@@ -330,7 +386,7 @@ const config: Config = {
           // fiestaui.generated.css (precompiled DS tokens + Tailwind utilities,
           // built by `npm run build:css`) loads first so custom.css can bridge
           // Infima variables onto the DS tokens.
-          customCss: ["./src/css/fiestaui.generated.css", "./src/css/custom.css"],
+          customCss: ["./src/css/fiestaui.generated.css", "./src/css/app-calendar.css", "./src/css/custom.css"],
         },
         gtag: {
           trackingID: "G-5D2S6D6PNC",
@@ -352,7 +408,7 @@ const config: Config = {
       {
         name: "description",
         content:
-          "FiestaBoard is free, open-source software for split-flap displays. Add weather, stocks, sports scores, transit times, and more with 26 plugins, a visual editor, and scheduling. Compatible with Vestaboard.",
+          "FiestaBoard is free, open-source software for split-flap boards, LED matrices and TVs. Add weather, stocks, sports scores, transit times, and more with 60+ plugins, a visual editor, and scheduling. Compatible with Vestaboard and Divoom Pixoo 64.",
       },
       // og:title/og:description/og:image/og:type are emitted per-page by
       // Docusaurus (blog posts get og:type=article + their own social card);
@@ -373,6 +429,11 @@ const config: Config = {
       },
       items: [
         {
+          to: "/installation",
+          label: "Install",
+          position: "left",
+        },
+        {
           type: "dropdown",
           label: "Documentation",
           position: "left",
@@ -380,7 +441,6 @@ const config: Config = {
             { type: "doc", docId: "intro", label: "Getting Started" },
             { type: "doc", docId: "setup/quick-start", label: "Setup" },
             { type: "doc", docId: "features/page-editor", label: "Features" },
-            { type: "doc", docId: "plugins/overview", label: "Plugins" },
             { type: "doc", docId: "deployment/production", label: "Deployment" },
             { type: "doc", docId: "development/contributing", label: "Development" },
             { type: "doc", docId: "reference/api-endpoints", label: "API Reference" },
@@ -434,16 +494,16 @@ const config: Config = {
           title: "Documentation",
           items: [
             {
+              label: "Install",
+              to: "/installation",
+            },
+            {
               label: "Getting Started",
               to: "/docs/intro",
             },
             {
               label: "Setup Guide",
               to: "/docs/setup/quick-start",
-            },
-            {
-              label: "Plugins",
-              to: "/docs/plugins/overview",
             },
             {
               label: "Plugin Directory",

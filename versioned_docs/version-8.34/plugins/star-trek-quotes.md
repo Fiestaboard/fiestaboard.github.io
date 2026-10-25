@@ -42,5 +42,5 @@ The default ratio is `3:5:9` (TNG:Voyager:DS9). Adjust this in the plugin settin
 
 ## Next Steps
 
-- [Stardate Plugin](/docs/plugins/stardate) -- Display the current stardate
-- [Plugins Overview](/docs/plugins/overview) -- See all available plugins
+- [Stardate Plugin](stardate.md) -- Display the current stardate
+- [Plugins Overview](overview.md) -- See all available plugins

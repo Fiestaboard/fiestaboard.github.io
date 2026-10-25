@@ -98,5 +98,5 @@ The plugin uses colors to indicate state:
 
 ## Next Steps
 
-- [Plugins Overview](/docs/plugins/overview) - See all available plugins
-- [Plugin Configuration](/docs/plugins/configuration) - General plugin management
+- [Plugins Overview](overview.md) - See all available plugins
+- [Plugin Configuration](configuration.md) - General plugin management

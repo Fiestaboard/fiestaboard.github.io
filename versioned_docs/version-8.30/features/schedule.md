@@ -91,4 +91,4 @@ At your configured polling interval (default: 15 seconds), the display service:
 
 - [Page Editor](/docs/features/page-editor) - Create pages to use in your schedule
 - [Silence Schedule](/docs/features/silence-schedule) - Set quiet hours for your board
-- [Plugins Overview](/docs/plugins/overview) - Add data sources to your pages
+- [Plugins Overview](../plugins/overview.md) - Add data sources to your pages

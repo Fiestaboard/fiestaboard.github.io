@@ -72,5 +72,5 @@ Countdown requires no external service or API key. All values are computed local
 
 ## Next Steps
 
-- [Date & Time Plugin](/docs/plugins/date-time) -- Display the current date and time
-- [Plugins Overview](/docs/plugins/overview) -- See all available plugins
+- [Date & Time Plugin](date-time.md) -- Display the current date and time
+- [Plugins Overview](overview.md) -- See all available plugins

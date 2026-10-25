@@ -46,5 +46,5 @@ The WSDOT plugin shows:
 
 ## Next Steps
 
-- [Plugins Overview](/docs/plugins/overview) -- See all available plugins
+- [Plugins Overview](overview.md) -- See all available plugins
 - [Schedule](/docs/features/schedule) -- Show ferry info during commute hours

@@ -61,9 +61,9 @@ This is where it gets fun. Click the **Variables** button in the editor toolbar.
 
 For example, if you enabled the Date & Time plugin, you'll see variables like:
 
-- `{date_time.datetime}` - Inserts the current date and time
-- `{date_time.date}` - Inserts just the date
-- `{date_time.time}` - Inserts just the time
+- `{{date_time.datetime}}` - Inserts the current date and time
+- `{{date_time.date}}` - Inserts just the date
+- `{{date_time.time}}` - Inserts just the time
 
 Click any variable to insert it into your page at the cursor position. When the page is displayed on your board, the variable is automatically replaced with live data.
 
@@ -77,10 +77,10 @@ Here's a page layout you could create using Date & Time and Star Trek Quotes:
 
 ```text
   GOOD MORNING
-  {date_time.date}
-  {date_time.time}
+  {{date_time.date}}
+  {{date_time.time}}
 
-  {star_trek_quotes.quote}
+  {{star_trek_quotes.quote}}
 ```
 
 ### Save your page
@@ -101,7 +101,7 @@ Some plugins fill the entire board with formatted content. These are great for "
 - **Sun Art** - An art pattern that changes throughout the day
 - **Surf Conditions** - Full surf report with wave height and conditions
 
-To use these, create a new page and insert just the plugin's main variable (e.g., `{visual_clock.display}` or `{sun_art.display}`). The plugin handles the entire layout.
+To use these, create a new page and insert just the plugin's main variable (e.g., `{{visual_clock.visual_clock}}` or `{{sun_art.sun_art}}`). The plugin handles the entire layout.
 
 ## 6. Set Up a Schedule (Optional)
 
@@ -152,10 +152,10 @@ Now that you have the basics down, here are some things to explore:
 
 Head to the **Integrations** page and set up plugins that need API keys. These are the most popular:
 
-- **[Weather](/docs/plugins/weather)** - Free API key from weatherapi.com (1 million calls/month free)
-- **[Stocks](/docs/plugins/configuration)** - Works without an API key; optional Finnhub key for better search
-- **[Sports Scores](/docs/plugins/sports-scores)** - Works without an API key
-- **[Traffic](/docs/plugins/traffic)** - Requires a Google Routes API key (free tier available)
+- **[Weather](/plugins/detail?id=weather)** - Free API key from weatherapi.com (1 million calls/month free)
+- **[Stocks](/plugins/detail?id=stocks)** - Works without an API key; optional Finnhub key for better search
+- **[Sports Scores](/plugins/detail?id=sports_scores)** - Works without an API key
+- **[Traffic](/plugins/detail?id=traffic)** - Requires a Google Routes API key (free tier available)
 
 ### Design more pages
 
@@ -166,4 +166,4 @@ Create pages for different moods and times of day. Mix and match plugin variable
 - **[Color Guide](/docs/reference/color-guide)** - Add colored tiles to your pages
 - **[Character Codes](/docs/reference/character-codes)** - Special characters available on the board
 - **[Schedule Mode](/docs/features/schedule)** - Advanced scheduling with day patterns
-- **[All Plugins](/docs/plugins/overview)** - Full list of all 50+ plugins
+- **[All Plugins](/plugins)** - Full list of all 50+ plugins

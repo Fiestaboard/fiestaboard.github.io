@@ -67,5 +67,5 @@ Pollen data is fetched from [Open-Meteo](https://open-meteo.com/) automatically 
 
 ## Next Steps
 
-- [Weather Plugin](/docs/plugins/weather) -- Pair with weather data
-- [Plugins Overview](/docs/plugins/overview) -- See all available plugins
+- [Weather Plugin](weather.md) -- Pair with weather data
+- [Plugins Overview](overview.md) -- See all available plugins

@@ -5,7 +5,6 @@ import { ScaledBoardDisplay } from "@fiestaboard/ui/components/board/scaled-boar
 import { Badge } from "@fiestaboard/ui/components/feedback/badge";
 import { Button } from "@fiestaboard/ui/components/forms/button";
 import { Box } from "@fiestaboard/ui/components/layout/box";
-import { Code } from "@fiestaboard/ui/components/typography/code";
 import { Heading } from "@fiestaboard/ui/components/typography/heading";
 import { Text } from "@fiestaboard/ui/components/typography/text";
 import { TextLink } from "@fiestaboard/ui/components/typography/text-link";
@@ -202,6 +201,7 @@ function createFlap(count: number, onFrame: (shown: (string | null)[] | null) =>
 }
 
 type HighlightItem = {
+  badge: "New in v10" | "Recent";
   title: string;
   description: ReactNode;
   primary: { label: string; to: string };
@@ -210,28 +210,28 @@ type HighlightItem = {
 
 const HighlightList: HighlightItem[] = [
   {
-    title: "FiestaPi - flash a Raspberry Pi, done",
-    description: (
-      <>
-        A pre-built Raspberry Pi OS image with FiestaBoard, Docker, and the self-update sidecar all pre-installed. Flash
-        a microSD card with Raspberry Pi Imager, boot your Pi, open <Code>http://fiestapi.local:4420</Code> - no Docker
-        setup, no terminal, no config files. Works on Pi 3B, Pi 4, Pi 5, and Pi Zero 2 W.
-      </>
-    ),
-    primary: { label: "FiestaPi Quick Start →", to: "/docs/setup/raspberry-pi" },
-    secondary: { label: "Download image", to: "https://github.com/Fiestaboard/FiestaBoard/releases/latest" },
+    badge: "New in v10",
+    title: "More kinds of display",
+    description:
+      "Add a Divoom Pixoo 64 or a TV running FiestaPanel alongside your split-flap board. Manage them in one app, with pages and schedules for each display.",
+    primary: { label: "Explore displays", to: "/displays" },
+    secondary: { label: "Find your setup", to: "/installation" },
   },
   {
-    title: "One-click in-app updates",
-    description: (
-      <>
-        When a new version ships, a banner appears in Settings → System. Click Update Now and FiestaBoard updates itself
-        - no SSH, no <Code>docker compose pull</Code>. On for FiestaPi by default; opt in on Docker installs by enabling
-        the <Code>fiestaupdater</Code> sidecar.
-      </>
-    ),
-    primary: { label: "How updates work →", to: "/docs/features/updating" },
-    secondary: { label: "FiestaUpdater reference", to: "/docs/deployment/fiestaupdater" },
+    badge: "Recent",
+    title: "Sign in to your accounts",
+    description:
+      "OAuth connects supported plugins through the service’s own sign-in page. Some services still need an app registration; each plugin’s setup guide explains what’s required.",
+    primary: { label: "Connect an account", to: "/docs/features/connecting-accounts" },
+    secondary: { label: "Browse plugins", to: "/plugins" },
+  },
+  {
+    badge: "Recent",
+    title: "A first draft, with FiestaBot",
+    description:
+      "Connect your own AI provider, describe a page and refine the result in the visual editor. FiestaBot is optional, and your provider’s pricing and terms apply.",
+    primary: { label: "Set up FiestaBot", to: "/docs/setup/ai-providers" },
+    secondary: { label: "Explore the editor", to: "/docs/features/page-editor" },
   },
 ];
 
@@ -349,19 +349,11 @@ function FeatureCard({ title, Icon, color, description, glyph }: FeatureItem & {
   );
 }
 
-function HighlightCard({ title, description, primary, secondary }: HighlightItem) {
+function HighlightCard({ badge, title, description, primary, secondary }: HighlightItem) {
   return (
     <Box className={styles.highlightCard}>
-      {/* No className: the "New" chip is the DS `success` tag pair as shipped.
-          It used to be overridden here with opaque hexes, on the claim that the
-          translucent tint collapsed to ~1.5:1 on the dark card. It does not -
-          recomputed from theme.css it is 9.20:1 at the resting fill and 7.18:1
-          at the anchor-hover one (7.17 / 6.22 in light), where the hexes that
-          replaced it were 7.52:1 and 6.49:1. The fork measured worse than the
-          thing it overrode, and a hex cannot follow a retune of the pair;
-          @fiestaboard/ui 5.4.0 now recomputes that whole matrix in CI, so there
-          is nothing left for a consumer to second-guess. */}
-      <Badge variant="success">New</Badge>
+      {/* Keep FiestaUI's status colors and contrast without local overrides. */}
+      <Badge variant={badge === "New in v10" ? "success" : "secondary"}>{badge}</Badge>
       <Heading level={3} className={styles.highlightTitle}>
         {title}
       </Heading>
@@ -528,7 +520,7 @@ export default function HomepageFeatures(): ReactNode {
             What&apos;s New
           </Heading>
           <Text className={styles.sectionSubtitle}>
-            The fastest way to run FiestaBoard, and updates without ever touching a terminal
+            More display choices, easier account connections, and help creating your next page.
           </Text>
           <Box className={styles.highlightGrid}>
             {HighlightList.map((props) => (

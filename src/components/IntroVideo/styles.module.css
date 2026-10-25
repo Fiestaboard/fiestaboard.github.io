@@ -1,0 +1,175 @@
+.section {
+  border-bottom: 1px solid var(--border);
+}
+
+.inner {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: clamp(32px, 5vw, 56px) 24px;
+}
+
+.panel {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  align-items: center;
+  gap: 32px;
+  padding: 32px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+}
+
+.copy {
+  min-width: 0;
+}
+
+.duration {
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+
+.title {
+  margin: 10px 0 0;
+  font-size: clamp(26px, 3vw, 34px);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  color: var(--foreground);
+  text-wrap: balance;
+}
+
+.description {
+  margin: 16px 0 0;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+
+.youtubeLink {
+  margin-top: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  font-size: 14px;
+}
+
+.media {
+  min-width: 0;
+  aspect-ratio: 16 / 9;
+}
+
+.poster,
+.player {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: var(--radius-lg);
+}
+
+/* The poster is a play control, not an image-zoom surface. Keep its focus
+   boundary outside the image and reserve the same area for the player. */
+.poster {
+  position: relative;
+  padding: 0;
+  cursor: pointer;
+  white-space: normal;
+}
+
+.poster img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  transition: filter 150ms ease;
+}
+
+[data-theme="dark"] .poster img {
+  filter: brightness(0.84) saturate(0.94);
+}
+
+[data-theme="dark"] .poster:hover img,
+[data-theme="dark"] .poster:focus-visible img {
+  filter: brightness(0.9) saturate(0.94);
+}
+
+.poster::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(to top, rgb(0 0 0 / 0.38) 0%, rgb(0 0 0 / 0.08) 38%, transparent 60%);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.08);
+}
+
+[data-theme="dark"] .poster::after {
+  background: linear-gradient(to top, rgb(0 0 0 / 0.46) 0%, rgb(0 0 0 / 0.1) 40%, transparent 62%);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.1);
+}
+
+.playLabel {
+  position: absolute;
+  z-index: 1;
+  left: 16px;
+  bottom: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 6px 14px 6px 6px;
+  border-radius: 999px;
+  background: rgb(20 20 20 / 0.72);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  backdrop-filter: blur(8px);
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.35),
+    inset 0 0 0 1px rgb(255 255 255 / 0.12);
+}
+
+.playLabel svg {
+  width: 28px;
+  height: 28px;
+  padding: 7px;
+  border-radius: 999px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.poster:hover .playLabel,
+.poster:focus-visible .playLabel {
+  background: rgb(20 20 20 / 0.84);
+}
+
+.poster:focus-visible,
+.player:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring-shadow);
+}
+
+@media (max-width: 820px) {
+  .panel {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    padding: 24px;
+  }
+}
+
+@media (max-width: 420px) {
+  .panel {
+    padding: 20px;
+  }
+
+  .playLabel {
+    padding: 6px 12px 6px 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .poster img {
+    transition: none;
+  }
+}

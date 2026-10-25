@@ -216,7 +216,7 @@ const config: Config = {
             name: "How do I install FiestaBoard?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "FiestaBoard runs in Docker. Pull the image from Docker Hub and start it with docker-compose - you can be up and running in under 5 minutes. It works on Mac, Windows, Linux, and Raspberry Pi.",
+              text: "Install FiestaBoard with FiestaPi on a dedicated Raspberry Pi, the beta add-on for Home Assistant OS or Supervised, or Docker Compose on a compatible computer, NAS or home server. The installation page helps you choose a setup and links to its guide.",
             },
           },
           {
@@ -423,6 +423,11 @@ const config: Config = {
       },
       items: [
         {
+          to: "/installation",
+          label: "Install",
+          position: "left",
+        },
+        {
           type: "dropdown",
           label: "Documentation",
           position: "left",
@@ -482,6 +487,10 @@ const config: Config = {
         {
           title: "Documentation",
           items: [
+            {
+              label: "Install",
+              to: "/installation",
+            },
             {
               label: "Getting Started",
               to: "/docs/intro",

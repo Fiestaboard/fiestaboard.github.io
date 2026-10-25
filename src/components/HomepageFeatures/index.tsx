@@ -582,11 +582,12 @@ export default function HomepageFeatures(): ReactNode {
             Ready to Get Started?
           </Heading>
           <Text className={styles.ctaSubtitle}>
-            FiestaBoard is free, open source, and runs anywhere Docker does. Get up and running in minutes.
+            FiestaBoard is free and open source. Choose FiestaPi, Home Assistant or Docker, then follow the guide for
+            your setup.
           </Text>
           <Box className={styles.centerAction}>
             <Button size="lg" asChild>
-              <Link to="/docs/setup/beginners-guide">Beginner&apos;s Guide</Link>
+              <Link to="/installation">Choose Your Setup</Link>
             </Button>
             <Button variant="outline" size="lg" asChild>
               <Link to="/docs/development/plugin-guide">Build a Plugin</Link>

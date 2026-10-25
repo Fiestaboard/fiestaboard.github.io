@@ -1,5 +1,6 @@
 import BrowserOnly from "@docusaurus/BrowserOnly";
 import Link from "@docusaurus/Link";
+import useBrokenLinks from "@docusaurus/useBrokenLinks";
 import { DisplayPreview } from "@fiestaboard/ui/components/board/display-preview";
 import { ScaledBoardDisplay } from "@fiestaboard/ui/components/board/scaled-board-display";
 import { Badge } from "@fiestaboard/ui/components/feedback/badge";
@@ -23,6 +24,7 @@ import styles from "./styles.module.css";
  */
 
 type DisplayCard = {
+  id: string;
   title: string;
   /** A state badge, when the display has one worth calling out. */
   badge?: { label: string; variant: "success" | "secondary" };
@@ -35,6 +37,7 @@ type DisplayCard = {
 
 const CARDS: DisplayCard[] = [
   {
+    id: "split-flap",
     title: "Split-flap",
     description:
       "Mechanical flaps that clatter into place. Every page lands the way it would on an airport departures board.",
@@ -44,23 +47,31 @@ const CARDS: DisplayCard[] = [
       message: "SF WEATHER\n\n{yellow} 72F  SUNNY\n\nHIGH 78    LOW 61\nUV 4    WIND 8 MPH",
     },
     previewLabel: "A weather forecast on a Vestaboard Flagship",
-    link: { label: "Set up a split-flap board", to: "/docs/displays/split-flap" },
+    link: {
+      label: "Read the split-flap guide",
+      to: "https://github.com/Fiestaboard/FiestaBoard/blob/next/docs/displays/split-flap.md",
+    },
   },
   {
+    id: "led-matrix",
     title: "LED matrix",
     badge: { label: "New", variant: "success" },
     description:
       "Bright RGB pixels with icons, mixed-case text, and smooth transitions. Pages are redrawn for the pixel grid, not squeezed onto it.",
-    devices: "Divoom Pixoo 64, with more panels arriving as output plugins",
+    devices: "Divoom Pixoo 64; other panels can be added through output plugins",
     preview: {
       model: "divoom_pixoo64",
       message: "{icon:sun} 72°\nSunny\n\nHigh 78°\nLow  61°\n\nUV 4\nWind 8",
       letterCase: "mixed",
     },
     previewLabel: "The same forecast on a Divoom Pixoo 64",
-    link: { label: "Set up an LED matrix", to: "/docs/displays/led-matrix" },
+    link: {
+      label: "Read the LED matrix guide",
+      to: "https://github.com/Fiestaboard/FiestaBoard/blob/next/docs/displays/led-matrix.md",
+    },
   },
   {
+    id: "tv",
     title: "TV",
     badge: { label: "Apps coming soon", variant: "secondary" },
     description: (
@@ -85,13 +96,19 @@ const CARDS: DisplayCard[] = [
       ].join("\n"),
     },
     previewLabel: "The same forecast on a TV running FiestaPanel",
-    link: { label: "Set up a TV", to: "/docs/displays/tv" },
+    link: {
+      label: "Read the TV guide",
+      to: "https://github.com/Fiestaboard/FiestaBoard/blob/next/docs/displays/tv.md",
+    },
   },
 ];
 
-function Card({ title, badge, description, devices, preview, previewLabel, link }: DisplayCard) {
+function Card({ id, title, badge, description, devices, preview, previewLabel, link }: DisplayCard) {
+  // React-page anchors must be registered as well as rendered for the
+  // Docusaurus build to validate links from the homepage.
+  useBrokenLinks().collectAnchor(id);
   return (
-    <Box className={styles.card}>
+    <Box id={id} className={styles.card}>
       <Box className={styles.preview} data-frame={preview.frame ?? "none"}>
         <BrowserOnly fallback={<Box className={styles.previewFallback} />}>
           {() =>
@@ -135,7 +152,7 @@ function Card({ title, badge, description, devices, preview, previewLabel, link 
   );
 }
 
-export default function DisplayTypes(): ReactNode {
+export default function DisplayTypes({ showContribution = true, linkToGuides = false } = {}): ReactNode {
   return (
     <>
       <Box as="section" className={styles.section}>
@@ -148,34 +165,43 @@ export default function DisplayTypes(): ReactNode {
           </Text>
           <Box className={styles.grid}>
             {CARDS.map((card) => (
-              <Card key={card.title} {...card} />
+              <Card
+                key={card.title}
+                {...card}
+                link={
+                  linkToGuides ? card.link : { label: `Explore ${card.title} displays`, to: `/displays#${card.id}` }
+                }
+              />
             ))}
           </Box>
         </Box>
       </Box>
 
-      <Box as="section" className={styles.sectionMuted}>
-        <Box className={styles.byod}>
-          <Box className={styles.byodCopy}>
-            <Heading level={2} className={styles.byodTitle}>
-              Bring your own display
-            </Heading>
-            <Text className={styles.byodBody}>
-              Every display FiestaBoard drives is an output plugin, including the Vestaboard. Write one for your
-              hardware, have your screen pull frames from FiestaBoard, or read the data straight from the API and MCP
-              server.
-            </Text>
-          </Box>
-          <Box className={styles.byodActions}>
-            <Button variant="secondary" asChild>
-              <Link to="/docs/development/output-plugins">Write an output plugin</Link>
-            </Button>
-            <Button variant="ghost" asChild>
-              <Link to="/docs/development/output-stream-api">Pull frames instead</Link>
-            </Button>
+      {showContribution ? (
+        <Box as="section" className={styles.sectionMuted}>
+          <Box className={styles.byod}>
+            <Box className={styles.byodCopy}>
+              <Heading level={2} className={styles.byodTitle}>
+                Find your display. Or add a new one.
+              </Heading>
+              <Text className={styles.byodBody}>
+                See the displays FiestaBoard supports, from split-flap boards to LED matrices and TVs. Have hardware we
+                don&apos;t support yet? Build a display plugin and contribute it to the project.
+              </Text>
+            </Box>
+            <Box className={styles.byodActions}>
+              <Button variant="secondary" asChild>
+                <Link to="/displays">See supported displays</Link>
+              </Button>
+              <Button variant="ghost" asChild>
+                <Link href="https://github.com/Fiestaboard/FiestaBoard/blob/next/docs/development/output-plugins.md">
+                  Build a display plugin
+                </Link>
+              </Button>
+            </Box>
           </Box>
         </Box>
-      </Box>
+      ) : null}
     </>
   );
 }

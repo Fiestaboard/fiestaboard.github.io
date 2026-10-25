@@ -40,6 +40,7 @@
 }
 
 .card {
+  scroll-margin-top: 90px;
   display: flex;
   flex-direction: column;
   background: var(--card);

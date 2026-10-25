@@ -30,7 +30,7 @@ function Hero() {
           <Text className={styles.heroSubline}>Free, open source, and self-hosted</Text>
           <Flex gap="3" wrap className={styles.heroButtons}>
             <Button size="lg" asChild>
-              <Link to="/docs/intro">Get Started</Link>
+              <Link to="/installation">Get Started</Link>
             </Button>
             <Button variant="outline" size="lg" asChild>
               <Link href="https://github.com/Fiestaboard/FiestaBoard">View on GitHub</Link>

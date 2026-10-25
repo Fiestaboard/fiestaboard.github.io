@@ -12,6 +12,7 @@ const sidebars: SidebarsConfig = {
         "setup/quick-start",
         "setup/beginners-guide",
         "setup/first-10-minutes",
+        "setup/home-assistant-addon",
         "setup/api-keys",
         "setup/home-assistant-mqtt",
       ],

@@ -73,5 +73,5 @@
 .heroBoardFallback {
   width: 100%;
   /* Match .stage's responsive min-height (+ gap and the two-line caption). */
-  min-height: min(409px, 57vw + 49px);
+  min-height: min(470px, 100vw + 60px);
 }

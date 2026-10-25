@@ -7,6 +7,7 @@ import { Text } from "@fiestaboard/ui/components/typography/text";
 import DisplayTypes from "@site/src/components/DisplayTypes";
 import HeroBoard from "@site/src/components/HeroBoard";
 import HomepageFeatures from "@site/src/components/HomepageFeatures";
+import IntroVideo from "@site/src/components/IntroVideo";
 import Layout from "@theme/Layout";
 import type { ReactNode } from "react";
 
@@ -52,6 +53,7 @@ export default function Home(): ReactNode {
     >
       <Hero />
       <Box as="main">
+        <IntroVideo />
         <DisplayTypes />
         <HomepageFeatures />
       </Box>

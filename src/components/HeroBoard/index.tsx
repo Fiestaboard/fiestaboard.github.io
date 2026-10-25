@@ -1,129 +1,100 @@
+import { DisplayPreview } from "@fiestaboard/ui/components/board/display-preview";
 import { ScaledBoardDisplay } from "@fiestaboard/ui/components/board/scaled-board-display";
+import { Tabs, TabsList, TabsTrigger } from "@fiestaboard/ui/components/containment/tabs";
 import { Button } from "@fiestaboard/ui/components/forms/button";
 import { Box } from "@fiestaboard/ui/components/layout/box";
 import { Text } from "@fiestaboard/ui/components/typography/text";
+import type { DeviceModel } from "@fiestaboard/ui/lib/devices";
+import { FIESTAPANEL_LED_MATRIX_MODEL, FIESTAPANEL_SPLIT_FLAP_MODEL } from "@site/src/lib/display-models";
 import { Pause, Play } from "lucide-react";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 
 import styles from "./styles.module.css";
 
 /**
- * Animated multi-device hero board.
+ * The homepage hero: one stage, every kind of display FiestaBoard drives.
  *
- * Cycles through a mix of the Vestaboard hardware families FiestaBoard supports
- * - Flagship (22×6), Note (15×3), and Note Arrays in several sizes (wide 2×1,
- * tall 1×2, big 2×2) - showing data dashboards, colorful board art, and boards
- * that combine the two. Each one is captioned with what it is showing (`title`)
- * over what it is running on (`label`). For each board it:
- *   1. fades the previous board out,
- *   2. swaps to the new device (the grid-size change is hidden by the fade),
- *   3. fades the new board in while its contents flap in - every cell cycles
- *      through random values and settles on a staggered per-cell frame,
- *      left-to-right / top-to-bottom, like a real split-flap board. Character
- *      cells flap through glyphs; color tiles flap through colors.
+ * A tab per display technology - split-flap, LED matrix, TV - over a stage
+ * that cycles through a few scenes on each. Left alone it walks every scene
+ * in order, so the tabs change on their own and a visitor who never touches
+ * anything still sees all three kinds. Picking a tab keeps the rotation inside
+ * that kind; the pause button stops it altogether.
  *
- * The flap is driven here (not FiestaUI's native board animation, which is
- * wired to the loading state) so it fires reliably on load and every cycle.
- * `ScaledBoardDisplay` fit-scales every device uniformly so nothing is
- * distorted, and we disable its own animation since we drive the frames.
+ * Every board is drawn by FiestaUI, the same renderers the app uses:
+ *   - split-flap scenes go through `ScaledBoardDisplay`, with the flap driven
+ *     here (see `runScramble`) so it fires on load and on every change;
+ *   - LED and TV scenes go through `DisplayPreview`, which dispatches on the
+ *     device model, animates its own transition when the message changes,
+ *     and puts a board on a television with `frame="tv"`.
  *
  * Rendered inside <BrowserOnly> (see src/pages/index.tsx). Respects
- * `prefers-reduced-motion`: no scramble, no fade - the message is set directly.
+ * `prefers-reduced-motion`: no scramble and no fade - content is set directly.
  */
-type BoardConfig = {
-  deviceType: "flagship" | "note" | "note_array";
-  /** What the board is showing, e.g. "Market Movers". */
+
+type DisplayKindId = "split_flap" | "led" | "tv";
+
+type SceneBase = {
+  /** What the display is showing, e.g. "Market Movers". */
   title: string;
-  /** What it is running on, e.g. "Flagship · 22 × 6". */
+  /** What it is running on, e.g. "Vestaboard Flagship · 22 × 6". */
   label: string;
   message: string;
-  notesWide?: number;
-  notesTall?: number;
-  /** Eligible to be the first board shown on load. See `pickOpener`. */
-  opener?: boolean;
 };
 
-const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 .-:%";
-const COLORS = ["{red}", "{orange}", "{yellow}", "{green}", "{blue}", "{violet}"];
-const SUNSET = ["{yellow}", "{orange}", "{red}", "{violet}", "{blue}"];
-const RAINBOW = ["{red}", "{orange}", "{yellow}", "{green}", "{blue}", "{violet}"];
+type FlapScene = SceneBase & {
+  kind: "split_flap";
+  deviceType: "flagship" | "note" | "note_array";
+  notesWide?: number;
+  notesTall?: number;
+};
 
-/** A block of `cols` color tiles per row, one row per entry in `rowColors`. */
-function verticalGradient(cols: number, rowColors: string[]): string {
-  return rowColors.map((color) => color.repeat(cols)).join("\n");
-}
+type LedScene = SceneBase & { kind: "led"; model: "divoom_pixoo64" };
 
-/** A diagonal gradient across `palette`, blended from top-left to bottom-right. */
-function diagonalGradient(rows: number, cols: number, palette: string[]): string {
-  const lines: string[] = [];
-  for (let r = 0; r < rows; r++) {
-    let line = "";
-    for (let c = 0; c < cols; c++) {
-      const t = (r / Math.max(1, rows - 1) + c / Math.max(1, cols - 1)) / 2;
-      line += palette[Math.min(palette.length - 1, Math.round(t * (palette.length - 1)))];
-    }
-    lines.push(line);
-  }
-  return lines.join("\n");
-}
+/** FiestaPanel draws on a TV in either look; its models are the ones the
+ *  FiestaPanel output plugin declares (FiestaUI ships them as fixtures). */
+type TvScene = SceneBase & { kind: "tv"; model: DeviceModel };
 
-/**
- * The rotation, ordered so a text-heavy board never follows another one.
- * Color tiles (`{green}`) count as one cell each, so rows that mix tiles and
- * text still have to fit the device width: 22 cells on Flagship, 15 on Note.
- */
-const BOARDS: BoardConfig[] = [
+type Scene = FlapScene | LedScene | TvScene;
+
+const DISPLAY_KINDS: { id: DisplayKindId; tab: string }[] = [
+  { id: "split_flap", tab: "Split-flap" },
+  { id: "led", tab: "LED matrix" },
+  { id: "tv", tab: "TV" },
+];
+
+const SCENES: Scene[] = [
   {
-    deviceType: "flagship",
-    title: "Morning Dashboard",
-    label: "Flagship · 22 × 6",
-    message:
-      "GOOD MORNING SF\n62F CLEAR   UV 4\nN JUDAH OB   4 MIN\nAAPL 232.10  +1.24%\nOCEAN BEACH 3-4 FT\nHAVE A GREAT DAY",
-  },
-  {
+    kind: "split_flap",
     deviceType: "flagship",
     title: "Market Movers",
-    label: "Flagship · 22 × 6",
-    opener: true,
+    label: "Vestaboard Flagship · 22 × 6",
     message:
       "MARKET MOVERS\n{green}AAPL  232.10  +1.24%\n{green}NVDA  121.44  +0.86%\n{red}TSLA  244.90  -2.10%\n{red}BTC   61,204  -1.40%\n{green}S+P   5,712   +0.42%",
   },
   {
-    deviceType: "flagship",
-    title: "Sunset Gradient",
-    label: "Sun Art · 22 × 6",
-    message: diagonalGradient(6, 22, SUNSET),
-  },
-  {
+    kind: "split_flap",
     deviceType: "flagship",
     title: "Weekly Forecast",
-    label: "Flagship · 22 × 6",
-    opener: true,
+    label: "Vestaboard Flagship · 22 × 6",
     message:
       "SF FORECAST\nMON {yellow} SUNNY     68 54\nTUE {blue} RAIN      61 52\nWED {violet} FOG       59 51\nTHU {yellow} SUNNY     70 55\nFRI {orange} HOT       78 58",
   },
   {
-    deviceType: "note",
-    title: "Daily Briefing",
-    label: "Note · 15 × 3",
-    message: "N JUDAH  4 MIN\nAAPL 232  +1.2%\n62F SUNNY   SF",
-  },
-  {
+    kind: "split_flap",
     deviceType: "note",
     title: "Game Day",
-    label: "Note · 15 × 3",
+    label: "Vestaboard Note · 15 × 3",
     message: "{orange}SF 24  {red}LA 17\n4TH QTR   2:41\n{orange}SF BALL 1ST+10",
   },
   {
+    kind: "split_flap",
     deviceType: "note_array",
     notesWide: 2,
     notesTall: 1,
     title: "Transit + Markets",
-    label: "Note Array · 2 × 1",
-    // A 2 × 1 array is two 15-col Notes side by side, so each half is laid out
-    // to its own 15 cells, with a blank column either side of the seam so the
-    // two halves read as separate panels. (The rows this replaced were 31 cells
-    // wide and lost their last character off the edge of the grid.)
+    label: "Vestaboard Note Array · 2 × 1",
+    // Two 15-column Notes side by side: each half is laid out to its own 15
+    // cells, with a blank column either side of the seam.
     message: [
       "N JUDAH  4 MIN " + " BART    9 MIN",
       "AAPL 232 +1.2% " + " NVDA 121 -0.9%",
@@ -131,60 +102,78 @@ const BOARDS: BoardConfig[] = [
     ].join("\n"),
   },
   {
-    deviceType: "note_array",
-    notesWide: 1,
-    notesTall: 2,
-    title: "Sunrise Column",
-    label: "Note Array · 1 × 2 (tall)",
-    message: verticalGradient(15, ["{yellow}", "{orange}", "{orange}", "{red}", "{violet}", "{blue}"]),
+    kind: "led",
+    model: "divoom_pixoo64",
+    title: "Weather",
+    label: "Divoom Pixoo 64 · 64 × 64 LEDs",
+    message: "{icon:sun} 72°\nSunny\n\nHigh 78°\nLow  61°\n\n{yellow}{yellow}{orange}{orange}{red}{red}",
   },
   {
-    deviceType: "note_array",
-    notesWide: 2,
-    notesTall: 2,
-    title: "Rainbow Wash",
-    label: "Note Array · 2 × 2",
-    message: diagonalGradient(6, 30, RAINBOW),
+    kind: "led",
+    model: "divoom_pixoo64",
+    title: "Next Train",
+    label: "Divoom Pixoo 64 · 64 × 64 LEDs",
+    message: "N Judah\n{green: 4 min }\n\nKT\n{yellow: 9 min }\n\nBART\n{red: 14 min }",
+  },
+  {
+    kind: "led",
+    model: "divoom_pixoo64",
+    title: "Markets",
+    label: "Divoom Pixoo 64 · 64 × 64 LEDs",
+    message: "AAPL\n{green: +1.24% }\n\nNVDA\n{green: +0.86% }\n\nTSLA\n{red: -2.10% }",
+  },
+  {
+    kind: "tv",
+    model: FIESTAPANEL_SPLIT_FLAP_MODEL,
+    title: "Morning Dashboard",
+    label: "FiestaPanel on a 55″ TV · 29 × 12",
+    message: [
+      "",
+      "  GOOD MORNING",
+      "",
+      "  {yellow} 62F CLEAR        UV 4",
+      "  {blue} OCEAN BEACH    3-4 FT",
+      "",
+      "  N JUDAH            4 MIN",
+      "  KT                 9 MIN",
+      "",
+      "  {green} AAPL  232.10   +1.24%",
+      "  {red} TSLA  244.90   -2.10%",
+    ].join("\n"),
+  },
+  {
+    kind: "tv",
+    model: FIESTAPANEL_LED_MATRIX_MODEL,
+    title: "Game Day",
+    label: "FiestaPanel on a 55″ TV · LED look",
+    message:
+      "\n   Game Day\n\n   {orange:SF}  24   {red:LA}  17\n\n   4th Qtr   2:41\n   SF ball 1st & 10\n\n   {63}{63}{64}{64}{65}{65}{66}{66}{67}{67}{68}{68}",
   },
 ];
 
-/**
- * Nine boards at ROTATE_MS each is a ~43s loop - longer than most visitors
- * stay - so start somewhere random rather than always on board 0. Openers are
- * limited to the full-size boards that show data and color at once, which is
- * the strongest first impression. Safe to randomize: this component only ever
- * renders in the browser (<BrowserOnly>), so there is no SSR markup to match.
- */
-function pickOpener(): number {
-  const openers = BOARDS.map((board, i) => (board.opener ? i : -1)).filter((i) => i >= 0);
-  return openers[Math.floor(Math.random() * openers.length)];
-}
-
-const ROTATE_MS = 4800; // time each board is shown
-const FADE_MS = 380; // fade-out before swapping devices
+const ROTATE_MS = 5200; // time each scene is shown
+const FADE_MS = 380; // fade-out before swapping displays
 const FRAME_MS = 45; // scramble frame interval
+
+const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 .-:%";
+const COLORS = ["{red}", "{orange}", "{yellow}", "{green}", "{blue}", "{violet}"];
 
 /**
  * Split a row into board cells the way FiestaUI's renderer does: a `{color}`
- * token is one cell (a color tile), every other character is one cell. Lets a
- * single board mix data and color - `{green}AAPL 232.10` is one tile plus text.
- *
- * Closing tags (`{/red}`) render as zero cells and so would throw the cell
- * count off here; the boards above use bare color tiles only.
+ * token is one cell (a color tile), every other character is one cell.
  */
 function toCells(row: string): string[] {
   return row.match(/\{[^}]+\}|[\s\S]/g) ?? [];
 }
 
 /**
- * Run the split-flap scramble for a board, calling `onFrame` with each frame.
- * Cell (row r, col c) locks to its final value at frame
- * 4 + c*0.8 + r*1.6 + rand(0..7); until then it shows a random value of its own
- * kind - color tiles flap through colors, characters through glyphs. Returns
- * the interval id.
+ * Run the split-flap scramble for a message, calling `onFrame` with each
+ * frame. Cell (row r, col c) locks to its final value at frame
+ * 4 + c*0.8 + r*1.6 + rand(0..7); until then it shows a random value of its
+ * own kind - color tiles flap through colors, characters through glyphs.
  */
-function runScramble(board: BoardConfig, onFrame: (frame: string) => void): ReturnType<typeof setInterval> {
-  const rows = board.message.split("\n").map(toCells);
+function runScramble(message: string, onFrame: (frame: string) => void): ReturnType<typeof setInterval> {
+  const rows = message.split("\n").map(toCells);
   const settleAt = rows.map((cells, ri) => cells.map((_, ci) => 4 + ci * 0.8 + ri * 1.6 + Math.random() * 7));
   const randomCell = (cell: string) =>
     cell.startsWith("{")
@@ -209,7 +198,7 @@ function runScramble(board: BoardConfig, onFrame: (frame: string) => void): Retu
     onFrame(out);
     if (done) {
       clearInterval(interval);
-      onFrame(board.message);
+      onFrame(message);
     }
   };
   render(); // first scrambled frame immediately, so nothing pops in
@@ -221,87 +210,180 @@ function prefersReducedMotion(): boolean {
   return window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
 }
 
+/** The next scene: the following one overall, or within `pinned` when a tab is pinned. */
+function nextScene(current: number, pinned: DisplayKindId | null): number {
+  for (let step = 1; step <= SCENES.length; step++) {
+    const candidate = (current + step) % SCENES.length;
+    if (!pinned || SCENES[candidate].kind === pinned) return candidate;
+  }
+  return current;
+}
+
+function SceneDisplay({ scene, message, reduceMotion }: { scene: Scene; message: string; reduceMotion: boolean }) {
+  switch (scene.kind) {
+    case "split_flap":
+      return (
+        <ScaledBoardDisplay
+          message={message}
+          deviceType={scene.deviceType}
+          notesWide={scene.notesWide}
+          notesTall={scene.notesTall}
+          size="md"
+          animationsEnabled={false}
+        />
+      );
+    case "led":
+      return (
+        <Box className={styles.ledSquare}>
+          <DisplayPreview
+            model={scene.model}
+            message={message}
+            letterCase="mixed"
+            font="5x7"
+            transition={reduceMotion ? "none" : "wipe"}
+            previewLabel={`${scene.title} on a ${scene.label}`}
+          />
+        </Box>
+      );
+    case "tv":
+      return (
+        <Box className={styles.tv}>
+          <DisplayPreview
+            model={scene.model}
+            message={message}
+            frame="tv"
+            tv={{ diagonalInches: 55, stand: true }}
+            animated={!reduceMotion}
+            letterCase="mixed"
+            transition={scene.model.technology === "led_matrix" && !reduceMotion ? "dissolve" : undefined}
+            previewLabel={`${scene.title} on a ${scene.label}`}
+          />
+        </Box>
+      );
+  }
+}
+
 export default function HeroBoard(): ReactNode {
-  const [shown, setShown] = useState(pickOpener);
-  const [message, setMessage] = useState(() => BOARDS[shown].message);
+  const [shown, setShown] = useState(0);
+  const [message, setMessage] = useState(() => SCENES[0].message);
   const [visible, setVisible] = useState(true);
   const [paused, setPaused] = useState(false);
+  const [pinned, setPinned] = useState<DisplayKindId | null>(null);
 
   const shownRef = useRef(shown);
   const scrambleTimer = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
   const fadeTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-  const cycleTimer = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
+  const reduceMotion = useRef(false);
 
   useEffect(() => {
     shownRef.current = shown;
   }, [shown]);
 
+  /**
+   * Show scene `index`. A change of display kind fades out, swaps the device
+   * while hidden and fades back in; a new message on the same kind of display
+   * changes in place, so the display's own transition is what you see. A
+   * split-flap message always flaps in through the scramble.
+   */
+  const show = (index: number) => {
+    const scene = SCENES[index];
+    const previous = SCENES[shownRef.current];
+    clearInterval(scrambleTimer.current);
+    clearTimeout(fadeTimer.current);
+    const swapIn = () => {
+      setShown(index);
+      shownRef.current = index;
+      if (scene.kind === "split_flap" && !reduceMotion.current) {
+        scrambleTimer.current = runScramble(scene.message, setMessage);
+      } else {
+        setMessage(scene.message);
+      }
+    };
+    const sameDevice =
+      previous.kind === scene.kind &&
+      (previous.kind === "split_flap"
+        ? previous.deviceType === (scene as FlapScene).deviceType &&
+          previous.notesWide === (scene as FlapScene).notesWide
+        : previous.model === (scene as LedScene | TvScene).model);
+    if (reduceMotion.current || sameDevice) {
+      swapIn();
+      return;
+    }
+    setVisible(false);
+    fadeTimer.current = setTimeout(() => {
+      swapIn();
+      setVisible(true);
+    }, FADE_MS);
+  };
+
   // The opening board flaps in on load.
   useEffect(() => {
-    if (prefersReducedMotion()) return;
-    scrambleTimer.current = runScramble(BOARDS[shownRef.current], setMessage);
+    reduceMotion.current = prefersReducedMotion();
+    if (reduceMotion.current) return;
+    scrambleTimer.current = runScramble(SCENES[0].message, setMessage);
     return () => clearInterval(scrambleTimer.current);
   }, []);
 
-  // The rotation itself, torn down and rebuilt when the user pauses/resumes.
+  // The rotation, rebuilt when the visitor pauses, resumes or pins a tab.
   useEffect(() => {
     if (paused) return;
+    const cycle = setInterval(() => show(nextScene(shownRef.current, pinned)), ROTATE_MS);
+    // Only the interval stops here: a fade already under way finishes, so
+    // pausing - or picking a tab, which starts a fade and re-pins the
+    // rotation in the same render - never strands the stage half-faded or
+    // drops the scene that was asked for.
+    return () => clearInterval(cycle);
+  }, [paused, pinned]);
 
-    const reduceMotion = prefersReducedMotion();
-
-    cycleTimer.current = setInterval(() => {
-      const next = (shownRef.current + 1) % BOARDS.length;
-      if (reduceMotion) {
-        setShown(next);
-        setMessage(BOARDS[next].message);
-        return;
-      }
-      setVisible(false); // fade current out
+  useEffect(
+    () => () => {
+      clearInterval(scrambleTimer.current);
       clearTimeout(fadeTimer.current);
-      fadeTimer.current = setTimeout(() => {
-        setShown(next); // swap device (hidden by the fade)
-        setVisible(true); // fade the new one in
-        clearInterval(scrambleTimer.current);
-        scrambleTimer.current = runScramble(BOARDS[next], setMessage); // flap the new contents in
-      }, FADE_MS);
-    }, ROTATE_MS);
+    },
+    [],
+  );
 
-    return () => {
-      clearInterval(cycleTimer.current);
-      // Pausing mid-fade would otherwise strand the board half-faded, since the
-      // timeout that fades it back in never fires.
-      clearTimeout(fadeTimer.current);
-      setVisible(true);
-    };
-  }, [paused]);
+  const scene = SCENES[shown];
 
-  const board = BOARDS[shown];
+  const pickKind = (value: unknown) => {
+    const kind = value as DisplayKindId;
+    setPinned(kind);
+    if (SCENES[shownRef.current].kind !== kind) show(SCENES.findIndex((s) => s.kind === kind));
+  };
 
   return (
     <Box className={styles.stage}>
-      <Box className={styles.frame} data-visible={visible}>
-        <ScaledBoardDisplay
-          key={shown}
-          message={message}
-          deviceType={board.deviceType}
-          notesWide={board.notesWide}
-          notesTall={board.notesTall}
-          size="md"
-          animationsEnabled={false}
-        />
+      <Tabs value={scene.kind} onValueChange={pickKind}>
+        <TabsList aria-label="Display type" className={styles.tabs}>
+          {DISPLAY_KINDS.map((kind) => (
+            <TabsTrigger key={kind.id} value={kind.id}>
+              {kind.tab}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
+      <Box className={styles.frame} data-visible={visible} data-kind={scene.kind}>
+        <SceneDisplay scene={scene} message={message} reduceMotion={reduceMotion.current} />
       </Box>
-      <Text as="span" className={styles.caption} data-visible={visible}>
-        {board.label}
-      </Text>
-      <Button
-        variant="ghost"
-        size="icon-sm"
-        className={styles.pauseButton}
-        onClick={() => setPaused((p) => !p)}
-        aria-label={paused ? "Resume board rotation" : "Pause board rotation"}
-      >
-        {paused ? <Play aria-hidden="true" /> : <Pause aria-hidden="true" />}
-      </Button>
+      <Box className={styles.captionRow}>
+        <Box className={styles.caption} data-visible={visible}>
+          <Text as="span" className={styles.captionTitle}>
+            {scene.title}
+          </Text>
+          <Text as="span" className={styles.captionMeta}>
+            {scene.label}
+          </Text>
+        </Box>
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          className={styles.pauseButton}
+          onClick={() => setPaused((p) => !p)}
+          aria-label={paused ? "Resume display rotation" : "Pause display rotation"}
+        >
+          {paused ? <Play aria-hidden="true" /> : <Pause aria-hidden="true" />}
+        </Button>
+      </Box>
     </Box>
   );
 }

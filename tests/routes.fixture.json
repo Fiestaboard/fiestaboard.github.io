@@ -34,6 +34,8 @@
   { "path": "/docs/setup/split-flap-display-software", "expect": "redirect", "target": "/docs/intro" },
 
   { "path": "/", "expect": "page" },
+  { "path": "/installation", "expect": "page" },
+  { "path": "/displays", "expect": "page" },
   { "path": "/plugins", "expect": "page" },
   { "path": "/plugins/detail", "expect": "page" },
   { "path": "/blog", "expect": "page" },

@@ -12,9 +12,17 @@ const sidebars: SidebarsConfig = {
         "setup/quick-start",
         "setup/beginners-guide",
         "setup/first-10-minutes",
+        "setup/home-assistant-addon",
         "setup/api-keys",
         "setup/home-assistant-mqtt",
       ],
+    },
+    {
+      type: "category",
+      label: "Displays",
+      collapsed: false,
+      link: { type: "doc", id: "displays/index" },
+      items: ["displays/split-flap", "setup/note-arrays", "displays/led-matrix", "displays/tv", "features/fiestapanel"],
     },
     {
       type: "category",
@@ -61,6 +69,8 @@ const sidebars: SidebarsConfig = {
       items: [
         "development/contributing",
         "development/plugin-guide",
+        "development/output-plugins",
+        "development/output-stream-api",
         "development/testing",
         "setup/local-development",
         "setup/local-home-assistant",

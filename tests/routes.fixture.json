@@ -1,6 +1,7 @@
 [
   { "path": "/docs/intro", "expect": "page" },
   { "path": "/docs/setup/quick-start", "expect": "page" },
+  { "path": "/docs/setup/api-keys", "expect": "page" },
   { "path": "/docs/features/page-editor", "expect": "page" },
   { "path": "/docs/features/schedule", "expect": "page" },
   { "path": "/docs/development/contributing", "expect": "page" },
@@ -9,6 +10,7 @@
   { "path": "/docs/troubleshooting", "expect": "page" },
 
   { "path": "/docs/8.30/intro", "expect": "page", "fullBuildOnly": true },
+  { "path": "/docs/8.29/setup/secret-encryption", "expect": "redirect", "target": "/docs/setup/api-keys" },
   { "path": "/docs/8.28/setup/quick-start", "expect": "redirect", "target": "/docs/setup/quick-start" },
   { "path": "/docs/8.15/intro", "expect": "redirect", "target": "/docs/intro", "fullBuildOnly": true },
   { "path": "/docs/8.30", "expect": "redirect", "target": "/docs/8.30/intro", "fullBuildOnly": true },

@@ -22,6 +22,14 @@ test("DEPLOY_VERSION_CAP is readable from docusaurus.config.ts", () => {
 
 const built = new Set(versions.slice(0, Number(capMatch?.[1] ?? 0)));
 const known = new Set(versions);
+// Removed historical pages may move to a different current guide. The URL
+// fixture verifies their exact targets; the cap test ensures those targets
+// are current pages covered by that same fixture.
+const currentDocsPages = new Set(
+  fixture
+    .filter((e) => e.expect === "page" && e.path.startsWith("/docs/") && !/^\/docs\/\d+\.\d+(?:\/|$)/.test(e.path))
+    .map((e) => e.path),
+);
 const versioned = fixture
   .map((e) => ({ e, v: e.path.match(/^\/docs\/(\d+\.\d+)(?:\/|$)/)?.[1] }))
   .filter(({ v }) => v && known.has(v));
@@ -41,8 +49,10 @@ for (const { e, v } of versioned) {
         "redirect",
         `${v} is past DEPLOY_VERSION_CAP and is no longer built — ${e.path} is a redirect stub, not a page`,
       );
-      const rest = e.path.slice(`/docs/${v}`.length) || "/intro";
-      assert.equal(e.target, `/docs${rest}`, `${e.path} should redirect to the current docs at the same path`);
+      assert.ok(
+        currentDocsPages.has(e.target),
+        `${e.path} should redirect to a current docs page covered by the URL fixture (target ${e.target})`,
+      );
     }
   });
 }

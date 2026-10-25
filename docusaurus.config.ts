@@ -286,6 +286,12 @@ const config: Config = {
             from: ["/docs/setup/split-flap-display-software", "/docs/next/setup/split-flap-display-software"],
             to: "/docs/intro",
           },
+          // The retired secret-encryption helper guide has no same-path
+          // successor. Preserve it as older snapshots leave the build cap.
+          {
+            from: redirectedDocsPrefixes.map((prefix) => `/docs/${prefix}/setup/secret-encryption`),
+            to: "/docs/setup/api-keys",
+          },
           // Bare section roots have no route of their own: /docs itself and
           // the bare form of every redirected prefix (/docs/latest,
           // /docs/next, /docs/<retired-version>) land on the docs home page.
@@ -317,9 +323,9 @@ const config: Config = {
             to: "/plugins",
           },
         ],
-        // Every page in a retired version snapshot has a same-path page in
-        // the current docs (verified against git history), so map each
-        // current docs route to its retired-prefix ancestors.
+        // Map current docs routes to their retired-prefix ancestors.
+        // Retired pages without a same-path successor need an explicit
+        // redirect above so leaving the build cap does not drop their URLs.
         createRedirects(existingPath: string) {
           const match = existingPath.match(/^\/docs\/(.+)$/);
           if (!match) return undefined;

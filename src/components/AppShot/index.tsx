@@ -3,6 +3,7 @@ import useBaseUrl from "@docusaurus/useBaseUrl";
 import { Box } from "@fiestaboard/ui/components/layout/box";
 import { type ReactNode, useCallback, useEffect, useRef, useState } from "react";
 
+import { observeWidth } from "./observe-width";
 import styles from "./styles.module.css";
 
 /**
@@ -315,9 +316,7 @@ export default function AppShot({
   useEffect(() => {
     const host = hostRef.current;
     if (!host) return;
-    const ro = new ResizeObserver(() => layout());
-    ro.observe(host);
-    return () => ro.disconnect();
+    return observeWidth(host, layout);
   }, [layout]);
 
   if (failed) {

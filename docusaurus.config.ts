@@ -1,7 +1,10 @@
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import { themes as prismThemes } from "prism-react-renderer";
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
 import versions from "./versions.json";
+import remarkLegacyPluginLinks from "./scripts/remark-legacy-plugin-links.mjs";
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -319,7 +322,9 @@ const config: Config = {
           // snapshot is still the latest version (the plugin skips redirects
           // whose `from` is an existing route), then forward here.
           {
-            from: LEGACY_PLUGIN_DOCS.map((page) => `/docs/plugins/${page}`),
+            from: ["", ...redirectedDocsPrefixes].flatMap((prefix) =>
+              LEGACY_PLUGIN_DOCS.map((page) => `/docs/${prefix ? `${prefix}/` : ""}plugins/${page}`),
+            ),
             to: "/plugins",
           },
         ],
@@ -360,6 +365,15 @@ const config: Config = {
           // (includeCurrentVersion: false) — the site serves snapshots only.
           path: "docs",
           sidebarPath: "./sidebars.ts",
+          remarkPlugins: [
+            [
+              remarkLegacyPluginLinks,
+              {
+                enabled: !existsSync(join(__dirname, "versioned_docs", `version-${versions[0]}`, "plugins")),
+                legacyPages: LEGACY_PLUGIN_DOCS,
+              },
+            ],
+          ],
           // "Edit this page" targets this repo: Docusaurus appends the doc's
           // path relative to the site dir (docs/… or versioned_docs/…), and
           // since the cutover those trees live here, not in

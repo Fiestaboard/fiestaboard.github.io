@@ -55,6 +55,12 @@ jobs:
         uses: actions/upload-pages-artifact@v5
         with:
           path: build
+          # Since v4 the action drops dot-prefixed files unless told otherwise,
+          # and /.well-known/ (apple-app-site-association, assetlinks.json) is
+          # what lets the phone apps claim https://fiestaboard.app/link/*.
+          # Actions deploys never run Jekyll, so no .nojekyll is involved.
+          # tests/well-known.test.mjs keeps this setting in place.
+          include-hidden-files: true
 
   deploy:
     name: Deploy to GitHub Pages

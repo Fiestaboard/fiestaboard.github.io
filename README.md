@@ -47,9 +47,14 @@ If you are using GitHub pages for hosting, this command is a convenient way to b
 when the app isn't installed lives in [Fiestaboard/link](https://github.com/Fiestaboard/link).
 
 - `apple-app-site-association` (JSON, no extension): iOS Universal Links for
-  `<Team ID>.com.fiestaboard.ios.draft`, paths `/link/*` except the `/link/` index.
+  `<Team ID>.com.fiestaboard.ios.draft`, paths `/link/*` except the explainer index
+  (`/link/` and `/link/index.html`), which must stay a web page.
 - `assetlinks.json`: Android App Links (`delegate_permission/common.handle_all_urls`) for
-  `com.fiestaboard.android`.
+  `com.fiestaboard.android`. **It can't exclude paths**: it only proves the app may handle this
+  domain, and the app's manifest decides which paths. The Android intent filter must therefore
+  list `/link/pair`, `/link/activate` and `/link/open` explicitly (or, on Android 15+, use a
+  `uri-relative-filter-group` with `allow="false"` for the index), never a bare
+  `pathPrefix="/link/"`.
 
 The deploy workflow uploads the Pages artifact with `include-hidden-files: true`; without it,
 `actions/upload-pages-artifact` drops `.well-known` and both files 404. GitHub Pages serves the
@@ -66,4 +71,13 @@ accepts; Pages can't set headers.
   (colon-separated, upper case). Add the upload key's fingerprint too if you sideload builds
   signed with it.
 
-`npm test` checks both files' shape (`tests/well-known.test.mjs`).
+Fill both in only once the apps actually handle these links. Before then, a filled-in file makes
+links open an app that does nothing with them. Apple's CDN caches the AASA for hours to days, and
+Android verifies at install time. After deploying, check the live files with Apple's CDN
+(`https://app-site-association.cdn-apple.com/a/v1/fiestaboard.app`) and Google's Digital Asset
+Links API
+(`https://digitalassetlinks.googleapis.com/v1/statements:list?source.web.site=https://fiestaboard.app&relation=delegate_permission/common.handle_all_urls`).
+
+`npm test` checks both files' shape and the workflow setting (`tests/well-known.test.mjs`).
+
+Everything in `static/` is public, dotfiles included: the deploy now ships hidden files too.

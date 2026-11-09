@@ -1,0 +1,15 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["REPLACE_ME_APPLE_TEAM_ID.com.fiestaboard.ios.draft"],
+        "components": [
+          { "/": "/link/", "exclude": true, "comment": "The index explains links; it is not a link." },
+          { "/": "/link/*", "comment": "Phone app links: pair, activate, open. Data rides in the # fragment." }
+        ],
+        "appID": "REPLACE_ME_APPLE_TEAM_ID.com.fiestaboard.ios.draft",
+        "paths": ["NOT /link/", "/link/*"]
+      }
+    ]
+  }
+}
